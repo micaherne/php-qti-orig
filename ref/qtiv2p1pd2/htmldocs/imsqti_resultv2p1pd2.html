@@ -1,0 +1,1726 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+
+
+
+  
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+
+
+
+  
+  
+  
+  
+  <title>IMS Question and Test Interoperability Results Reporting</title>
+  <link rel="alternate" media="print" href="http://www.imsglobal.org/printer.cfm">
+
+
+
+  
+  
+  <link rel="stylesheet" href="stylesheet.css" type="text/css">
+</head>
+
+
+<body>
+
+
+
+<table summary="layout table" border="0" cellspacing="0" width="100%">
+
+
+
+  <tbody>
+
+
+    <tr>
+
+
+
+      <td valign="middle" width="19%"><img src="images/speclogo.jpg" alt="IMS Logo" height="245" width="117"></td>
+
+
+
+      <td valign="middle" width="81%">
+      
+      
+      <h1>IMS Question and Test Interoperability Results Reporting</h1>
+
+
+
+      
+      
+      <h2>Version 2.1 Public Draft (revision 2) Specification</h2>
+
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+  
+  
+  </tbody>
+</table>
+
+
+
+<p>Copyright &copy; 2006 IMS Global Learning Consortium, Inc. All Rights Reserved.<br>
+
+
+
+The IMS Logo is a registered trademark of IMS GLC.<br>
+
+
+
+Document Name: IMS Question and Test Interoperability Results Reporting<br>
+
+</p>
+
+
+
+<hr>
+<p></p>
+
+
+
+<p></p>
+
+
+
+<table summary="This table describes the document status" border="0" cellpadding="5" cellspacing="0">
+
+
+
+    <tr>
+
+
+
+      <td>Date Issued:<br>
+
+
+      </td>
+
+
+
+      <td>8 June 2006<br>
+
+
+      </td>
+
+
+
+    </tr>
+    <tr>
+      <td colspan="2" rowspan="1">
+      <br>
+      <br>
+<p>Caution: this specification is incomplete in its current state.  The IMS QTI project group is in the process of evolving this specification based on input from market participants. Suppliers of products and services are encouraged to participate by contacting Mark McKell at mmckell@imsglobal.org. This specification will be superseded by an updated release based on the input of the project group participants.
+
+<p>Please note that supplier's claims as to implementation of QTI v2.1 and conformance to it HAVE NOT BEEN VALIDATED by IMS GLC. While such suppliers are likely well-intentioned, IMS GLC member organizations have not yet put in place the testing process to validate these claims. IMS GLC currently grants a conformance mark to the Common Cartridge profile of QTI v1.2.1. The authoritative source of products and services that meet this conformance is contained in the IMS online product directory <a href="http://www.imsglobal.org/ProductDirectory/directory.cfm">http://www.imsglobal.org/ProductDirectory/directory.cfm</a>
+
+<p>Thank you for your interest in and support of IMS QTI.
+
+<p><b>IPR and Distribution Notices</b></p>
+<p>Recipients of this document are requested to submit, with their comments, notification of any relevant patent claims or other intellectual property rights of which they may be aware that might be infringed by any implementation of the specification set forth in this document, and to provide supporting documentation.</p>
+<p>IMS takes no position regarding the validity or scope of any intellectual property or other rights that might be claimed to pertain to the implementation or use of the technology described in this document or the extent to which any license under such rights might or might not be available; neither does it represent that it has made any effort to identify any such rights. Information on IMS's procedures with respect to rights in IMS specifications can be found at the IMS Intellectual Property Rights web page: <a href="http://www.imsglobal.org/ipr/imsipr_policyFinal.pdf">http://www.imsglobal.org/ipr/imsipr_policyFinal.pdf</a>.</p>
+<p>Copyright © 2006 IMS Global Learning Consortium. All Rights Reserved.</p>
+<p>If you wish to copy or distribute this document, you must complete a valid Registered User license registration with IMS and receive an email from IMS granting the license to distribute the specification. To register, follow the instructions on the IMS website: <a href="http://www.imsglobal.org/specificationdownload.cfm">http://www.imsglobal.org/specificationdownload.cfm</a>.</p>
+<p>This document may be copied and furnished to others by Registered Users who have registered on the IMS website provided that the above copyright notice and this paragraph are included on all such copies. However, this document itself may not be modified in any way, such as by removing the copyright notice or references to IMS, except as needed for the purpose of developing IMS specifications, under the auspices of a chartered IMS project group.</p>
+<p>Use of this specification to develop products or services is governed by the license with IMS found on the IMS website: <a href="http://www.imsglobal.org/license.html">http://www.imsglobal.org/license.html</a>.</p>
+<p>The limited permissions granted above are perpetual and will not be revoked by IMS or its successors or assigns.</p>
+<p>THIS SPECIFICATION IS BEING OFFERED WITHOUT ANY WARRANTY WHATSOEVER, AND IN PARTICULAR, ANY WARRANTY OF NONINFRINGEMENT IS EXPRESSLY DISCLAIMED. ANY USE OF THIS SPECIFICATION SHALL BE MADE ENTIRELY AT THE IMPLEMENTER'S OWN RISK, AND NEITHER THE CONSORTIUM, NOR ANY OF ITS MEMBERS OR SUBMITTERS, SHALL HAVE ANY LIABILITY WHATSOEVER TO ANY IMPLEMENTER OR THIRD PARTY FOR ANY DAMAGES OF ANY NATURE WHATSOEVER, DIRECTLY OR INDIRECTLY, ARISING FROM THE USE OF THIS SPECIFICATION.</p>
+
+      </td>
+
+
+
+    </tr>
+
+
+
+  
+  
+</table>
+
+
+
+<h2><a name="section10000">Table of Contents</a></h2>
+
+
+
+<dl>
+
+
+
+  <dt><a name="section10000">1. </a><a href="#section10001">Introduction</a></dt>
+
+
+
+  <dt>2. <a href="#section10002">References</a></dt>
+
+
+
+  <dt>3. <a href="#section10003">Assessment Result</a></dt>
+
+
+
+</dl>
+
+
+
+
+<h2><a name="section10001">1. Introduction</a></h2>
+
+
+
+
+<h2><a name="section10002">2. References</a></h2>
+
+
+
+<dl>
+
+
+
+  <dt><a name="ref_IMS_LIP">IMS_LIP
+    </a></dt>
+
+
+  <dd><a name="ref_IMS_LIP">IMS Learner Information Package Specification, Version 1.0
+    </a></dd>
+
+
+  <dd><a href="http://www.imsglobal.org/profiles/index.html">http://www.imsglobal.org/profiles/index.html</a></dd>
+
+
+
+</dl>
+
+
+
+
+<h2><a name="section10003">3. Assessment Result</a></h2>
+
+
+
+<div class="class-body">
+<div class="class-head">
+<p class="class-head"><a name="element10801"><b>Class</b> : <code>assessmentResult</code>
+</a></p>
+
+
+</div>
+
+
+
+
+<a name="element10801">				</a>
+<p><a name="element10801">An Assessment Result is used to report the results of a candidate's interaction
+                    with a test and/or one or more items attempted. Information about the test is
+                    optional, in some systems it may be possible to interact with items that are not
+                    organized into a test at all. For example, items that are organized with
+                    learning resources and presented individually in a formative context.</a></p>
+
+
+
+
+<a name="element10801">				</a>
+<p class="class-subbody"><a name="element10802"><b>Contains</b> : <code></code></a><a class="class-subbody" href="#element10805">context</a> [1]</p>
+
+
+
+
+				
+<p class="class-subbody"><a name="element10803"><b>Contains</b> : <code></code></a><a class="class-subbody" href="#element10812">testResult</a> [0..1]<br>
+
+
+
+ When a test
+                    result is given the following item results must relate only to items that were
+                    selected for presentation as part of the corresponding test session.
+                    Furthermore, all items selected for presentation should be reported with a
+                    corresponding itemResult. </p>
+
+
+
+
+				
+<p class="class-subbody"><a name="element10804"><b>Contains</b> : <code></code></a><a class="class-subbody" href="#element10816">itemResult</a> [*]<br>
+
+
+
+ A summary report
+                    for a test is represented by an assessment result containing a <a href="#element10812">testResult</a> but no <a href="#element10816">itemResult</a>s.</p>
+
+
+
+
+			</div>
+
+
+
+<div class="class-body">
+<div class="class-head">
+<p class="class-head"><a name="element10805"><b>Class</b> : <code>context</code>
+</a></p>
+
+
+<dl>
+
+
+
+  <dt><a name="element10805">Associated classes:</a></dt>
+
+
+  <dd><code><a class="class-head" href="#element10801">assessmentResult</a></code></dd>
+
+
+
+</dl>
+
+
+</div>
+
+
+
+
+				
+<p class="class-subbody"><a name="element10806"><b>Contains</b> : <code></code></a><a class="class-subbody" href="#element10808">sessionIdentifier</a> [*]<br>
+
+
+
+ The
+                    system that creates the result (for example, the test delivery system) should
+                    assign a session identifier that it can use to identify the session. Subsequent
+                    systems that process the result might assign their own identifier to the session
+                    which should be added to the context if the result is modified and exported for
+                    transport again.</p>
+
+
+
+
+				
+<p class="class-subbody"><a name="element10807"><b>Contains</b> : <code></code></a><a class="class-subbody" href="#element10811">identification</a> [0..1]<br>
+
+
+
+ </p>
+
+
+
+
+			</div>
+
+
+
+<div class="class-body">
+<div class="class-head">
+<p class="class-head"><a name="element10808"><b>Class</b> : <code>sessionIdentifier</code>
+</a></p>
+
+
+<dl>
+
+
+
+  <dt><a name="element10808">Associated classes:</a></dt>
+
+
+  <dd><code><a class="class-head" href="#element10805">context</a></code></dd>
+
+
+
+</dl>
+
+
+</div>
+
+
+
+
+				
+<p class="class-subbody"><a name="element10809"><b>Attribute</b> : <code>sourceID [1]: </code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10738">uri</a><br>
+
+
+
+A unique identifier of the
+                    system which added this identifier to the result.</p>
+
+
+
+
+				
+<p class="class-subbody"><a name="element10810"><b>Attribute</b> : <code>identifier [1]: </code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10735">string</a><br>
+
+
+
+The system that creates
+                    the report should add a session identifier. Subsequent systems that process the
+                    results might use their own identifier for the session and should add this too
+                    if the result is exported again for further transport.</p>
+
+
+
+
+			</div>
+
+
+
+<div class="class-body">
+<div class="class-head">
+<p class="class-head"><a name="element10811"><b>Class</b> : <code>identification</code>
+</a></p>
+
+
+<dl>
+
+
+
+  <dt><a name="element10811">Associated classes:</a></dt>
+
+
+  <dd><code><a class="class-head" href="#element10805">context</a></code></dd>
+
+
+
+</dl>
+
+
+</div>
+
+
+
+
+				
+<p>The format of the information used to identify the candidate is defined by the
+                        <a href="#ref_IMS_LIP">[IMS_LIP]</a>. </p>
+
+
+
+
+			</div>
+
+
+
+<div class="class-body">
+<div class="class-head">
+<p class="class-head"><a name="element10812"><b>Class</b> : <code>testResult</code>
+</a></p>
+
+
+<dl>
+
+
+
+  <dt><a name="element10812">Associated classes:</a></dt>
+
+
+  <dd><code><a class="class-head" href="#element10801">assessmentResult</a></code></dd>
+
+
+
+</dl>
+
+
+</div>
+
+
+
+
+				
+<p class="class-subbody"><a name="element10813"><b>Attribute</b> : <code>identifier [1]: </code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10735">string</a><br>
+
+
+
+The identifier of the
+                    test for which this is a result.</p>
+
+
+
+
+				
+<p class="class-subbody"><a name="element10814"><b>Attribute</b> : <code>datestamp [1]: </code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10718">datetime</a><br>
+
+
+
+The date stamp of when
+                    this result was recorded.</p>
+
+
+
+
+				
+				
+				
+<p class="class-subbody"><a name="element10815"><b>Contains</b> : <code></code></a><a class="class-subbody" href="#element10828">itemVariable</a> [*]<br>
+
+
+
+The values of the test outcomes <em>and</em> any durations that were tracked
+                    during the test. Note that durations are reported as built-in test-level
+                    response variables with name <em>duration</em>. The duration of individual test
+                    parts or sections being distinguished by prefixing them with the associated
+                    identifier as described in <a href="imsqti_infov2p1pd2.html">Assessment Test, Section and Item Information Model</a>. </p>
+
+
+
+
+			</div>
+
+
+
+<div class="class-body">
+<div class="class-head">
+<p class="class-head"><a name="element10816"><b>Class</b> : <code>itemResult</code>
+</a></p>
+
+
+<dl>
+
+
+
+  <dt><a name="element10816">Associated classes:</a></dt>
+
+
+  <dd><code><a class="class-head" href="#element10801">assessmentResult</a></code></dd>
+
+
+
+</dl>
+
+
+</div>
+
+
+
+
+				
+<p>The result of an item session is reported with an itemResult. A report may contain
+                    multiple results for the same instance of an item representing multiple
+                    attempts, progression through an adaptive item, or even more detailed tracking.
+                    In these cases, each item result must have a different datestamp.</p>
+
+
+
+
+				
+<p class="class-subbody"><a name="element10817"><b>Attribute</b> : <code>identifier [1]: </code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10735">string</a><br>
+
+
+
+The identifier of the
+                    item for which this is a result. For item results that are reported as part of a
+                    test result this is the identifier used to refer to the item in the test (see
+                        <a href="imsqti_infov2p1pd2.html#element10519">assessmentItemRef</a>). For item results that are reported
+                    on their own, this can be any suitable identifier for the item. Where possible,
+                    the value should match the <a href="imsqti_infov2p1pd2.html#element10013">identifier</a>
+                    attribute on the associated <a href="imsqti_infov2p1pd2.html#element10012">assessmentItem</a>. </p>
+
+
+
+
+				
+<p class="class-subbody"><a name="element10818"><b>Attribute</b> : <code>sequenceIndex [0..1]: </code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10722">integer</a><br>
+
+
+
+ For
+                    item results that are reported as part of a test, this attribute must be used to
+                    indicate the position of the item within the specific instance of the test. The
+                    first item of the first part of the test is defined to have sequence index 1. </p>
+
+
+
+
+				
+<p class="class-subbody"><a name="element10819"><b>Attribute</b> : <code>datestamp [1]: </code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10718">datetime</a><br>
+
+
+
+The date stamp of when
+                    this result was recorded.</p>
+
+
+
+
+				
+<p class="class-subbody"><a name="element10820"><b>Attribute</b> : <code>sessionStatus [1]: </code></a><a class="class-subbody" href="#element10823">sessionStatus</a><br>
+
+
+
+ The session
+                    status is used to interpret the values of the item variables. See <a href="#element10823">sessionStatus</a> below.</p>
+
+
+
+
+				
+<p class="class-subbody"><a name="element10821"><b>Contains</b> : <code></code></a><a class="class-subbody" href="#element10828">itemVariable</a> [*]<br>
+
+
+
+During the item session the
+                    delivery engine keeps track of the current values assigned to all <a href="#element10828">itemVariable</a>s. The values of including the values of the built-in
+                    variables <em>numAttempts</em>, <em>duration</em>, and <em>completionStatus</em>.
+                    Each value is represented in the report by an instance of <a href="#element10828">itemVariable</a>.</p>
+
+
+
+
+				
+<p class="class-subbody"><a name="element10822"><b>Contains</b> : <code></code></a><a class="class-subbody" href="#element10848">candidateComment</a> [0..1]<br>
+
+
+
+An
+                    optional comment supplied by the candidate (see <a href="imsqti_infov2p1pd2.html#element10034">allowComment</a>).</p>
+
+
+
+
+			</div>
+
+
+
+<div class="class-body">
+<div class="class-head">
+<h4><a name="element10823">Enumeration: <code>sessionStatus</code></a></h4>
+
+
+
+</div>
+
+
+<a name="element10823"></a>
+<p><a name="element10823">The session status is used to keep track of the status of the item variables in
+                    an item session.</a></p>
+
+
+
+
+<a name="element10823">				</a>
+<p class="class-subbody"><a name="element10824"><code>initial</code><br>
+
+
+
+The value to use for sessions in the initial
+                    state, as described above. This value can only be used to describe sessions for
+                    which the response variable <em>numAttempts</em> is 0. The values of the
+                    variables are set according to the rules defined in the appropriate declarations
+                    (see </a><a href="imsqti_infov2p1pd2.html#element10073">responseDeclaration</a>, <a href="imsqti_infov2p1pd2.html#element10089">outcomeDeclaration</a> and <a href="imsqti_infov2p1pd2.html#element10433">templateDeclaration</a>).</p>
+
+
+
+
+				
+<p class="class-subbody"><a name="element10825"><code>pendingSubmission</code><br>
+
+
+
+The value to use when the item variables represent a
+                    snapshot of the current values during an attempt (in other words, while
+                    interacting or suspended). The values of the response variables represent work
+                    in progress that has not yet been submitted for response processing by the
+                    candidate. The values of the outcome variables represent the values assigned
+                    during response processing <em>at the end of the previous attempt</em> or, in
+                    the case of the first attempt, the default values given in the variable
+                    declarations.</a></p>
+
+
+
+
+<a name="element10825">				</a>
+<p class="class-subbody"><a name="element10826"><code>pendingResponseProcessing</code><br>
+
+
+
+The value to use when the item variables
+                    represent the values of the response variables after submission but before
+                    response processing has taken place. Again, the outcomes are those assigned at
+                    the end of the previous attempt as they are awaiting response processing.</a></p>
+
+
+
+
+<a name="element10826">				</a>
+<p class="class-subbody"><a name="element10827"><code>final</code><br>
+
+
+
+The value to use when the item variables represent the values at
+                    the end of an attempt <em>after</em> response processing has taken place. In
+                    other words, after the outcome values have been updated to reflect the values of
+                    the response variables.</a></p>
+
+
+
+
+<a name="element10827">			</a></div>
+
+
+
+<div class="class-body">
+<div class="class-head">
+<p class="class-head"><a name="element10828"><b>Abstract class</b> : <code>itemVariable</code>
+</a></p>
+
+
+<dl>
+
+
+
+  <dt><a name="element10828">Derived classes:</a></dt>
+
+
+  <dd><code><a class="class-head" href="#element10838">outcomeVariable</a>, <a class="class-head" href="#element10832">responseVariable</a>, <a class="class-head" href="#element10846">templateVariable</a></code></dd>
+
+
+
+  <dt>Associated classes:</dt>
+
+
+  <dd><code><a class="class-head" href="#element10816">itemResult</a>, <a class="class-head" href="#element10812">testResult</a></code></dd>
+
+
+
+</dl>
+
+
+</div>
+
+
+
+
+				
+				
+<p class="class-subbody"><a name="element10829"><b>Attribute</b> : <code>identifier [1]: </code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10721">identifier</a><br>
+
+
+
+The purpose of an itemVariable is to
+                    report the value of the item variable with the given identifier.</p>
+
+
+
+
+				
+<p class="class-subbody"><a name="element10830"><b>Attribute</b> : <code>cardinality [1]: </code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10048">cardinality</a><br>
+
+
+
+The cardinality of
+                    the variable, taken from the corresponding declaration or definition.</p>
+
+
+
+
+				
+<p class="class-subbody"><a name="element10831"><b>Attribute</b> : <code>baseType [0..1]: </code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10053">baseType</a><br>
+
+
+
+The base type of the
+                    variable, taken from the corresponding declaration of definition. This value is
+                    omitted only for variables with <a href="imsqti_infov2p1pd2.html#element10052">record</a>
+                    cardinality.</p>
+
+
+
+
+			</div>
+
+
+
+<div class="class-body">
+<div class="class-head">
+<p class="class-head"><a name="element10832"><b>Class</b> : <code>responseVariable (</code></a><a class="class-head" href="#element10828">itemVariable</a>)
+</p>
+
+
+</div>
+
+
+
+
+				
+<p class="class-subbody"><a name="element10833"><b>Attribute</b> : <code>choiceSequence [*]: </code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10721">identifier</a><br>
+
+
+
+
+                    When a response variable is bound to an interaction that supports the shuffling
+                    of choices, the sequence of choices experienced by the candidate will vary
+                    between test instances. When shuffling is in effect, the sequence of choices
+                    should be reported as a sequence of choice identifiers using this attribute. </p>
+
+
+
+
+				
+<p class="class-subbody"><a name="element10834"><b>Contains</b> : <code></code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10077">correctResponse</a> [0..1]<br>
+
+
+
+ The
+                    correct response may be output as part of the report if desired. </p>
+
+
+
+
+				
+<p class="class-subbody"><a name="element10835"><b>Contains</b> : <code></code></a><a class="class-subbody" href="#element10836">candidateResponse</a> [1]<br>
+
+
+
+ The
+                    response given by the candidate. </p>
+
+
+
+
+            </div>
+
+
+
+<div class="class-body">
+<div class="class-head">
+<p class="class-head"><a name="element10836"><b>Class</b> : <code>candidateResponse</code>
+</a></p>
+
+
+<dl>
+
+
+
+  <dt><a name="element10836">Associated classes:</a></dt>
+
+
+  <dd><code><a class="class-head" href="#element10832">responseVariable</a></code></dd>
+
+
+
+</dl>
+
+
+</div>
+
+
+
+
+                
+<p class="class-subbody"><a name="element10837"><b>Contains</b> : <code></code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10042">value</a> [*]<br>
+
+
+
+The value(s) of the response
+                    variable. A NULL value, resulting from no response, is indicated by the absence
+                    of any value.</p>
+
+
+
+
+			</div>
+
+
+
+<div class="class-body">
+<div class="class-head">
+<p class="class-head"><a name="element10838"><b>Class</b> : <code>outcomeVariable (</code></a><a class="class-head" href="#element10828">itemVariable</a>)
+</p>
+
+
+</div>
+
+
+
+
+				
+<p class="class-subbody"><a name="element10839"><b>Attribute</b> : <code>view [*]: </code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10740">view</a><br>
+
+
+
+The views (if any)
+                    declared for the outcome must be copied to the report to enable systems that
+                    render the report to hide information not relevant in a specific situation. If
+                    no values are given, the outcome's value should be considered relevant in all
+                    views. </p>
+
+
+
+
+                
+<p class="class-subbody"><a name="element10840"><b>Attribute</b> : <code>interpretation [0..1]: </code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10735">string</a><br>
+
+
+
+See <a href="imsqti_infov2p1pd2.html#element10091">interpretation</a>.</p>
+
+
+
+
+                
+<p class="class-subbody"><a name="element10841"><b>Attribute</b> : <code>longInterpretation [0..1]: </code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10738">uri</a><br>
+
+
+
+See <a href="imsqti_infov2p1pd2.html#element10092">longInterpretation</a>.</p>
+
+
+
+
+                
+<p class="class-subbody"><a name="element10842"><b>Attribute</b> : <code>normalMaximum [0..1]: </code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10720">float</a><br>
+
+
+
+Taken
+                    from the corresponding <a href="imsqti_infov2p1pd2.html#element10089">outcomeDeclaration</a>.</p>
+
+
+
+
+				
+<p class="class-subbody"><a name="element10843"><b>Attribute</b> : <code>normalMinimum [0..1]: </code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10720">float</a><br>
+
+
+
+Taken
+                    from the corresponding <a href="imsqti_infov2p1pd2.html#element10089">outcomeDeclaration</a>.</p>
+
+
+
+
+				
+<p class="class-subbody"><a name="element10844"><b>Attribute</b> : <code>masteryValue [0..1]: </code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10720">float</a><br>
+
+
+
+If a mastery value
+                    is specified in the corresponding <a href="imsqti_infov2p1pd2.html#element10089">outcomeDeclaration</a> it
+                    may be reported alongside the value of the <a href="#element10838">outcomeVariable</a>. In some cases, the mastery value may not be an attribute of the item itself,
+                    but be determined by the context in which the item is delivered, for example, by
+                    examining the candidates in a specific cohort. The mastery value may be reported
+                    with the outcome value even when there is no corresponding value in the
+                    declaration. </p>
+
+
+
+
+				
+<p class="class-subbody"><a name="element10845"><b>Contains</b> : <code></code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10042">value</a> [*]<br>
+
+
+
+The value(s) of the outcome
+                    variable.</p>
+
+
+
+
+			</div>
+
+
+
+<div class="class-body">
+<div class="class-head">
+<p class="class-head"><a name="element10846"><b>Class</b> : <code>templateVariable (</code></a><a class="class-head" href="#element10828">itemVariable</a>)
+</p>
+
+
+</div>
+
+
+
+
+				
+<p class="class-subbody"><a name="element10847"><b>Contains</b> : <code></code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10042">value</a> [*]<br>
+
+
+
+The value(s) of the template
+                    variable.</p>
+
+
+
+
+			</div>
+
+
+
+<div class="class-body">
+<div class="class-head">
+<p class="class-head"><a name="element10848"><b>Class</b> : <code>candidateComment</code>
+</a></p>
+
+
+<dl>
+
+
+
+  <dt><a name="element10848">Associated classes:</a></dt>
+
+
+  <dd><code><a class="class-head" href="#element10816">itemResult</a></code></dd>
+
+
+
+</dl>
+
+
+</div>
+
+
+
+
+				
+<p>The class used for comments from the candidate. A simple run of text.</p>
+
+
+
+
+			</div>
+
+
+
+<h2>About This Document</h2>
+
+
+
+<p></p>
+
+
+
+<table summary="This table describes the document properties" border="1" cellpadding="5" cellspacing="0">
+
+
+
+  <tbody>
+
+
+    <tr>
+
+
+
+      <td><strong>Title</strong><br>
+
+
+      </td>
+
+
+
+      <td>IMS Question and Test Interoperability Results Reporting<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td><strong>Editors</strong><br>
+
+
+      </td>
+
+
+
+      <td>Steve Lay (Cambridge Assessment), Pierre Gorissen (SURF)<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td><strong>Version</strong><br>
+
+
+      </td>
+
+
+
+      <td>Public Draft v2.1 (revision 2)<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td><strong>Version Date</strong><br>
+
+
+      </td>
+
+
+
+      <td>8 June 2006<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td><strong>Status</strong><br>
+
+
+      </td>
+
+
+
+      <td><strong>Public Draft (revision 2) Specification</strong><br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td><strong>Summary</strong><br>
+
+
+      </td>
+
+
+
+      <td>This document describes the QTI Results Reporting specification.<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td><strong>Revision Information</strong><br>
+
+
+      </td>
+
+
+
+      <td>8 June 2006<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td><strong>Purpose</strong><br>
+
+
+      </td>
+
+
+
+      <td>This document has been approved by the IMS Technical Board and is made available for public review and comment.<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td><strong>Document Location</strong><br>
+
+
+      </td>
+
+
+
+      <td><a href="http://www.imsglobal.org/question/qtiv2p1pd2/imsqti_resultv2p1pd2.html">
+http://www.imsglobal.org/question/qtiv2p1pd2/imsqti_resultv2p1pd2.html</a><br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+  
+  
+  </tbody>
+</table>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<table summary="This table lists link to register comments" border="1" cellpadding="5" cellspacing="0">
+
+
+
+  <tbody>
+
+
+    <tr>
+
+
+
+      <td>To register any comments or questions about this specification please visit: <a href="http://www.imsglobal.org/developers/ims/imsforum/categories.cfm?catid=23">
+http://www.imsglobal.org/developers/ims/imsforum/categories.cfm?catid=23</a><br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+  
+  
+  </tbody>
+</table>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<h3>List of Contributors</h3>
+
+
+
+<p>The following individuals contributed to the development of this document:</p>
+
+
+
+<p></p>
+
+
+
+<table summary="This table describes The list of contributors for this document" border="0" cellpadding="5" cellspacing="0">
+
+
+
+  <tbody>
+
+
+    <tr>
+
+
+
+      <th scope="col"><strong>Name</strong></th>
+
+
+
+      <th scope="col">
+      <strong>Organization</strong></th>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td>Dick Bacon<br>
+
+
+      </td>
+
+
+
+      <td>University of Surrey<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td>Niall Barr<br>
+
+
+      </td>
+
+
+
+      <td>Question Mark<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td>Lance Blackstone<br>
+
+
+      </td>
+
+
+
+      <td>Pearson VUE<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td>Jeanne Ferrante<br>
+
+
+      </td>
+
+
+
+      <td>ETS<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td>Pierre Gorissen<br>
+
+
+      </td>
+
+
+
+      <td>SURF<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td>Regina Hoag<br>
+
+
+      </td>
+
+
+
+      <td>ETS<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td>Gopal Krishnan<br>
+
+
+      </td>
+
+
+
+      <td>Pearson VUE<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td>Steve Lay<br>
+
+
+      </td>
+
+
+
+      <td>Cambridge Assessment<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td>Rowin Young<br>
+
+
+      </td>
+
+
+
+      <td>CETIS<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td><br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+  
+  
+  </tbody>
+</table>
+
+
+
+<h2>Revision History</h2>
+
+
+
+<p></p>
+
+
+
+<table summary="This table describes document revision history" border="1" cellpadding="5" cellspacing="0">
+
+
+
+  <tbody>
+
+
+    <tr bgcolor="#cccccc">
+
+
+
+      <th scope="col"><strong>Version No.</strong></th>
+
+
+
+      <th scope="col"><strong>Release Date</strong></th>
+
+
+
+      <th scope="col"><strong>Comments</strong></th>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td>Base Document 2.1<br>
+
+
+      </td>
+
+
+
+      <td>14 October 2005<br>
+
+
+      </td>
+
+
+
+      <td>The first version of the QTI v2.1 specification.<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td>Public Draft 2.1<br>
+
+
+      </td>
+
+
+
+      <td>9 January 2006<br>
+
+
+      </td>
+
+
+
+      <td>The Public Draft v2.1 of the QTI specification.<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td>Public Draft 2.1 (revision 2)<br>
+
+
+      </td>
+
+
+
+      <td>8 June 2006<br>
+
+
+      </td>
+
+
+
+      <td>The Public Draft v2.1 (revision 2) of the QTI specification.<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+  
+  
+  </tbody>
+</table>
+
+
+
+
+<center>
+<p>&nbsp;</p>
+
+
+
+<p>&nbsp;</p>
+
+
+
+<p>&nbsp;</p>
+
+
+
+<p><em>IMS Global Learning Consortium, Inc. ("IMS/GLC") is publishing the information contained in this</em> IMS Question and Test Interoperability Results Reporting <em>("Specification") for purposes of scientific, experimental, and scholarly collaboration only.<br>
+
+
+
+<br>
+
+
+
+IMS/GLC makes no warranty or representation regarding the accuracy or completeness of the Specification.<br>
+
+
+
+This material is provided on an "As Is" and "As Available" basis.<br>
+
+
+
+<br>
+
+
+
+The Specification is at all times subject to change and revision without notice.<br>
+
+
+
+<br>
+
+
+
+It is your sole responsibility to evaluate the usefulness, accuracy, and completeness of the Specification as it relates to you.<br>
+
+
+
+<br>
+
+
+
+IMS/GLC would appreciate receiving your comments and suggestions.<br>
+
+
+
+<br>
+
+
+
+Please contact IMS/GLC through our website at <a href="http://www.imsglobal.org">http://www.imsglobal.org</a><br>
+
+
+
+<br>
+
+
+
+Please refer to Document Name:</em> IMS Question and Test Interoperability Results Reporting <em>Revision:</em> 8 June 2006</p>
+
+
+
+</center>
+
+
+
+<hr>
+</body>
+</html>

@@ -1,0 +1,1390 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+
+
+
+  
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+
+
+
+  
+  
+  
+  
+  <title>IMS Question and Test Interoperability Overview</title>
+  <link rel="alternate" media="print" href="http://www.imsglobal.org/printer.cfm">
+
+
+
+  
+  
+  <link rel="stylesheet" href="stylesheet.css" type="text/css">
+</head>
+
+
+<body>
+
+
+
+<table summary="layout table" border="0" cellspacing="0" width="100%">
+
+
+
+  <tbody>
+
+
+    <tr>
+
+
+
+      <td valign="middle" width="19%"><img src="images/speclogo.jpg" alt="IMS Logo" height="245" width="117"></td>
+
+
+
+      <td valign="middle" width="81%">
+      
+      
+      <h1>IMS Question and Test Interoperability Overview</h1>
+
+
+
+      
+      
+      <h2>Version 2.1 Public Draft (revision 2) Specification</h2>
+
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+  
+  
+  </tbody>
+</table>
+
+
+
+<p>Copyright &copy; 2006 IMS Global Learning Consortium, Inc. All Rights Reserved.<br>
+
+
+
+The IMS Logo is a registered trademark of IMS GLC.<br>
+
+
+
+Document Name: IMS Question and Test Interoperability Overview<br>
+
+
+
+
+</p>
+
+
+
+<hr>
+<p></p>
+
+
+
+<p></p>
+
+
+
+<table summary="This table describes the document status" border="0" cellpadding="5" cellspacing="0">
+    <tr>
+      <td>Date Issued:<br>
+      </td>
+      <td>8 June 2006<br>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" rowspan="1">
+      <br>
+      <br>
+<p>Caution: this specification is incomplete in its current state.  The IMS QTI project group is in the process of evolving this specification based on input from market participants. Suppliers of products and services are encouraged to participate by contacting Mark McKell at mmckell@imsglobal.org. This specification will be superseded by an updated release based on the input of the project group participants.
+
+<p>Please note that supplier's claims as to implementation of QTI v2.1 and conformance to it HAVE NOT BEEN VALIDATED by IMS GLC. While such suppliers are likely well-intentioned, IMS GLC member organizations have not yet put in place the testing process to validate these claims. IMS GLC currently grants a conformance mark to the Common Cartridge profile of QTI v1.2.1. The authoritative source of products and services that meet this conformance is contained in the IMS online product directory <a href="http://www.imsglobal.org/ProductDirectory/directory.cfm">http://www.imsglobal.org/ProductDirectory/directory.cfm</a>
+
+<p>Thank you for your interest in and support of IMS QTI.
+
+<p><b>IPR and Distribution Notices</b></p>
+<p>Recipients of this document are requested to submit, with their comments, notification of any relevant patent claims or other intellectual property rights of which they may be aware that might be infringed by any implementation of the specification set forth in this document, and to provide supporting documentation.</p>
+<p>IMS takes no position regarding the validity or scope of any intellectual property or other rights that might be claimed to pertain to the implementation or use of the technology described in this document or the extent to which any license under such rights might or might not be available; neither does it represent that it has made any effort to identify any such rights. Information on IMS's procedures with respect to rights in IMS specifications can be found at the IMS Intellectual Property Rights web page: <a href="http://www.imsglobal.org/ipr/imsipr_policyFinal.pdf">http://www.imsglobal.org/ipr/imsipr_policyFinal.pdf</a>.</p>
+<p>Copyright © 2006 IMS Global Learning Consortium. All Rights Reserved.</p>
+<p>If you wish to copy or distribute this document, you must complete a valid Registered User license registration with IMS and receive an email from IMS granting the license to distribute the specification. To register, follow the instructions on the IMS website: <a href="http://www.imsglobal.org/specificationdownload.cfm">http://www.imsglobal.org/specificationdownload.cfm</a>.</p>
+<p>This document may be copied and furnished to others by Registered Users who have registered on the IMS website provided that the above copyright notice and this paragraph are included on all such copies. However, this document itself may not be modified in any way, such as by removing the copyright notice or references to IMS, except as needed for the purpose of developing IMS specifications, under the auspices of a chartered IMS project group.</p>
+<p>Use of this specification to develop products or services is governed by the license with IMS found on the IMS website: <a href="http://www.imsglobal.org/license.html">http://www.imsglobal.org/license.html</a>.</p>
+<p>The limited permissions granted above are perpetual and will not be revoked by IMS or its successors or assigns.</p>
+<p>THIS SPECIFICATION IS BEING OFFERED WITHOUT ANY WARRANTY WHATSOEVER, AND IN PARTICULAR, ANY WARRANTY OF NONINFRINGEMENT IS EXPRESSLY DISCLAIMED. ANY USE OF THIS SPECIFICATION SHALL BE MADE ENTIRELY AT THE IMPLEMENTER'S OWN RISK, AND NEITHER THE CONSORTIUM, NOR ANY OF ITS MEMBERS OR SUBMITTERS, SHALL HAVE ANY LIABILITY WHATSOEVER TO ANY IMPLEMENTER OR THIRD PARTY FOR ANY DAMAGES OF ANY NATURE WHATSOEVER, DIRECTLY OR INDIRECTLY, ARISING FROM THE USE OF THIS SPECIFICATION.</p>
+      </td>
+    </tr>
+</table>
+
+
+
+<h2><a name="section10000">Table of Contents</a></h2>
+
+
+
+<dl>
+
+
+
+  <dt><a name="section10000">1. </a><a href="#section10001">Question and Test Interoperability</a></dt>
+
+
+
+  <dd>
+    
+    
+    <dl>
+
+
+
+      <dt>1.1. <a href="#section10002">History of this Specification</a></dt>
+
+
+
+      <dt>1.2. <a href="#section10003">Scope</a></dt>
+
+
+
+    
+    
+    </dl>
+
+
+  </dd>
+
+
+
+  <dt>2. <a href="#section10004">Specification Use Cases</a></dt>
+
+
+
+  <dd>
+    
+    
+    <dl>
+
+
+
+      <dt>2.1. <a href="#section10005">Use Case Actors</a></dt>
+
+
+
+    
+    
+    </dl>
+
+
+  </dd>
+
+
+
+  <dt>3. <a href="#section10006">Structure of this Specification</a></dt>
+
+
+
+  <dt>4. <a href="#section10007">References</a></dt>
+
+
+
+</dl>
+
+
+
+
+<h2><a name="section10001">1. Question and Test Interoperability</a></h2>
+
+
+
+<p><a name="section10001">The IMS Question &amp; Test Interoperability (QTI) specification describes a data
+                model for the representation of question (assessmentItem) and test (assessmentTest)
+                data and their corresponding results reports. Therefore, the specification enables
+                the exchange of this item, test, and results data between authoring tools, item
+                banks, test constructional tools, learning systems, and assessment delivery systems.
+                The data model is described abstractly, using </a><a href="#ref_UML">[UML]</a> to facilitate
+                binding to a wide range of data-modeling tools and programming languages, however,
+                for interchange <em>between</em> systems a binding is provided to the industry
+                standard eXtensible Markup Language <a href="#ref_XML">[XML]</a> and use of this binding is
+                strongly recommended. The IMS QTI specification has been designed to support both
+                interoperability and innovation through the provision of well-defined extension
+                points. These extension points can be used to wrap specialized or proprietary data
+                in ways that allows it to be used alongside items that can be represented directly.</p>
+
+
+
+<h3><a name="section10002">1.1. History of this Specification</a></h3>
+
+
+
+<p><a name="section10002">An initial V0.5 specification was released for discussion in March 1999 and in
+                    November it was agreed to develop IMS Question &amp; Test Interoperability
+                    v1.0 which was released as a public draft in February 2000 and as a final
+                    specification in May that year. The specification was extended and updated
+                    twice, in March 2001 and January 2002. By February of that year in excess of
+                    6000 copies of the IMS QTI <em>1.x</em> specifications had been downloaded from
+                    the IMS website.</a></p>
+
+
+
+<p><a name="section10002">Since then, a number of issues of have been raised by implementers and reviewed
+                    by the QTI project team. Many of them were dealt with in an addendum, which
+                    defined version 1.2.1 of the specification and was released in March 2003. Some
+                    of the issues could not be dealt with this way as they required changes to the
+                    specification that would not be backwardly compatible or because they uncovered
+                    more fundamental issues that would require extensive clarification or
+                    significant extension of the specification to resolve.</a></p>
+
+
+
+<p><a name="section10002">Since the QTI specification was first conceived, the breadth of IMS
+                    specifications has grown and work on Content Packaging, Simple Sequencing, and
+                    most recently Learning Design created the need for a cross-specification review.
+                    This review took place during 2003 and a number of harmonization issues
+                    affecting QTI were identified. In September that year a project charter was
+                    agreed to address both the collected issues from <em>1.x</em> and the
+                    harmonization issues and to draft QTI V2.0. In order to make the work manageable
+                    and ensure that results were returned to the community at the earliest
+                    opportunity some restrictions were placed on the scope of the recommended work.
+                    Therefore, the QTI V2.0 release of the specification concentrated only on the
+                    individual assessmentItem and did not update those parts of the specification
+                    that dealt with the aggregation of items into sections and tests or the
+                    reporting of results. This QTI <em>2.1</em> release completes the update from
+                        <em>1.x</em> to <em>2.x</em> by replacing those remaining parts of the QTI
+                    specification. </a></p>
+
+
+
+<h3><a name="section10003">1.2. Scope</a></h3>
+
+
+
+<p><a name="section10003">The IMS QTI work specifically relates to content providers (that is, question and
+                    test authors and publishers), developers of authoring and content management
+                    tools, assessment delivery systems, and learning systems. The data model for
+                    representing question-based content is suitable for targeting users in learning,
+                    education, and training across all age ranges and national contexts.</a></p>
+
+
+
+
+<h2><a name="section10004">2. Specification Use Cases</a></h2>
+
+
+
+<p><a name="section10004">QTI is designed to facilitate interoperability between a number of systems that are
+                described here in relation to the actors that use them.</a></p>
+
+
+
+<p><a name="section10004">Specifically, QTI is designed to:</a></p>
+
+
+
+<ul>
+
+
+
+
+  <a name="section10004">				<li>Provide a well documented content format for storing and exchanging
+                    <em>items</em> independent of the authoring tool used to create them.</li>
+
+
+
+
+				<li>Support the deployment of item banks across a wide range of learning and
+                    assessment delivery systems.</li>
+
+
+
+
+				<li>Provide a well documented content format for storing and exchanging
+                    <em>tests</em> independent of the test construction tool used to create them.</li>
+
+
+
+
+				<li>Support the deployment of items, item banks, and tests from diverse sources in a
+                    single learning or assessment delivery system.</li>
+
+
+
+
+				<li>Provide systems with the ability to report test results in a consistent
+                manner.</li>
+
+
+
+
+			</a>
+</ul>
+
+
+
+<p align="center"><a name="section10004"><img src="images/components.png"></a></p>
+
+
+
+<p style="font-weight: bold;" align="center"><a name="section10004">Figure 2.1 The Role of Assessment Tests and Assessment Items.</a></p>
+
+
+
+<p><a name="element10000"><b><code>authoringTool</code></b></a></p>
+
+
+
+<p><a name="element10000">A system used by an author for creating or modifying an
+                assessment item.</a></p>
+
+
+
+<p><a name="element10001"><b><code>itemBank</code></b></a></p>
+
+
+
+<p><a name="element10001">A system for collecting and managing collections of
+                assessment items. </a></p>
+
+
+
+<p><a name="element10002"><b><code>testConstructionTool</code></b></a></p>
+
+
+
+<p><a name="element10002">A system for assembling tests from individual
+                items.</a></p>
+
+
+
+<p><a name="element10003"><b><code>assessmentDeliverySystem</code></b></a></p>
+
+
+
+<p><a name="element10003">A system for managing the delivery of
+                assessments to candidates. The system contains a delivery engine for delivering the
+                items to the candidates and scores the responses automatically (where applicable) or
+                by distributing them to </a><a href="#element10009">scorer</a>s.</p>
+
+
+
+<p><a name="element10004"><b><code>learningSystem</code></b></a></p>
+
+
+
+<p><a name="element10004">A system that enables or directs learners in learning
+                activities, possibly coordinated with a </a><a href="#element10010">tutor</a>. For the
+                purposes of this specification a learner exposed to an assessment item as part of an
+                interaction with a learning system (i.e., through formative assessment) is still
+                described as a <a href="#element10011">candidate</a> as no formal distinction between
+                formative and summative assessment is made. A learning system is also considered to
+                contain a delivery engine though the administration and security model is likely to
+                be very different from that employed by an <a href="#element10003">assessmentDeliverySystem</a>.</p>
+
+
+
+<h3><a name="section10005">2.1. Use Case Actors</a></h3>
+
+
+
+<p><a name="section10005">The set of roles identified in this specification have been reduced to a small
+                    set of abstract actors for simplicity. Typically, roles in real learning and
+                    assessment systems are more complex but, for the purposes of this specification,
+                    it is assumed that they can be generalized by one or more of the roles defined
+                    here.</a></p>
+
+
+
+<p><a name="element10005"><b><code>author</code></b></a></p>
+
+
+
+<p><a name="element10005">The author of an assessment item. In simple situations an item
+                    may have a single author, in more complex situations an item may go through a
+                    creation and quality control process involving many people. In this
+                    specification we identify all of these people with the role of author. An author
+                    is concerned with the content of an item, which distinguishes them from the role
+                    of an </a><a href="#element10006">itemBankManager</a>. An author interacts with an item
+                    through an <a href="#element10000">authoringTool</a>.</p>
+
+
+
+<p><a name="element10006"><b><code>itemBankManager</code></b></a></p>
+
+
+
+<p><a name="element10006">An actor with responsibility for managing a collection
+                    of assessment items with an </a><a href="#element10001">itemBank</a>.</p>
+
+
+
+<p><a name="element10007"><b><code>testConstructor</code></b></a></p>
+
+
+
+<p><a name="element10007">The role of test constructor is to create tests (test
+                    forms) from individual items. The items are typically drawn from an item bank.</a></p>
+
+
+
+<p><a name="element10008"><b><code>proctor</code></b></a></p>
+
+
+
+<p><a name="element10008">A person charged with overseeing the delivery of an
+                    assessment. Often referred to as an invigilator. For the purposes of this
+                    specification a proctor is anyone (other than the candidate) who is involved in
+                    the delivery process but who does not have a role in assessing the candidate's
+                    responses.</a></p>
+
+
+
+<p><a name="element10009"><b><code>scorer</code></b></a></p>
+
+
+
+<p><a name="element10009">A person or external system responsible for assessing the
+                    candidate's responses during assessment delivery. Scorers are optional, for
+                    example, many assessment items can be scored automatically using response
+                    processing rules defined in the item itself.</a></p>
+
+
+
+<p><a name="element10010"><b><code>tutor</code></b></a></p>
+
+
+
+<p><a name="element10010">Someone involved in managing, directing, or supporting the
+                    learning process for a learner but who is not subject to (the same) assessment.</a></p>
+
+
+
+<p><a name="element10011"><b><code>candidate</code></b></a></p>
+
+
+
+<p><a name="element10011">The person being assessed by an assessment test or
+                    assessment item.</a></p>
+
+
+
+
+<h2><a name="section10006">3. Structure of this Specification</a></h2>
+
+
+
+<p><a name="section10006">The specification is spread over a number of documents:</a></p>
+
+
+
+<ul>
+
+
+
+
+  <a name="section10006">				<li>
+					</li>
+
+
+  </a><a href="imsqti_implv2p1pd2.html">Implementation Guide</a>: A document that takes you through the data
+                    models by example. The best starting point for readers who are new to QTI and
+                    want to get an idea of what it can do.
+
+				<li>
+					<a href="imsqti_infov2p1pd2.html">Assessment Test, Section, and Item Information Model</a>: The reference guide to the main data model
+                    for assessment tests and items. The document provides detailed information about
+                    the model and specifies the requirements of delivery engines and authoring
+                    systems.</li>
+
+
+
+
+				<li>
+					<a href="imsqti_mdudv2p1pd2.html">Meta-data and Usage Data</a>: A document that describes a profile of the
+                    IEEE Standard for Learning Object Metadata <a href="#ref_LOM">[LOM]</a> data model
+                    suitable for use with assessment tests and items and a separate data model for
+                    representing usage data (i.e., item statistics). This document will be of
+                    particular interest to developers and managers of item banks and other content
+                    repositories, and to those who construct assessments from item banks.</li>
+
+
+
+
+				<li>
+					<a href="imsqti_resultv2p1pd2.html">Results Reporting</a>: A reference guide to the data model for
+                    result reporting. The document provides detailed information about the model and
+                    specifies the associated requirements on delivery engines.</li>
+
+
+
+
+				<li>
+					<a href="imsqti_intgv2p1pd2.html">Integration Guide</a>: A document that describes the relationship
+                    between this specification and other related specifications such as IMS Content
+                    Packaging <a href="#ref_IMS_CP">[IMS_CP]</a>, IMS Simple Sequencing <a href="#ref_IMS_SS">[IMS_SS]</a>, and IMS Learning Design <a href="#ref_IMS_LD">[IMS_LD]</a>.</li>
+
+
+
+
+				<li>
+					<a href="imsqti_bindv2p1pd2.html">XML Binding</a>: A document describing the way the data models
+                    have been bound to <a href="#ref_XML">[XML]</a>.</li>
+
+
+
+
+				<li>
+					<a href="imsqti_confv2p1pd2.html">Conformance Guide</a>: A document that describes conformance
+                    requirements and provides a data model for the construction of QTI profiles
+                    including a predefined profile that replaces the QTI Lite specification <a href="#ref_QTI_LITE">[QTI_LITE]</a> released as part of version 1. <span>This
+                        document is currently unchanged but an updated version will be published
+                        with the final release of the specification.</span>
+				</li>
+
+
+
+
+				<li>
+					<a href="imsqti_migrv2p1pd2.html">Migration Guide</a>: A document aimed at people familiar with
+                    version <em>1.x</em>. It takes you through the main changes that have been made
+                    to the data model and includes an alphabetical listing of version 1 elements
+                    providing detailed information about how the same information is represented in
+                    version 2.
+				</li>
+
+
+
+
+			
+</ul>
+
+
+
+
+<h2><a name="section10007">4. References</a></h2>
+
+
+
+<dl>
+
+
+
+  <dt><a name="ref_IMS_CP">IMS_CP
+    </a></dt>
+
+
+  <dd><a name="ref_IMS_CP">IMS Content Packaging Specification, Version 1.1.3
+    </a></dd>
+
+
+  <dt><a name="ref_IMS_LD">IMS_LD
+    </a></dt>
+
+
+  <dd><a name="ref_IMS_LD">IMS Learning Design Specification, Version 1.0
+    </a></dd>
+
+
+  <dd><a name="ref_IMS_LD">Published: 2003-01
+    </a></dd>
+
+
+  <dt><a name="ref_IMS_SS">IMS_SS
+    </a></dt>
+
+
+  <dd><a name="ref_IMS_SS">IMS Simple Sequencing Specification, Version 1.0
+    </a></dd>
+
+
+  <dd><a name="ref_IMS_SS">Published: 2003-03
+    </a></dd>
+
+
+  <dt><a name="ref_LOM">LOM
+    </a></dt>
+
+
+  <dd><a name="ref_LOM">IEEE 1484.12.1-2002 Standard for Learning Object Meta-data             (LOM)
+    </a></dd>
+
+
+  <dt><a name="ref_QTI_LITE">QTI_LITE
+    </a></dt>
+
+
+  <dd><a name="ref_QTI_LITE">QTI Lite
+    </a></dd>
+
+
+  <dt><a name="ref_UML">UML
+    </a></dt>
+
+
+  <dd><a name="ref_UML">OMG Unified Modeling Language Specification, Version 1.4
+    </a></dd>
+
+
+  <dd><a name="ref_UML">Published: 2001-09
+    </a></dd>
+
+
+  <dt><a name="ref_XML">XML
+    </a></dt>
+
+
+  <dd><a name="ref_XML">Extensible Markup Language (XML), Version 1.0 (second             edition)
+    </a></dd>
+
+
+  <dd><a name="ref_XML">Published: 2000-10
+    </a></dd>
+
+
+</dl>
+
+
+
+<h2><a name="ref_XML">About This Document</a></h2>
+
+
+
+<p></p>
+
+
+
+<table summary="This table describes the document properties" border="1" cellpadding="5" cellspacing="0">
+
+
+
+  <tbody>
+
+
+    <tr>
+
+
+
+      <td><strong>Title</strong><br>
+
+
+      </td>
+
+
+
+      <td>IMS Question and Test Interoperability Overview<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td><strong>Editors</strong><br>
+
+
+      </td>
+
+
+
+      <td>Steve Lay (Cambridge Assessment), Pierre Gorissen (SURF)<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td><strong>Version</strong><br>
+
+
+      </td>
+
+
+
+      <td>Public Draft v2.1 (revision 2)<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td><strong>Version Date</strong><br>
+
+
+      </td>
+
+
+
+      <td>8 June 2006<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td><strong>Status</strong><br>
+
+
+      </td>
+
+
+
+      <td><strong>Public Draft (revision 2) Specification</strong><br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td><strong>Summary</strong><br>
+
+
+      </td>
+
+
+
+      <td>This document describes the QTI Overview specification.<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td><strong>Revision Information</strong><br>
+
+
+      </td>
+
+
+
+      <td>8 June 2006<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td><strong>Purpose</strong><br>
+
+
+      </td>
+
+
+
+      <td>This document has been approved by the IMS Technical Board and is made available for public review and comment.<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td><strong>Document Location</strong><br>
+
+
+      </td>
+
+
+
+      <td><a href="http://www.imsglobal.org/question/qtiv2p1pd2/imsqti_oviewv2p1pd2.html">
+http://www.imsglobal.org/question/qtiv2p1pd2/imsqti_oviewv2p1pd2.html</a><br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+  
+  
+  </tbody>
+</table>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<table summary="This table lists link to register comments" border="1" cellpadding="5" cellspacing="0">
+
+
+
+  <tbody>
+
+
+    <tr>
+
+
+
+      <td>To register any comments or questions about this specification please visit: <a href="http://www.imsglobal.org/developers/ims/imsforum/categories.cfm?catid=23">
+http://www.imsglobal.org/developers/ims/imsforum/categories.cfm?catid=23</a><br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+  
+  
+  </tbody>
+</table>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<h3><a name="ref_XML">List of Contributors</a></h3>
+
+
+
+<p><a name="ref_XML">The following individuals contributed to the development of this document:</a></p>
+
+
+
+<p></p>
+
+
+
+<table summary="This table describes The list of contributors for this document" border="0" cellpadding="5" cellspacing="0">
+
+
+
+  <tbody>
+
+
+    <tr>
+
+
+
+      <th scope="col"><strong>Name</strong></th>
+
+
+
+      <th scope="col">
+      <strong>Organization</strong></th>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td>Dick Bacon<br>
+
+
+      </td>
+
+
+
+      <td>University of Surrey<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td>Niall Barr<br>
+
+
+      </td>
+
+
+
+      <td>Question Mark<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td>Lance Blackstone<br>
+
+
+      </td>
+
+
+
+      <td>Pearson VUE<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td>Jeanne Ferrante<br>
+
+
+      </td>
+
+
+
+      <td>ETS<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td>Pierre Gorissen<br>
+
+
+      </td>
+
+
+
+      <td>SURF<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td>Regina Hoag<br>
+
+
+      </td>
+
+
+
+      <td>ETS<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td>Gopal Krishnan<br>
+
+
+      </td>
+
+
+
+      <td>Pearson VUE<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td>Steve Lay<br>
+
+
+      </td>
+
+
+
+      <td>Cambridge Assessment<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td>Rowin Young<br>
+
+
+      </td>
+
+
+
+      <td>CETIS<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td><br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+  
+  
+  </tbody>
+</table>
+
+
+
+<h2><a name="ref_XML">Revision History</a></h2>
+
+
+
+<p></p>
+
+
+
+<table summary="This table describes document revision history" border="1" cellpadding="5" cellspacing="0">
+
+
+
+  <tbody>
+
+
+    <tr bgcolor="#cccccc">
+
+
+
+      <th scope="col"><strong>Version No.</strong></th>
+
+
+
+      <th scope="col"><strong>Release Date</strong></th>
+
+
+
+      <th scope="col"><strong>Comments</strong></th>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td>Base Document 2.1<br>
+
+
+      </td>
+
+
+
+      <td>14 October 2005<br>
+
+
+      </td>
+
+
+
+      <td>The first version of the QTI v2.1 specification.<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td>Public Draft 2.1<br>
+
+
+      </td>
+
+
+
+      <td>9 January 2006<br>
+
+
+      </td>
+
+
+
+      <td>The Public Draft v2.1 of the QTI specification.<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td>Public Draft 2.1 (revision 2)<br>
+
+
+      </td>
+
+
+
+      <td>8 June 2006<br>
+
+
+      </td>
+
+
+
+      <td>The Public Draft v2.1 (revision 2) of the QTI specification.<br>
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+  
+  
+  </tbody>
+</table>
+
+
+
+
+<center>
+<p><a name="ref_XML">&nbsp;</a></p>
+
+
+
+<p><a name="ref_XML">&nbsp;</a></p>
+
+
+
+<p><a name="ref_XML">&nbsp;</a></p>
+
+
+
+<p><a name="ref_XML"><em>IMS Global Learning Consortium, Inc. ("IMS/GLC") is publishing the information contained in this</em> IMS Question and Test Interoperability Overview <em>("Specification") for purposes of scientific, experimental, and scholarly collaboration only.<br>
+
+
+
+<br>
+
+
+
+IMS/GLC makes no warranty or representation regarding the accuracy or completeness of the Specification.<br>
+
+
+
+This material is provided on an "As Is" and "As Available" basis.<br>
+
+
+
+<br>
+
+
+
+The Specification is at all times subject to change and revision without notice.<br>
+
+
+
+<br>
+
+
+
+It is your sole responsibility to evaluate the usefulness, accuracy, and completeness of the Specification as it relates to you.<br>
+
+
+
+<br>
+
+
+
+IMS/GLC would appreciate receiving your comments and suggestions.<br>
+
+
+
+<br>
+
+
+
+Please contact IMS/GLC through our website at </em></a><em><a href="http://www.imsglobal.org">http://www.imsglobal.org</a><br>
+
+
+
+<br>
+
+
+
+Please refer to Document Name:</em> IMS Question and Test Interoperability Overview <em>Revision:</em> 8 June 2006</p>
+
+
+
+</center>
+
+
+
+<hr>
+</body>
+</html>

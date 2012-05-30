@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assessmentTest xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 http://www.imsglobal.org/xsd/imsqti_v2p1.xsd"
+	identifier="RTEST-02" title="Steve's Test">
+	<!-- Provide support for aggregating arbitrary collections of item outcomes
+             to create one or more test outcomes (including weighting ref R-TEST/04). -->
+	<outcomeDeclaration baseType="float" cardinality="single" identifier="SCORE">
+		<defaultValue>
+			<value>0</value>
+		</defaultValue>
+	</outcomeDeclaration>
+	<testPart identifier="part01" navigationMode="nonlinear" submissionMode="simultaneous">
+		<assessmentSection identifier="sectionA" title="Section A" visible="true">
+			<rubricBlock view="candidate">
+				<p>Instructions for Section A</p>
+			</rubricBlock>
+			<assessmentItemRef identifier="item034" href="adaptive.xml">
+				<weight identifier="WEIGHT" value="2.0"/>
+			</assessmentItemRef>
+			<assessmentItemRef identifier="item160" href="choice.xml">
+				<weight identifier="WEIGHT" value="0.0"/>
+			</assessmentItemRef>
+		</assessmentSection>
+		<assessmentSection identifier="sectionB" title="Section B" visible="true">
+			<rubricBlock view="candidate">
+				<p>Instructions for Section B</p>
+			</rubricBlock>
+			<assessmentItemRef identifier="item063" href="choice_multiple.xml"/>
+			<assessmentItemRef identifier="item065" href="hotspot.xml"/>
+		</assessmentSection>
+	</testPart>
+	<outcomeProcessing>
+		<setOutcomeValue identifier="SCORE">
+			<sum>
+				<variable identifier="item034.SCORE" weightIdentifier="WEIGHT"/>
+				<variable identifier="item160.SCORE" weightIdentifier="WEIGHT"/>
+				<variable identifier="item063.SCORE"/>
+				<variable identifier="item065.SCORE"/>
+			</sum>
+		</setOutcomeValue>
+	</outcomeProcessing>
+</assessmentTest>

@@ -1,0 +1,1926 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+
+
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+  
+
+
+  
+  <title>IMS Question and Test Interoperability Integration Guide</title>
+  <link rel="alternate" media="print" href="http://www.imsglobal.org/printer.cfm">
+
+
+  
+  <link rel="stylesheet" href="stylesheet.css" type="text/css">
+</head>
+
+
+<body>
+
+
+<table summary="layout table" border="0" cellspacing="0" width="100%">
+
+
+  <tbody>
+
+
+    <tr>
+
+
+      <td valign="middle" width="19%"><img src="images/speclogo.jpg" alt="IMS Logo" height="245" width="117"></td>
+
+
+      <td valign="middle" width="81%">
+      
+      <h1>IMS Question and Test Interoperability Integration Guide</h1>
+
+
+      
+      <h2>Version 2.1 Public Draft (revision 2) Specification</h2>
+
+
+      </td>
+
+
+    </tr>
+
+
+  
+  </tbody>
+</table>
+
+
+<p>Copyright &copy; 2006 IMS Global Learning Consortium, Inc.
+All Rights Reserved.<br>
+
+
+The IMS Logo is a registered trademark of IMS GLC.<br>
+
+
+Document Name: IMS Question and Test Interoperability Integration Guide<br>
+
+</p>
+
+
+<hr>
+<p></p>
+
+
+<p></p>
+
+
+<table summary="This table describes the document status" border="0" cellpadding="5" cellspacing="0">
+    <tr>
+      <td>Date Issued:<br>
+      </td>
+      <td>8 June 2006<br>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" rowspan="1">
+      <br>
+      <br>
+<p>Caution: this specification is incomplete in its current state.  The IMS QTI project group is in the process of evolving this specification based on input from market participants. Suppliers of products and services are encouraged to participate by contacting Mark McKell at mmckell@imsglobal.org. This specification will be superseded by an updated release based on the input of the project group participants.
+
+<p>Please note that supplier's claims as to implementation of QTI v2.1 and conformance to it HAVE NOT BEEN VALIDATED by IMS GLC. While such suppliers are likely well-intentioned, IMS GLC member organizations have not yet put in place the testing process to validate these claims. IMS GLC currently grants a conformance mark to the Common Cartridge profile of QTI v1.2.1. The authoritative source of products and services that meet this conformance is contained in the IMS online product directory <a href="http://www.imsglobal.org/ProductDirectory/directory.cfm">http://www.imsglobal.org/ProductDirectory/directory.cfm</a>
+
+<p>Thank you for your interest in and support of IMS QTI.
+
+<p><b>IPR and Distribution Notices</b></p>
+<p>Recipients of this document are requested to submit, with their comments, notification of any relevant patent claims or other intellectual property rights of which they may be aware that might be infringed by any implementation of the specification set forth in this document, and to provide supporting documentation.</p>
+<p>IMS takes no position regarding the validity or scope of any intellectual property or other rights that might be claimed to pertain to the implementation or use of the technology described in this document or the extent to which any license under such rights might or might not be available; neither does it represent that it has made any effort to identify any such rights. Information on IMS's procedures with respect to rights in IMS specifications can be found at the IMS Intellectual Property Rights web page: <a href="http://www.imsglobal.org/ipr/imsipr_policyFinal.pdf">http://www.imsglobal.org/ipr/imsipr_policyFinal.pdf</a>.</p>
+<p>Copyright © 2006 IMS Global Learning Consortium. All Rights Reserved.</p>
+<p>If you wish to copy or distribute this document, you must complete a valid Registered User license registration with IMS and receive an email from IMS granting the license to distribute the specification. To register, follow the instructions on the IMS website: <a href="http://www.imsglobal.org/specificationdownload.cfm">http://www.imsglobal.org/specificationdownload.cfm</a>.</p>
+<p>This document may be copied and furnished to others by Registered Users who have registered on the IMS website provided that the above copyright notice and this paragraph are included on all such copies. However, this document itself may not be modified in any way, such as by removing the copyright notice or references to IMS, except as needed for the purpose of developing IMS specifications, under the auspices of a chartered IMS project group.</p>
+<p>Use of this specification to develop products or services is governed by the license with IMS found on the IMS website: <a href="http://www.imsglobal.org/license.html">http://www.imsglobal.org/license.html</a>.</p>
+<p>The limited permissions granted above are perpetual and will not be revoked by IMS or its successors or assigns.</p>
+<p>THIS SPECIFICATION IS BEING OFFERED WITHOUT ANY WARRANTY WHATSOEVER, AND IN PARTICULAR, ANY WARRANTY OF NONINFRINGEMENT IS EXPRESSLY DISCLAIMED. ANY USE OF THIS SPECIFICATION SHALL BE MADE ENTIRELY AT THE IMPLEMENTER'S OWN RISK, AND NEITHER THE CONSORTIUM, NOR ANY OF ITS MEMBERS OR SUBMITTERS, SHALL HAVE ANY LIABILITY WHATSOEVER TO ANY IMPLEMENTER OR THIRD PARTY FOR ANY DAMAGES OF ANY NATURE WHATSOEVER, DIRECTLY OR INDIRECTLY, ARISING FROM THE USE OF THIS SPECIFICATION.</p>
+      </td>
+    </tr>
+</table>
+
+
+<h2><a name="section10000">Table of Contents</a></h2>
+
+
+<dl>
+
+
+  <dt><a name="section10000">1. </a><a href="#section10001">Introduction</a></dt>
+
+
+  <dt>2. <a href="#section10002">References</a></dt>
+
+
+  <dt>3. <a href="#section10003">Content Packaging</a></dt>
+
+
+  <dd>
+    
+    <dl>
+
+
+      <dt>3.1. <a href="#section10004">Packaging
+Items</a></dt>
+
+
+      <dt>3.2. <a href="#section10005">Packaging
+Tests</a></dt>
+
+
+      <dt>3.3. <a href="#section10006">Packaging
+Item and Test Fragments</a></dt>
+
+
+      <dt>3.4. <a href="#section10007">Packaging
+Response Processing Templates</a></dt>
+
+
+      <dt>3.5. <a href="#section10008">Associating
+Meta-data to items in a Content Package</a></dt>
+
+
+      <dt>3.6. <a href="#section10009">Packaging
+QTI Version 1 Objects</a></dt>
+
+
+    
+    </dl>
+
+
+  </dd>
+
+
+  <dt>4. <a href="#section10010">Learning Design</a></dt>
+
+
+  <dd>
+    
+    <dl>
+
+
+      <dt>4.1. <a href="#section10011">Integration
+through IMS LD Properties and QTI Variables</a></dt>
+
+
+      <dd>
+        
+        <dl>
+
+
+          <dt>4.1.1. <a href="#section10012">Naming
+&amp; Typing</a></dt>
+
+
+        
+        </dl>
+
+
+      </dd>
+
+
+      <dt>4.2. <a href="#section10013">How and
+where QTI content is referenced in the Learning Design of a Unit of
+Learning</a></dt>
+
+
+      <dt>4.3. <a href="#section10014">A skeletal
+example of IMS LD, QTI and CP integration</a></dt>
+
+
+      <dt>4.4. <a href="#section10015">IMS LD and
+QTI assessmentTest integration</a></dt>
+
+
+    
+    </dl>
+
+
+  </dd>
+
+
+  <dt>5. <a href="#section10016">Simple Sequencing</a></dt>
+
+
+  <dt>6. <a href="#section10017">CMI</a></dt>
+
+
+</dl>
+
+
+<h2><a name="section10001">1. Introduction</a></h2>
+
+
+<p><a name="section10001">This document describes a
+set of methods for using QTI's </a><a href="imsqti_infov2p1pd2.html#element10472">assessmentTest</a>s
+or processing templates in combination with some other commonly used
+technical specifications.</p>
+
+
+<h2><a name="section10002">2. References</a></h2>
+
+
+<dl>
+
+
+  <dt><a name="ref_APIS">APIS
+    </a></dt>
+
+
+  <dd><a name="ref_APIS">Assessment Provision
+through Interoperable Segments
+    </a></dd>
+
+
+  <dd><a name="ref_APIS"><i>Barr, Sclater and
+Young</i>
+    </a></dd>
+
+
+  <dt><a name="ref_ASI_BIND">ASI_BIND
+    </a></dt>
+
+
+  <dd><a name="ref_ASI_BIND">IMS Question &amp;
+Test Interoperability: ASI XML Binding Specification, Version 1.2
+    </a></dd>
+
+
+  <dd><a name="ref_ASI_BIND">Published: 2002-02
+    </a></dd>
+
+
+  <dt><a name="ref_CMI">CMI
+    </a></dt>
+
+
+  <dd><a name="ref_CMI">IEEE 1484.11.1, Standard for
+Learning Technology - Data Model for Content Object Communication
+    </a></dd>
+
+
+  <dt><a name="ref_IMS_CP">IMS_CP
+    </a></dt>
+
+
+  <dd><a name="ref_IMS_CP">IMS Content Packaging
+Specification, Version 1.1.3
+    </a></dd>
+
+
+  <dt><a name="ref_IMS_LD">IMS_LD
+    </a></dt>
+
+
+  <dd><a name="ref_IMS_LD">IMS Learning Design
+Specification, Version 1.0
+    </a></dd>
+
+
+  <dd><a name="ref_IMS_LD">Published: 2003-01
+    </a></dd>
+
+
+  <dt><a name="ref_IMS_MD_Binding">IMS_MD_Binding
+    </a></dt>
+
+
+  <dd><a name="ref_IMS_MD_Binding">IMS Learning
+Resource Meta-Data XML Binding, Version 1.2.1
+    </a></dd>
+
+
+  <dt><a name="ref_IMS_SS">IMS_SS
+    </a></dt>
+
+
+  <dd><a name="ref_IMS_SS">IMS Simple Sequencing
+Specification, Version 1.0
+    </a></dd>
+
+
+  <dd><a name="ref_IMS_SS">Published: 2003-03
+    </a></dd>
+
+
+  <dt><a name="ref_LOM">LOM
+    </a></dt>
+
+
+  <dd><a name="ref_LOM">IEEE 1484.12.1-2002 Standard
+for Learning Object Meta-data (LOM)
+    </a></dd>
+
+
+  <dt><a name="ref_XHTML">XHTML
+    </a></dt>
+
+
+  <dd><a name="ref_XHTML">XHTML 1.1: The Extensible
+HyperText Markup Language
+    </a></dd>
+
+
+</dl>
+
+
+<h2><a name="section10003">3. Content Packaging</a></h2>
+
+
+<p><a name="section10003">IMS Content Packaging </a><a href="#ref_IMS_CP">[IMS_CP]</a> should be used when
+transferring <a href="imsqti_infov2p1pd2.html#element10012">assessmentItem</a>s,
+<a href="imsqti_infov2p1pd2.html#element10472">assessmentTest</a>s,
+or processing templates between systems. To avoid confusion between the
+identically named <em>item</em> in the Content Packaging
+specification and, more generally, to make it clear when
+terms&nbsp;in this Integration Guide are referring to elements in
+the content packaging model, all references to these elements will be
+qualified with the prefix "cp:". This is purely a typographical
+convention and <em>does not</em> indicate the use of XML
+namespacing syntax.</p>
+
+
+<p>In preparing this specification, every effort has been taken
+to ensure that no modifications or extensions to the existing Content
+Packaging data model are defined and, furthermore, features of that
+specification are used in the way originally intended. The goal is to
+enable the use of content packages containing assessment objects with
+the existing base of tools that support IMS Content Packaging without
+modification.</p>
+
+
+<p>During the development of this version of the QTI
+specification, IMS has started the development of version 1.2 of IMS
+Content Packaging <a href="#ref_IMS_CP">[IMS_CP]</a>.
+Though that version hasn't reached its final status yet, the QTI
+specification has been aligned to the expected changes in the IMS
+Content Packaging <a href="#ref_IMS_CP">[IMS_CP]</a>
+specification. Most notably is the change in the recommendation of the
+use of cp:schema of "IMS QTI Item" and cp:schemaversion of "2.0" for
+resources. This has now been deprecated following the expected change
+in IMS Content Packaging <a href="#ref_IMS_CP">[IMS_CP]</a>
+version 1.2.</p>
+
+
+<p>Version 1 of this specification defined an <em>objectbank</em>
+as a collection of items and sections. In this version of the
+specification, this concept has been extended to include assessment
+tests. A collection of assessment objects in a content package is
+therefore considered to be an objectbank and the meta-data associated
+with the package as a whole is interpreted as the meta-data describing
+the objectbank. In other words, objectbanks are bound to content
+packages for interchange. Note that an item pool is simply treated as a
+special case of an objectbank. Packaged items may still be referred to
+individually in an associated learning design or set of sequencing
+rules. This type of integration is discussed later in this document.</p>
+
+
+<p>Given that users may wish to package assessment content
+defined using version 1 of the QTI specification additional guidance is
+given on how to package <em>questestinterop</em> objects.
+These objects may define items, sections, assessments, or objectbanks
+in any way allowed by that version of this specification.</p>
+
+
+<h3><a name="section10004">3.1. Packaging Items</a></h3>
+
+
+<p><a name="section10004">An IMS content package is
+a logical directory containing the content files and a special manifest
+file which describes them. An </a><a href="imsqti_infov2p1pd2.html#element10012">assessmentItem</a>
+is represented in a content package by an XML file that satisfies the
+XML binding described by this specification.</p>
+
+
+<p>For example, in the case of a single item the content package
+will contain:</p>
+
+
+<ol>
+
+
+  <li>the manifest (an XML file called imsmanifest.xml)</li>
+
+
+  <li>the item (a QTI XML file)</li>
+
+
+  <li>any auxiliary files (typically images or media files)
+required by the item</li>
+
+
+</ol>
+
+
+<p>The manifest file must contain a <strong>separate</strong>
+cp:resource describing each item. The cp:type of the cp:resource must
+be imsqti_item_xmlv2p1. The cp:resource in turn must contain a cp:file
+representing the item's XML file. The cp:resource should also contain a
+cp:file for each of the item's auxiliary files, however, if an
+auxiliary file is shared amongst several items (whether or not these
+other items are contained in the same content package) the auxiliary
+file may be represented by a separate cp:resource. In this case, the
+item's cp:resource must contain a <em>cp:dependency</em>
+to the cp:resource representing the auxiliary file.</p>
+
+
+<p>Meta-data may be associated with an item by including it in
+the cp:resource. In the case of a content package that contains only
+one item the meta-data, if given, <strong>must</strong> be
+included in the cp:resource and <em>not</em> the enclosing
+cp:manifest. Meta-data associated with the cp:manifest itself is
+reserved for describing the <em>package</em> <span>(objectbank)</span>,
+not the package's contents.</p>
+
+
+<p>The meta-data associated with an item should conform to the
+model and XML binding for item meta-data described elsewhere in this
+specification. Meta-data that conforms to that model must specify a <em>metadatascheme</em>
+of "QTIv2.1". The use of cp:schema of "IMS QTI Item" and
+cp:schemaversion of "2.0" is deprecated following the changes to the
+IMS Content Packaging <a href="#ref_IMS_CP">[IMS_CP]</a>
+specification.</p>
+
+
+<p>The cp:type of the cp:resource must be <em>imsqti_item_xmlv2p0</em>
+or <em>imsqti_item_xmlv2p1</em> depending on what version
+of the specification the item conforms to.</p>
+
+
+<p>The use of a cp:organization to organize QTI items contained
+in a content package is reserved, except where the cp:organization is
+the basis for a set of rules described with the Simple Sequencing
+specification <a href="imsqti_intgv2p1pd2.html#ref_IMS_SS">[IMS_SS]</a>.
+Systems dealing only with the interchange of assessment objects
+conforming to this specification should ignore organizations when
+importing content packages. </p>
+
+
+<p>Auxiliary files that are referred to using relative URIs in an
+<a href="imsqti_infov2p1pd2.html#element10233">img</a>
+or <a href="imsqti_infov2p1pd2.html#element10173">object</a>
+must be included in the content package. These files may be placed in
+the top level directory or in a sub-directory of the content package if
+preferred.</p>
+
+
+<h3><a name="section10005">3.2. Packaging Tests</a></h3>
+
+
+<p><a name="section10005">When a package not only
+contains items, but also a Test, the manifest file must contain a
+cp:resource describing the </a><a href="imsqti_infov2p1pd2.html#element10472">assessmentTest</a>.
+The cp:type of the cp:resource for the test must be
+imsqti_test_xmlv2p1. The cp:resource in turn must contain a cp:file
+representing the test's XML file. The cp:resource should also contain a
+cp:file for each of the test's auxiliary files. A package can contain
+multiple tests, each represented by its own cp:resource. </p>
+
+
+<p>As with packages containing only items, the Items should be
+represented by a separate cp:resource. The relationship between items
+and test should be represented by a <em>cp:dependency</em>
+for each individual item in the cp:resource of the test.</p>
+
+
+<p>A single <a href="imsqti_infov2p1pd2.html#element10472">assessmentTest</a>
+can reference both items conforming to version 2.0 and items conforming
+to version 2.1 of this specification.</p>
+
+
+<p>If an auxiliary file is shared with other tests or even other
+testitems (whether or not these are contained in the same content
+package) the auxiliary file may be represented by a separate
+cp:resource. In this case, the tests's cp:resource must contain a <em>cp:dependency</em>
+to the cp:resource representing the auxiliary file.</p>
+
+
+<p>Meta-data specific to the test may be associated with a test
+by including it in the cp:resource. If given, this meta-data <strong>must</strong>
+be included in the cp:resource and <em>not</em> the
+enclosing cp:manifest. Meta-data associated with the cp:manifest itself
+is reserved for describing the <em>package</em>, not the
+package's contents.</p>
+
+
+<p>The use of a cp:organization to organize QTI Tests contained
+in a content package is reserved for future use, except where the
+cp:organization is the basis for a set of rules described with the
+Simple Sequencing specification <a href="imsqti_intgv2p1pd2.html#ref_IMS_SS">[IMS_SS]</a>.</p>
+
+
+<p>Auxiliary files that are referred to using relative URIs in an
+<a href="imsqti_infov2p1pd2.html#element10233">img</a>
+or <a href="imsqti_infov2p1pd2.html#element10173">object</a>
+must be included in the content package. These files may be placed in
+the top level directory or in a sub-directory of the content package if
+preferred.</p>
+
+
+<h3><a name="section10006">3.3. Packaging Item and
+Test Fragments</a></h3>
+
+
+<p><a name="section10006">An item fragment is part
+of an item that is managed independently of the items that depend on
+it. Similarly, a test fragment is part of a test that is managed
+independently of the tests that depend on it. The cp:type of the
+cp:resource for the test must be imsqti_fragment_xmlv2p1. The
+cp:resource in turn must contain a cp:file representing the fragments
+XML file. A package can contain multiple fragments, each represented by
+its own cp:resource. </a></p>
+
+
+<p><a name="section10006">The relationship between
+items and fragments <em>should</em> be represented by a <em>cp:dependency</em>
+for the fragment(s) in the cp:resource of the item that uses the
+template.</a></p>
+
+
+<h3><a name="section10007">3.4. Packaging Response
+Processing Templates</a></h3>
+
+
+<p><a name="section10007">There usually is no real
+need to include the standard templates in a content package, but they
+can be included in the package containing items. The package can also
+contain custom response processing templates shared by the items in the
+package. The cp:type of the cp:resource for the test must be
+imsqti_rptemplate_xmlv2p1. The cp:resource in turn must contain a
+cp:file representing the template's XML file. A package can contain
+multiple templates, each represented by its own cp:resource. </a></p>
+
+
+<p><a name="section10007">The relationship between
+items and templates should be represented by a <em>cp:dependency</em>
+for the template in the cp:resource of the item that uses the template.</a></p>
+
+
+<h3><a name="section10008">3.5. Associating
+Meta-data to items in a Content Package</a></h3>
+
+
+<p><a name="section10008">Previous versions of the
+IMS QTI specification had a specific meta-data set contained within the
+data structures themselves, i.e. the ASI. That meta-data vocabulary had
+its own set of names, all of which started with the characters 'qmd_'.
+The </a><a href="imsqti_migrv2p1pd2.html">Migration
+Guide</a> document describes how to convert these elements for
+use in QTI version 2.1.</p>
+
+
+<p>In QTI version 2.0, QTI-specific meta-data has been brought
+into line with the IEEE LOM in accordance with the IMS Meta-data Best
+Practice and Implementation Guide for <a href="#ref_LOM">[LOM]</a>.
+The IEEE LOM standard defines a set of meta-data elements that can be
+used to describe learning resources, but does not describe assessment
+resources in sufficient detail. The application profile provided in
+this document therefore extends the IEEE LOM to meet the specific needs
+of QTI developers wishing to associate meta-data with items (as defined
+by the accompanying Item Information Model).</p>
+
+
+<p>The <a href="imsqti_mdudv2p1pd2.html">Meta-data
+and Usage Data</a> document describes a profile of <a href="#ref_LOM">[LOM]</a> suitable for use with
+assessment items and a separate data model for representing usage data
+(i.e., item statistics). This document will be of particular interest
+to developers and managers of item banks and other content
+repositories, and to those who construct assessments from item banks</p>
+
+
+<p>Meta-data may be associated with an item by including it in
+the cp:resource. In the case of a content package that contains only
+one item the meta-data, if given, <strong>must</strong> be
+included in the cp:resource and <em>not</em> the enclosing
+cp:manifest. Meta-data associated with the cp:manifest itself is
+reserved for describing the <em>package</em>, not the
+package's contents.</p>
+
+
+<p>One of the goals during the development of this specification
+was to allow support by as large a number of existing tools as
+possible. It was also considered important to provide support for use
+of both the QTI specific meta-data in combination with the currently
+widely used <a href="#ref_IMS_MD_Binding">[IMS_MD_Binding]</a>
+and the future IEEE <a href="#ref_LOM">[LOM]</a>
+binding. Both of these have been taken into account while developing
+the integration method.</p>
+
+
+<p>The complete example file contains all the code discussed
+below:</p>
+
+
+<p><a name="auxFile.cpMDExample"><b>Meta-data
+in Content Package example</b><br>
+
+
+<code></code></a><a href="examples/mdexample/imsmanifest.xml">examples/mdexample/imsmanifest.xml</a></p>
+
+
+<p>The schema file for the IMS QTI Version 2.1 meta-data needs to
+be referenced in the manifest element using a suggested prefix of <strong>imsqti</strong>.</p>
+
+
+<pre>&lt;manifest xmlns="http://www.imsglobal.org/xsd/imscp_v1p1"<br> xmlns:imsmd="http://www.imsglobal.org/xsd/imsmd_v1p2"<br> xmlns:imsqti="http://www.imsglobal.org/xsd/imsqti_v2p1"<br> xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"<br> identifier="MANIFEST-QTI-1"<br> xsi:schemaLocation="http://www.imsglobal.org/xsd/imscp_v1p1 imscp_v1p1.xsd <br> http://www.imsglobal.org/xsd/imsmd_v1p2 imsmd_v1p2p2.xsd<br> http://www.imsglobal.org/xsd/imsqti_v2p1 imsqti_v2p1.xsd"&gt;</pre>
+
+
+<p>In this case the XSD-files <strong>should</strong>
+be included in the content package. Alternatively the schema files on
+the IMS website can be referenced instead of including them in the
+package.</p>
+
+
+<pre>&lt;manifest xmlns="http://www.imsglobal.org/xsd/imscp_v1p1"<br> xmlns:imsmd="http://www.imsglobal.org/xsd/imsmd_v1p2"<br> xmlns:imsqti="http://www.imsglobal.org/xsd/imsqti_v2p1"<br> xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"<br> identifier="MANIFEST-QTI-1"<br> xsi:schemaLocation="http://www.imsglobal.org/xsd/imscp_v1p1 http://www.imsglobal.org/xsd/imscp_v1p1.xsd <br> http://www.imsglobal.org/xsd/imsmd_v1p2 http://www.imsglobal.org/xsd/imsmd_v1p2p2.xsd<br> http://www.imsglobal.org/xsd/imsqti_v2p1 http://www.imsglobal.org/xsd/imsqti_v2p1.xsd"&gt;</pre>
+
+
+<p>The meta-data for the individual items is added inside the
+meta-data element for the resource element containing the QTI item. The
+generic meta-data, either using the IMS MD structures or the IEEE LOM
+structures goes first in the cp:metadata element, followed by the IMS
+QTIv2 Item meta-data.</p>
+
+
+<pre>&lt;resource identifier="RES-1" type="imsqti_item_xmlv2p1" href="qti_v2_item_01.xml"&gt;<br> &lt;metadata&gt;<br> &lt;imsmd:lom&gt;<br> &lt;imsmd:general&gt;<br> &lt;imsmd:identifier&gt;qti_v2_item_01&lt;/imsmd:identifier&gt;<br> &lt;imsmd:title&gt;<br> &lt;imsmd:langstring xml:lang="en"&gt;Meta-data Example Item #1&lt;/imsmd:langstring&gt;<br> &lt;/imsmd:title&gt;<br> &lt;imsmd:description&gt;<br> &lt;imsmd:langstring xml:lang="en"&gt;This is a dummy item&lt;/imsmd:langstring&gt;<br> &lt;/imsmd:description&gt;<br> &lt;/imsmd:general&gt;<br> &lt;imsmd:lifecycle&gt;<br> &lt;imsmd:version&gt;<br> &lt;imsmd:langstring xml:lang="en"&gt;1.0.1&lt;/imsmd:langstring&gt;<br> &lt;/imsmd:version&gt;<br> &lt;imsmd:status&gt;<br> &lt;imsmd:source&gt;<br> &lt;imsmd:langstring xml:lang="x-none"&gt;LOMv1.0&lt;/imsmd:langstring&gt;<br> &lt;/imsmd:source&gt;<br> &lt;imsmd:value&gt;<br> &lt;imsmd:langstring xml:lang="x-none"&gt;Draft&lt;/imsmd:langstring&gt;<br> &lt;/imsmd:value&gt;<br> &lt;/imsmd:status&gt;<br> &lt;/imsmd:lifecycle&gt;<br> &lt;imsmd:metametadata&gt;<br> &lt;imsmd:metadatascheme&gt;LOMv1.0&lt;/imsmd:metadatascheme&gt;<br> &lt;imsmd:metadatascheme&gt;QTIv2.1&lt;/imsmd:metadatascheme&gt;<br> &lt;imsmd:language&gt;en&lt;/imsmd:language&gt;<br> &lt;/imsmd:metametadata&gt;<br> &lt;imsmd:technical&gt;<br> &lt;imsmd:format&gt;text/x-imsqti-item-xml&lt;/imsmd:format&gt;<br> &lt;imsmd:format&gt;image/png&lt;/imsmd:format&gt;<br> &lt;/imsmd:technical&gt;<br> &lt;/imsmd:lom&gt;<br> &lt;imsqti:qtiMetadata&gt;<br> &lt;imsqti:timeDependent&gt;false&lt;/imsqti:timeDependent&gt;<br> &lt;imsqti:interactionType&gt;choiceInteraction&lt;/imsqti:interactionType&gt;<br> &lt;imsqti:feedbackType&gt;nonadaptive&lt;/imsqti:feedbackType&gt;<br> &lt;imsqti:solutionAvailable&gt;true&lt;/imsqti:solutionAvailable&gt;<br> &lt;imsqti:toolName&gt;XMLSPY&lt;/imsqti:toolName&gt;<br> &lt;imsqti:toolVersion&gt;5.4&lt;/imsqti:toolVersion&gt;<br> &lt;imsqti:toolVendor&gt;ALTOVA&lt;/imsqti:toolVendor&gt;<br> &lt;/imsqti:qtiMetadata&gt;<br> &lt;/metadata&gt;<br> &lt;file href="choice.xml"/&gt;<br> &lt;file href="images/sign.png"/&gt;<br>&lt;/resource&gt;</pre>
+
+
+<p>The above code shows a simple example containing both
+meta-data from the IMS meta-data specification, describing the title,
+description, version and status of the item. The second part of the
+meta-data is IMS QTI specific. It is not mandatory to use both
+meta-data parts, either the generic IMS meta-data part or the QTI
+specific part of the meta-data may be used alone.</p>
+
+
+<h3><a name="section10009">3.6. Packaging QTI
+Version 1 Objects</a></h3>
+
+
+<p><a name="section10009">In QTI version 1, the <em>questestinterop</em>
+element was used to contain individual items, sections, assessments, or
+object banks. All of these objects, including any collections allowed
+by that version of the specification are bound to XML documents of the
+same type, documents with a top level &lt;questestinterop&gt;
+element.</a></p>
+
+
+<p><a name="section10009">When packaging
+questestinterop instances, the content package will contain:</a></p>
+
+
+<ol>
+
+
+  <a name="section10009"> <li>the manifest</li>
+
+
+  <li>the questestinterop file (a QTI XML file satisfying the
+binding described in </li>
+
+
+  </a><a href="#ref_ASI_BIND">[ASI_BIND]</a>) <li>any
+auxiliary files (typically images or media files) required by the
+questestinterop object</li>
+
+
+</ol>
+
+
+<p>The manifest file must contain a <strong>separate</strong>
+cp:resource describing each questestinterop object. The cp:type of the
+cp:resource must be imsqti_questestinterop_xmlv1p2. The cp:resource in
+turn must contain a cp:file representing the questestinterop's XML
+file. The cp:resource should also contain a cp:file for each of the
+auxiliary files or, alternatively, a cp:dependency to a separate
+cp:resource representing the auxiliary file. The two approaches may be
+mixed in the same content package and must be treated identically.</p>
+
+
+<p>Meta-data may be associated with a questestinterop object in
+the cp:manifest by adding it to the associated cp:resource. Meta-data
+conforming to the model and XML binding for item meta-data described
+elsewhere in this specification must only be used when the
+questestinterop object contains a single item and no section,
+assessment or objectbank objects. Furthermore, this item <em>must
+not</em> contain either <em>qtimetadata</em> or <em>itemmedata</em>
+elements.</p>
+
+
+<p>The use of a cp:organization to impose a hierarchical ordering
+on QTI questestinterop objects contained in a content package is
+forbidden.</p>
+
+
+<h2><a name="section10010">4. Learning Design</a></h2>
+
+
+<p><a name="section10010">IMS Learning Design </a><a href="#ref_IMS_LD">[IMS_LD]</a> and IMS QTI are
+natural partners in the learning process. The central objective of the
+IMSLD specification is to model Units of Learning, delimited pieces of
+education or training, such as courses, modules, lessons, etc. A unit
+of learning describes the teaching-learning process and includes a
+variety of activities, assessments, services and support facilities
+provided by teachers, trainers, and other staff members.</p>
+
+
+<p>The primary motivation for integrating IMS Learning Design
+(IMSLD) and QTI stems from use cases which involve exploiting the
+results of a test or assessment to influence the learning process,
+often referred to as formative assessment. However, other use cases
+involving summative assessment, a final and comprehensive test of the
+learner's level of understanding, also form part of the rationale for
+integration.</p>
+
+
+<p>A typical learning situation involving a Unit of Learning
+containing a test or assessment might see learners engaging in a series
+of learning activities, then undergoing a short assessment. On the
+basis of the results of this assessment, learners experiencing
+difficulties with material are directed to additional learning
+activities designed to strengthen their understanding. In addition,
+those learners scoring particularly well might be directed to skip
+certain learning activities. </p>
+
+
+<p>Other cases of integration exist, such as the incorporation of
+straightforward, low-threshold questions throughout a unit of learning
+to maintain a certain degree of learner interaction, and the use of
+assessments for group formation in group-based learning (e.g., when
+dividing learners into groups of similar levels of ability).</p>
+
+
+<p>In general, the integration seeks to position assessment in
+its wider educational context, and revolves around the results of <em>QTI-based
+processes</em> being used in <em>IMSLD-based processes</em>.
+However, communication is not restricted to one direction; information
+can be brought in to influence the assessment process, including
+learner preferences, the results of previous tests, or the time taken
+to reach the assessment.</p>
+
+
+<p>Indeed, reconciling information described using IMSLD with
+that described using QTI so that run-time systems interoperate
+appropriately is a particular case of more general inter-specification
+interoperability. This Integration Guide does not seek to solve the
+more general issue, but aims to foster a tighter integration of IMSLD
+and QTI to help extend their application areas and improve the benefit
+of their combined use.</p>
+
+
+<h3><a name="section10011">4.1. Integration through
+IMS LD Properties and QTI Variables</a></h3>
+
+
+<p><a name="section10011">A large part of IMS LD's
+flexibility in orchestrating learning flows comes from the use of
+properties and conditions. Properties are used to record various types
+of information, which can subsequently be examined and used to
+influence aspects of the learning process, including the ordering and
+visibility of learning activities and learning objects. IMS LD supports
+the definition of different types of property in terms of scope and
+persistence (see the IMS Learning Design Specification for details).
+Note that the use of properties implies units of learning at IMS LD
+level B or C.</a></p>
+
+
+<p><a name="section10011">In a typical example,
+learning designers might create a property called P-intake-test-result:</a></p>
+
+
+<pre><a name="section10011">&lt;imsld:properties&gt;<br>	&lt;imsld:locpers-property identifier="P-intake-test-result"&gt;<br>	&lt;imsld:title&gt;The result for the test carried out as the first step in a learning flow&lt;/imsld:title&gt;<br>	&lt;imsld:datatype datatype="integer"/&gt;<br>	&lt;imsld:initial-value&gt;0&lt;/imsld:initial-value&gt;<br>	&lt;/imsld:locpers-property&gt;<br>&lt;/imsld:properties&gt;</a></pre>
+
+
+<p><a name="section10011">Here we see that an IMSLD
+(local, personal) property is declared, with type integer and with an
+initial value of zero. This property might be used in a condition to
+select between alternative learning activities, based on the results of
+the test:</a></p>
+
+
+<pre><a name="section10011">&lt;imsld:conditions&gt;<br>	&lt;imsld:if&gt;<br>	&lt;imsld:less-than&gt;<br>	&lt;imsld:property-ref ref="P-intake-test-result"/&gt;<br>	&lt;imsld:property-value&gt;3&lt;/imsld:property-value&gt;<br>	&lt;/imsld:less-than&gt;<br>	&lt;/imsld:if&gt;<br>	&lt;imsld:then&gt;<br>	&lt;imsld:show&gt;<br>	&lt;imsld:learning-activity-ref ref="LA-Review-Additional-Material"/&gt;<br>	&lt;/imsld:show&gt;<br>	&lt;/imsld:then&gt;<br>&lt;/imsld:conditions&gt;</a></pre>
+
+
+<p><a name="section10011">Here we see an IMSLD
+condition which states that if the value of P-intake-test-result is
+less than 3, a learning activity should be shown (giving, for example,
+additional guidance on a topic).</a></p>
+
+
+<p><a name="section10011">The IMS QTI specification
+includes the similar notion of variables, used to record the outcomes
+of assessment:</a></p>
+
+
+<pre><a name="section10011">&lt;imsqti:outcomes_processing&gt;<br>	&lt;imsqti:outcomes&gt;<br>	&lt;imsqti:decvar varname="SCORE" vartype="Integer" defaultval="0"/&gt;<br>	&lt;/imsqti:outcomes&gt;<br>&lt;/imsqti:outcomes_processing&gt;</a></pre>
+
+
+<p><a name="section10011">The above XML fragment
+shows the declaration of a variable SCORE, of type integer and with an
+initial value of zero.</a></p>
+
+
+<p><a name="section10011">The integration of IMS LD
+and IMS QTI revolves around aligning property and variable names.
+Essentially, when property identifiers and variable names are declared
+to be lexically identical at design time (i.e. in IMS LD-based and IMS
+QTI-based XML), they are considered to be a <em>shared variable</em>
+in run-time software environments which involve IMS LD and IMS
+QTI-based processes. To achieve this effect in the above QTI example,
+the variable name would need to be modified to become the property name
+used in IMSLD XML. Alternatively, the IMSLD XML could be modified to
+align it with the QTI variable name (including references in any IMSLD
+conditions using the property).</a></p>
+
+
+<p><a name="section10011">Figure 4.1 shows a Unit of
+Learning which includes both a fragment of QTI and a fragment of IMS LD
+which refer to VPROP in the manner describe above. These fragments may
+have been created with different tools or using an editing environment
+which supports authors in creating both types of content. Although
+software may be written to interpret both specifications, effectively
+side-stepping the integration issue, separate markets of LD processors
+and QTI processors already exist. As a result, the run-time situation
+may well involve different processors reading and writing VPROP</a></p>
+
+
+<p align="center"><a href="images/unit_of_learning_fs.png"><img src="images/unit_of_learning.png"></a></p>
+
+
+<p style="font-weight: bold;" align="center">Figure
+4.1 Illustration of LD and QTI integration.</p>
+
+
+<p>This is a loose level of integration in that, from the
+perspective of IMS LD, the internal response processing algorithms used
+in the QTI content are hidden, with only the resulting outcome being of
+importance. Similarly, QTI-based processes are unaware of any IMS
+LD-based use of outcomes. Some run-time mechanism must be in place to
+enable both IMS LD and IMS QTI-based processes to <em>write to</em>
+and <em>read from</em>, and services based on the emerging
+IMS Shareable State Persistence Information Model would appear a
+suitable candidate.</p>
+
+
+<p>A complicating factor with this approach lies in the use of
+multiple QTI items in which the same QTI variable name may be used more
+than once. The QTI specification indicates the default variable name to
+be "SCORE", and it is not uncommon to see this variable name used with
+QTI items. In order to avoid naming clashes and increase the
+transparency of Units of Learning which integrate IMSLD and IMS-QTI,
+the recommended best practice is to combine identifiers. The approach
+is to create compound identifiers for use as IMS LD property names by
+combining the resource identifier associated with the content package
+resource containing the IMS QTI item as a prefix to the variable name,
+using a period as separator. This approach is illustrated below.</p>
+
+
+<h4><a name="section10012">4.1.1. Naming &amp;
+Typing</a></h4>
+
+
+<p><a name="section10012">LD's properties are of
+type XML Identifiers (see
+http://www.imsglobal.org/learningdesign/ldv1p0/imsld_infov1p0.html#1515694),
+with the rules for their construction being governed by the XML 1.0
+specification:</a></p>
+
+
+<p>
+<a name="section10012"> <em>Definition: A Name is a
+token beginning with a letter or one of a few punctuation characters,
+and continuing with letters, digits, hyphens, underscores, colons, or
+full stops, together known as name characters.] (from Extensible Markup
+Language (XML) 1.0 (Third Edition), W3C Recommendation 04 February 2004
+http://www.w3.org/TR/2004/REC-xml-20040204/#NT-Nmtokens)</em> </a></p>
+
+
+<p><a name="section10012">QTIv2 item variables are
+also XML Identifiers and so the rules governing the lexical composition
+of IMSLD properties and IMSQTI variable are identical.</a></p>
+
+
+<p><a name="section10012">However, the type systems
+used in IMS LD and IMS QTI differ:</a></p>
+
+
+<table border="1" cellspacing="0" frame="border" rules="all">
+
+
+  <tbody>
+
+
+    <tr>
+
+
+      <th>Learning Design</th>
+
+
+      <th>QTI</th>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td> <em>no equivalent</em> </td>
+
+
+      <td>identifier</td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td>Boolean</td>
+
+
+      <td>boolean</td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td>Integer</td>
+
+
+      <td>integer</td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td>Real</td>
+
+
+      <td>float</td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td>String</td>
+
+
+      <td>string</td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td>Text</td>
+
+
+      <td>string</td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td> <em>no equivalent</em> </td>
+
+
+      <td>point</td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td> <em>no equivalent</em> </td>
+
+
+      <td>pair</td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td> <em>no equivalent</em> </td>
+
+
+      <td>directedPair</td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td>Duration</td>
+
+
+      <td>duration</td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td>File</td>
+
+
+      <td>file</td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td>URI</td>
+
+
+      <td> uri </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td>Datetime</td>
+
+
+      <td> <em>no equivalent</em> </td>
+
+
+    </tr>
+
+
+  
+  </tbody>
+</table>
+
+
+<p><a name="section10012">A final complicating
+factor is the presence of multi-valued variables in QTI which have no
+equivalent in IMS LD. </a></p>
+
+
+<p><a name="section10012">These issues point to the
+need for systems which process QTI items in combination with IMS LD to
+perform checks and issue warnings when differences are seen either in
+the type or multi-valued nature of QTI outcome variables and IMS LD
+properties which share a local part of their Qname.</a></p>
+
+
+<h3><a name="section10013">4.2. How and Where QTI
+Content is Referenced in the Learning Design of a Unit of Learning</a></h3>
+
+
+<p><a name="section10013">Conceptually, from an IMS
+Learning Design perspective, tests are linked to learning-activities
+which provide the instruction to complete the test that is present in
+the environment. In this way, reference to QTI items is likely to be as
+learning-objects in environments associated with learning-activities.
+The following figure shows part of an IMS manifest file containing
+these relationships:</a></p>
+
+
+<p><a name="auxFile.ldManifest"><b>Screenshot
+illustrating a Learning Design referring to a QTI Item</b><br>
+
+
+<code></code></a><a href="images/ldManifest.png">images/ldManifest.png</a></p>
+
+
+<p>A learning activity can reference one or more environments,
+and nesting of environments is permitted. Each environment can, in
+turn, contain several learning-objects, each referencing a separate QTI
+item. Environments can be made visible or hidden using IMS Learning
+Design's condition mechanism, giving the designer of a unit of learning
+considerable flexibility in modeling the sequencing and selection of
+test items during the course of a learning process. Note that the same
+approach can be used for including QTI content above the item level
+(sections or assessments).</p>
+
+
+<p>Compound identifiers are formed by using the resource
+identifier of the content package resource which references the QTI
+item, together with the QTI variable name, separated by a period. In
+the above example, assuming the QTI content in the file choice_01.xml
+contains an outcome variable declaration for the variable SCORE, IMS-LD
+content needing to use the value of SCORE would use a property declared
+as:</p>
+
+
+<pre>&lt;imsld:locpers-property identifier="Question1.SCORE"&gt;</pre>
+
+
+<h3><a name="section10014">4.3. A skeletal example
+of IMS LD, QTI, and CP integration</a></h3>
+
+
+<p><a name="section10014">This section walks the
+reader through a skeletal example of a Unit of Learning which
+integrates IMS Learning Design and IMS QTI in a content package. Three
+questions are used, two of which use the same variable names in order
+to further illustrate the approach to compound identifiers.</a></p>
+
+
+<p><a name="section10014">We will build the example
+starting from the QTI content, held in three separate files:</a></p>
+
+
+<p><a name="auxFile.choice01"><b>choice_01.xml</b><br>
+
+
+<code></code></a><a href="examples/ldexample/choice_01.xml">examples/ldexample/choice_01.xml</a></p>
+
+
+<p><a name="auxFile.choice02"><b>choice_02.xml</b><br>
+
+
+<code></code></a><a href="examples/ldexample/choice_02.xml">examples/ldexample/choice_02.xml</a></p>
+
+
+<p><a name="auxFile.choice03"><b>choice_03.xml</b><br>
+
+
+<code></code></a><a href="examples/ldexample/choice_03.xml">examples/ldexample/choice_03.xml</a></p>
+
+
+<p>Note that the first two items both use the variable SCORE, the
+third item uses the variable SIGNSCORE.</p>
+
+
+<p>These three IMS QTI items would be included in the content
+package as three resources (note that two other resources are also
+shown in the resources section):</p>
+
+
+<pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;<br>&lt;!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Colin Tattersall (Open University of the Netherlands) --&gt;<br>&lt;imscp:manifest xmlns:imscp="http://www.imsglobal.org/xsd/imscp_v1p1"<br> xmlns:imsld="http://www.imsglobal.org/xsd/imsld_v1p0"<br> xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"<br> xsi:schemaLocation="http://www.imsglobal.org/xsd/imscp_v1p1 imscp_v1p1.xsd <br> http://www.imsglobal.org/xsd/imsld_v1p0 IMS_LD_Level_B.xsd"<br> identifier="Integration-Example"&gt;<br>	&lt;imscp:organizations&gt;<br>	&lt;imsld:learning-design identifier="LD-Integration-Example" uri="" level="B"&gt;<br>	&hellip;<br>	&lt;/imsld:learning-design&gt;<br>	&lt;/imscp:organizations&gt;<br>	&lt;imscp:resources&gt;<br>	&lt;imscp:resource identifier="R-Simple" type="webcontent"&gt;<br>	&lt;imscp:file href="simple.xml"/&gt;<br>	&lt;/imscp:resource&gt;<br>	&lt;imscp:resource identifier="Question_1" type="imsqti_item_xmlv2p1" href="choice_01.xml"&gt;<br>	&lt;imscp:file href="choice_01.xml"/&gt;<br> &lt;imscp:file href="sign.png"/&gt;<br>	&lt;/imscp:resource&gt;<br>	&lt;imscp:resource identifier="Question_2" type="imsqti_item_xmlv2p1" href="choice_02.xml"&gt;<br>	&lt;imscp:file href="choice_02.xml"/&gt;<br> &lt;imscp:file href="sign2.png"/&gt;<br>	&lt;/imscp:resource&gt;<br>	&lt;imscp:resource identifier="Question_3" type="imsqti_item_xmlv2p1" href="choice_03.xml"&gt;<br>	&lt;imscp:file href="choice_03.xml"/&gt;<br> &lt;imscp:file href="sign3.png"/&gt;<br>	&lt;/imscp:resource&gt;<br>	&lt;imscp:resource identifier="R-Feedback" type="webcontent"&gt;<br>	&lt;imscp:file href="feedback.xml"/&gt;<br>	&lt;/imscp:resource&gt;<br>	&lt;/imscp:resources&gt;<br>&lt;/imscp:manifest&gt;<br> </pre>
+
+
+<p>In this example, the three resources are referenced from a
+single environment associated with a single learning activity:</p>
+
+
+<pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;<br>&lt;!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Colin Tattersall (Open University of the Netherlands) --&gt;<br>&lt;imscp:manifest xmlns:imscp="http://www.imsglobal.org/xsd/imscp_v1p1"<br> xmlns:imsld="http://www.imsglobal.org/xsd/imsld_v1p0"<br> xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"<br> xsi:schemaLocation="http://www.imsglobal.org/xsd/imscp_v1p1 imscp_v1p1.xsd <br> http://www.imsglobal.org/xsd/imsld_v1p0 IMS_LD_Level_B.xsd"<br> identifier="Integration-Example"&gt;<br>	&lt;imscp:organizations&gt;<br>	&lt;imsld:learning-design identifier="LD-Integration-Example" uri="" level="B"&gt;<br>	&hellip;<br>	&lt;imsld:activities&gt;<br>	&lt;imsld:learning-activity isvisible="true" identifier="LA-Signpost"&gt;<br>	&lt;imsld:title&gt;Complete the question show in the environment&lt;/imsld:title&gt;<br>	&lt;imsld:environment-ref ref="E-Simple-Environment"/&gt;<br>	&lt;imsld:activity-description&gt;<br>	&lt;imsld:title&gt;Check your understanding of signposts&lt;/imsld:title&gt;<br>	&lt;imsld:item identifier="I-Simple" identifierref="R-Simple"/&gt;<br>	&lt;/imsld:activity-description&gt;<br>	&hellip;.<br>	&lt;/imsld:learning-activity&gt;<br>	&lt;/imsld:activities&gt;<br>	&lt;imsld:environments&gt;<br>	&lt;imsld:environment identifier="E-Simple-Environment"&gt;<br>	&lt;imsld:title&gt;Quick Test&lt;/imsld:title&gt;<br>	&lt;imsld:learning-object identifier="LO-QTI-Item1"&gt;<br>	&lt;imsld:title&gt;Assign a sign&lt;/imsld:title&gt;<br>	&lt;imsld:item identifier="I-Question1" identifierref="Question_1"/&gt;<br>	&lt;/imsld:learning-object&gt;<br>	&lt;imsld:learning-object identifier="LO-QTI-Item2"&gt;<br>	&lt;imsld:title&gt;Assign a second sign&lt;/imsld:title&gt;<br>	&lt;imsld:item identifier="I-Question2" identifierref="Question_2"/&gt;<br>	&lt;/imsld:learning-object&gt;<br>	&lt;imsld:learning-object identifier="LO-QTI-Item3"&gt;<br>	&lt;imsld:title&gt;And try to assign a third one&lt;/imsld:title&gt;<br>	&lt;imsld:item identifier="I-Question3" identifierref="Question_3"/&gt;<br>	&lt;/imsld:learning-object&gt;<br>	&lt;/imsld:environment&gt;<br>	&lt;/imsld:environments&gt;<br>	&lt;/imsld:components&gt;<br>	&lt;imsld:method&gt;<br>	&hellip;<br>	&lt;/imsld:method&gt;<br>	&lt;/imsld:learning-design&gt;<br>	&lt;/imscp:organizations&gt;<br>	&lt;imscp:resources&gt;<br>	&lt;imscp:resource identifier="R-Simple" type="webcontent"&gt;<br>	&lt;imscp:file href="simple.xml"/&gt;<br>	&lt;/imscp:resource&gt;<br>	&lt;imscp:resource identifier="Question_1" type="imsqti_item_xmlv2p0" href="choice_01.xml"&gt;<br>	&lt;imscp:file href="choice_01.xml"/&gt;<br> &lt;imscp:file href="sign.png"/&gt;<br>	&lt;/imscp:resource&gt;<br>	&lt;imscp:resource identifier="Question_2" type="imsqti_item_xmlv2p0" href="choice_02.xml"&gt;<br>	&lt;imscp:file href="choice_02.xml"/&gt;<br> &lt;imscp:file href="sign.png2"/&gt;<br>	&lt;/imscp:resource&gt;<br>	&lt;imscp:resource identifier="Question_3" type="imsqti_item_xmlv2p0" href="choice_03.xml"&gt;<br>	&lt;imscp:file href="choice_03.xml"/&gt;<br> &lt;imscp:file href="sign3.png"/&gt;<br>	&lt;/imscp:resource&gt;<br>	&lt;imscp:resource identifier="R-Feedback" type="webcontent"&gt;<br>	&lt;imscp:file href="feedback.xml"/&gt;<br>	&lt;/imscp:resource&gt;<br>	&lt;/imscp:resources&gt;<br>&lt;/imscp:manifest&gt;<br> </pre>
+
+
+<p>IMS LD properties are defined for each outcome variable used
+in each resource file in the following manner, together with a property
+which will be used to hold the sum of the three:</p>
+
+
+<pre>&lt;imsld:properties&gt;<br>	&lt;imsld:locpers-property identifier="Question_1.SCORE"&gt;<br>	&lt;imsld:title&gt;The result for the first question&lt;/imsld:title&gt;<br>	&lt;imsld:datatype datatype="integer"/&gt;<br>	&lt;imsld:initial-value&gt;0&lt;/imsld:initial-value&gt;<br>	&lt;/imsld:locpers-property&gt;<br>	&lt;imsld:locpers-property identifier="Question_2.SCORE"&gt;<br>	&lt;imsld:title&gt;The result for the second question&lt;/imsld:title&gt;<br>	&lt;imsld:datatype datatype="integer"/&gt;<br>	&lt;imsld:initial-value&gt;0&lt;/imsld:initial-value&gt;<br>	&lt;/imsld:locpers-property&gt;<br>	&lt;imsld:locpers-property identifier="Question_3.SIGNSCORE"&gt;<br>	&lt;imsld:title&gt;The result for the third question&lt;/imsld:title&gt;<br>	&lt;imsld:datatype datatype="integer"/&gt;<br>	&lt;imsld:initial-value&gt;0&lt;/imsld:initial-value&gt;<br>	&lt;/imsld:locpers-property&gt;<br>	&lt;imsld:locpers-property identifier="Total"&gt;<br>	&lt;imsld:title&gt;The total&lt;/imsld:title&gt;<br>	&lt;imsld:datatype datatype="integer"/&gt;<br>	&lt;imsld:initial-value&gt;0&lt;/imsld:initial-value&gt;<br>	&lt;/imsld:locpers-property&gt;<br>&lt;/imsld:properties&gt;<br> </pre>
+
+
+<p>Assuming a pedagogical approach of programmed instruction, the
+learner may only progress if the total score is three (i.e., if all
+three questions are answered correctly). This is handled in IMS LD by
+indicating that the activity can only be completed when a property is
+set (<code>when-property-value-is-set</code>):</p>
+
+
+<pre>&lt;imsld:activities&gt;<br>	&lt;imsld:learning-activity isvisible="true" identifier="LA-Signpost"&gt;<br>	&lt;imsld:title&gt;Complete the question show in the environment&lt;/imsld:title&gt;<br>	&lt;imsld:environment-ref ref="E-Simple-Environment"/&gt;<br>	&lt;imsld:activity-description&gt;<br>	&lt;imsld:title&gt;Check your understanding of signposts&lt;/imsld:title&gt;<br>	&lt;imsld:item identifier="I-Simple" identifierref="R-Simple"/&gt;<br>	&lt;/imsld:activity-description&gt;<br>	&lt;imsld:complete-activity&gt;<br>	&lt;imsld:when-property-value-is-set&gt;<br>	&lt;imsld:property-ref ref="Total"/&gt;<br>	&lt;imsld:property-value&gt;3&lt;/imsld:property-value&gt;<br>	&lt;/imsld:when-property-value-is-set&gt;<br>	&lt;/imsld:complete-activity&gt;<br>	&lt;imsld:on-completion&gt;<br>	&lt;imsld:feedback-description&gt;<br>	&lt;imsld:item identifier="I-Feedback" identifierref="R-Feedback"/&gt;<br>	&lt;/imsld:feedback-description&gt;<br>	&lt;/imsld:on-completion&gt;<br>	&lt;/imsld:learning-activity&gt;<br>&lt;/imsld:activities&gt;<br> </pre>
+
+
+<p>The final step is to include an IMS LD condition which sets
+the property Total to have the value 3 when all three questions have
+been answered correctly:</p>
+
+
+<pre>&lt;imsld:conditions&gt;<br>	&lt;imsld:if&gt;<br>	&lt;imsld:and&gt;<br>	&lt;imsld:greater-than&gt;<br>	&lt;imsld:property-ref ref="Question_1.SCORE"/&gt;<br>	&lt;imsld:property-value&gt;0&lt;/imsld:property-value&gt;<br>	&lt;/imsld:greater-than&gt;<br>	&lt;imsld:greater-than&gt;<br>	&lt;imsld:property-ref ref="Question_2.SCORE"/&gt;<br>	&lt;imsld:property-value&gt;0&lt;/imsld:property-value&gt;<br>	&lt;/imsld:greater-than&gt;<br>	&lt;imsld:greater-than&gt;<br>	&lt;imsld:property-ref ref="Question_3.SIGNSCORE"/&gt;<br>	&lt;imsld:property-value&gt;0&lt;/imsld:property-value&gt;<br>	&lt;/imsld:greater-than&gt;<br>	&lt;/imsld:and&gt;<br>	&lt;/imsld:if&gt;<br>	&lt;imsld:then&gt;<br>	&lt;imsld:change-property-value&gt;<br>	&lt;imsld:property-ref ref="Total"/&gt;<br>	&lt;imsld:property-value&gt;3&lt;/imsld:property-value&gt;<br>	&lt;/imsld:change-property-value&gt;<br>	&lt;/imsld:then&gt;<br>&lt;/imsld:conditions&gt;<br> </pre>
+
+
+<p>The property Total could equally have been given the type <em>boolean</em>
+and assigned a value of true once the total had been reached.</p>
+
+
+<p><a name="auxFile.ldmanifest"><b>Full
+Manifest File</b><br>
+
+
+<code></code></a><a href="examples/ldexample/imsmanifest.xml">examples/ldexample/imsmanifest.xml</a></p>
+
+
+<h3><a name="section10015">4.4. IMS LD and QTI
+assessmentTest integration</a></h3>
+
+
+<p><a name="section10015">The previous example shows
+how individual QTI </a><a href="imsqti_infov2p1pd2.html#element10012">assessmentItem</a>s
+are referenced from within IMS Learning Design. In a similar way it is
+possible to point to complete <a href="imsqti_infov2p1pd2.html#element10472">assessmentTest</a>s
+from within IMS LD. The value of the outcome variable SCORE of the test
+would use a property declared as: </p>
+
+
+<pre>&lt;imsld:locpers-property identifier="Assessment1.SCORE"&gt;</pre>
+
+
+<p>Assessment1 in that case is the identifier of the resource
+containing the QTI <a href="imsqti_infov2p1pd2.html#element10472">assessmentTest</a>.</p>
+
+
+<h2><a name="section10016">5. Simple Sequencing</a></h2>
+
+
+<p><a name="section10016">The IMS Simple Sequencing
+specification </a><a href="#ref_IMS_SS">[IMS_SS]</a>
+defines a method for representing the intended sequencing behavior of
+an authored learning experience. In other words, the way learning
+technology systems can sequence discrete learning activities in a
+consistent way.</p>
+
+
+<p>Integrating individual assessment items with learning
+activities into a single activity tree controlled by simple sequencing
+rules suggests the need to map the information about the item session
+into the appropriate simple sequencing concepts. A detailed discussion
+of how this mapping might be implemented is beyond the scope of this
+document, though a number of experimental approaches are currently
+being discussed within the community. Readers may wish to monitor the
+output of the <a href="#ref_APIS">[APIS]</a>
+project which is currently preparing more detailed recommendations.</p>
+
+
+<p>To help facilitate easier integration of QTI items into
+activity trees authors are strongly encouraged to define an outcome
+variable with the name <em>SCORE</em> to be of a numeric
+type and to provide a value for the <a href="imsqti_infov2p1pd2.html#element10093">normalMaximum</a>
+attribute of the <a href="imsqti_infov2p1pd2.html#element10089">outcomeDeclaration</a>.
+Note particularly that scores will be normalized to the range
+[-1.0,1.0] for use with sequencing rules so care will need to be taken
+when designing items that generate scores with minimum obtainable
+values other than 0.</p>
+
+
+<p>Simple sequencing makes use of the organization element within
+the content package. In order to treat an assessment item as an
+activity a suitable cp:item element will need to be included in the
+organization. As stated above, this is the only use of the organization
+element that this specification recommends when packaging QTI content.</p>
+
+
+<p>Note that assessment items have resource type
+imsqti_item_xmlv2p0 and not webcontent. This indicates to the
+processing system that the resource is not suitable for handing
+directly to a web-browser for presentation. Instead, web-based systems
+that support the use of assessment items within activity trees must be
+capable of converting the assessment item into a suitable form for web
+delivery, processing the responses and collecting and mapping the
+resulting item outcomes. The version 2 data model for the <a href="imsqti_infov2p1pd2.html#element10110">itemBody</a>
+profiles <a href="#ref_XHTML">[XHTML]</a> making
+this transformation considerably easier. </p>
+
+
+<h2><a name="section10017">6. CMI</a></h2>
+
+
+<p><a name="section10017">The CMI datamodel </a><a href="#ref_CMI">[CMI]</a> is designed to provide a
+mechanism for the communication of data created at runtime, such as the
+outcomes of an assessment item, to a learning management system or
+other runtime service. A detailed description of how to map the
+contents of an item session into this model is beyond the scope of this
+specification. </p>
+
+
+<p>Item authors are encouraged to follow the best practice
+described in <a href="#section10016">Simple Sequencing</a>
+to help facilitate interoperability through the CMI interface. A
+special predefined item variable (<em>completionStatus</em>)
+is defined to ease integration with CMI-based systems. Authors are
+reminded that adaptive items must maintain a value for this variable in
+the item's <a href="imsqti_infov2p1pd2.html#element10403">responseProcessing</a>
+rules.</p>
+
+
+<h2>About This Document</h2>
+
+
+<p></p>
+
+
+<table summary="This table describes the document properties" border="1" cellpadding="5" cellspacing="0">
+
+
+  <tbody>
+
+
+    <tr>
+
+
+      <td><strong>Title</strong><br>
+
+
+      </td>
+
+
+      <td>IMS Question and Test Interoperability Integration Guide<br>
+
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td><strong>Editors</strong><br>
+
+
+      </td>
+
+
+      <td>Steve Lay (Cambridge Assessment), Pierre Gorissen (SURF)<br>
+
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td><strong>Version</strong><br>
+
+
+      </td>
+
+
+      <td>Public Draft v2.1 (revision 2)<br>
+
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td><strong>Version Date</strong><br>
+
+
+      </td>
+
+
+      <td>8 June 2006<br>
+
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td><strong>Status</strong><br>
+
+
+      </td>
+
+
+      <td><strong>Public Draft (revision 2) Specification</strong><br>
+
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td><strong>Summary</strong><br>
+
+
+      </td>
+
+
+      <td>This document describes the QTI Integration Guide
+specification.<br>
+
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td><strong>Revision Information</strong><br>
+
+
+      </td>
+
+
+      <td>8 June 2006<br>
+
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td><strong>Purpose</strong><br>
+
+
+      </td>
+
+
+      <td>This document has been approved by the IMS Technical
+Board and is made available for public review and comment.<br>
+
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td><strong>Document Location</strong><br>
+
+
+      </td>
+
+
+      <td><a href="http://www.imsglobal.org/question/qtiv2p1pd2/imsqti_intgv2p1pd2.html">
+http://www.imsglobal.org/question/qtiv2p1pd2/imsqti_intgv2p1pd2.html</a><br>
+
+
+      </td>
+
+
+    </tr>
+
+
+  
+  </tbody>
+</table>
+
+
+<p></p>
+
+
+<p></p>
+
+
+<p></p>
+
+
+<table summary="This table lists link to register comments" border="1" cellpadding="5" cellspacing="0">
+
+
+  <tbody>
+
+
+    <tr>
+
+
+      <td>To register any comments or questions about this
+specification please visit: <a href="http://www.imsglobal.org/developers/ims/imsforum/categories.cfm?catid=23">
+http://www.imsglobal.org/developers/ims/imsforum/categories.cfm?catid=23</a><br>
+
+
+      </td>
+
+
+    </tr>
+
+
+  
+  </tbody>
+</table>
+
+
+<p></p>
+
+
+<p></p>
+
+
+<h3>List of Contributors</h3>
+
+
+<p>The following individuals contributed to the development of
+this document:</p>
+
+
+<p></p>
+
+
+<table summary="This table describes The list of contributors for this document" border="0" cellpadding="5" cellspacing="0">
+
+
+  <tbody>
+
+
+    <tr>
+
+
+      <th scope="col"><strong>Name</strong></th>
+
+
+      <th scope="col">
+      <strong>Organization</strong></th>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td>Dick Bacon<br>
+
+
+      </td>
+
+
+      <td>University of Surrey<br>
+
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td>Niall Barr<br>
+
+
+      </td>
+
+
+      <td>Question Mark<br>
+
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td>Lance Blackstone<br>
+
+
+      </td>
+
+
+      <td>Pearson VUE<br>
+
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td>Jeanne Ferrante<br>
+
+
+      </td>
+
+
+      <td>ETS<br>
+
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td>Pierre Gorissen<br>
+
+
+      </td>
+
+
+      <td>SURF<br>
+
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td>Regina Hoag<br>
+
+
+      </td>
+
+
+      <td>ETS<br>
+
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td>Gopal Krishnan<br>
+
+
+      </td>
+
+
+      <td>Pearson VUE<br>
+
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td>Steve Lay<br>
+
+
+      </td>
+
+
+      <td>Cambridge Assessment<br>
+
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td>Rowin Young<br>
+
+
+      </td>
+
+
+      <td>CETIS<br>
+
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td><br>
+
+
+      </td>
+
+
+    </tr>
+
+
+  
+  </tbody>
+</table>
+
+
+<h2>Revision History</h2>
+
+
+<p></p>
+
+
+<table summary="This table describes document revision history" border="1" cellpadding="5" cellspacing="0">
+
+
+  <tbody>
+
+
+    <tr bgcolor="#cccccc">
+
+
+      <th scope="col"><strong>Version No.</strong></th>
+
+
+      <th scope="col"><strong>Release Date</strong></th>
+
+
+      <th scope="col"><strong>Comments</strong></th>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td>Base Document 2.1<br>
+
+
+      </td>
+
+
+      <td>14 October 2005<br>
+
+
+      </td>
+
+
+      <td>The first version of the QTI v2.1 specification.<br>
+
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td>Public Draft 2.1<br>
+
+
+      </td>
+
+
+      <td>9 January 2006<br>
+
+
+      </td>
+
+
+      <td>The Public Draft v2.1 of the QTI specification.<br>
+
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td>Public Draft 2.1 (revision 2)<br>
+
+
+      </td>
+
+
+      <td>8 June 2006<br>
+
+
+      </td>
+
+
+      <td>The Public Draft v2.1 (revision 2) of the QTI
+specification.<br>
+
+
+      </td>
+
+
+    </tr>
+
+
+  
+  </tbody>
+</table>
+
+
+<center>
+<p>&nbsp;</p>
+
+
+<p>&nbsp;</p>
+
+
+<p>&nbsp;</p>
+
+
+<p><em>IMS Global Learning Consortium, Inc. ("IMS/GLC") is
+publishing the information contained in this</em> IMS Question
+and Test Interoperability Integration Guide <em>("Specification")
+for purposes of scientific, experimental, and scholarly collaboration
+only.<br>
+
+
+<br>
+
+
+IMS/GLC makes no warranty or representation regarding the accuracy or
+completeness of the Specification.<br>
+
+
+This material is provided on an "As Is" and "As Available" basis.<br>
+
+
+<br>
+
+
+The Specification is at all times subject to change and revision
+without notice.<br>
+
+
+<br>
+
+
+It is your sole responsibility to evaluate the usefulness, accuracy,
+and completeness of the Specification as it relates to you.<br>
+
+
+<br>
+
+
+IMS/GLC would appreciate receiving your comments and suggestions.<br>
+
+
+<br>
+
+
+Please contact IMS/GLC through our website at <a href="http://www.imsglobal.org">http://www.imsglobal.org</a><br>
+
+
+<br>
+
+
+Please refer to Document Name:</em> IMS Question and Test
+Interoperability Integration Guide <em>Revision:</em> 8
+June 2006</p>
+
+
+</center>
+
+
+<hr>
+</body>
+</html>

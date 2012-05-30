@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Jeanne Ferrante (ETS) -->
+<!-- Definitions from http://www.glaucoma.org/learn/glossary.html -->
+<vdex profileType="glossaryOrDictionary" xmlns="http://www.imsglobal.org/xsd/imsvdex_v1p0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.imsglobal.org/xsd/imsvdex_v1p0 imsvdex_v1p0.xsd"
+    orderSignificant="false" language="en">
+    <vocabName>
+        <langstring>Glossary of Terms for Item Statistics</langstring>
+    </vocabName>
+    <term>
+        <termIdentifier>D-Parm</termIdentifier>
+        <caption>
+            <langstring>IRT d parameter</langstring>
+        </caption>
+        <description>
+            <langstring>A measure of the dispersion of the item computed using IRT method.</langstring>
+        </description>
+    </term>
+    <term>
+        <termIdentifier>Score_Conversion</termIdentifier>
+        <caption>
+            <langstring>Score Conversion Table</langstring>
+        </caption>
+        <description>
+            <langstring>Raw scores and their corresponding converted values (e.g. the values to be
+                used in score reports).</langstring>
+        </description>
+    </term>
+    <term>
+        <termIdentifier>AIS</termIdentifier>
+        <caption>
+            <langstring>Average Item Score</langstring>
+        </caption>
+        <description>
+            <langstring>A group-dependent measure of item difficulty. Equal to the mean of the item
+                scores for a group of individuals. For a rights-only dichotomously scored test,
+                equivalent to the percent answering the item correctly (P-value).</langstring>
+        </description>
+    </term>
+    <term>
+        <termIdentifier>A-Parm</termIdentifier>
+        <caption>
+            <langstring>IRT a parameter</langstring>
+        </caption>
+        <description>
+            <langstring>Index of item discrimination based on item response theory.</langstring>
+        </description>
+    </term>
+    <term>
+        <termIdentifier>B-Parm</termIdentifier>
+        <caption>
+            <langstring>IRT b parameter</langstring>
+        </caption>
+        <description>
+            <langstring>Index of item difficulty based on item response theory.</langstring>
+        </description>
+    </term>
+    <term>
+        <termIdentifier>C-Parm</termIdentifier>
+        <caption>
+            <langstring>IRT c parameter</langstring>
+        </caption>
+        <description>
+            <langstring>The lower asymptote of the item response function. Generally an index of
+                guessing, i.e., the probability of getting the item correct for very low ability examinees.</langstring>
+        </description>
+    </term>
+    <term>
+        <termIdentifier>P-value</termIdentifier>
+        <caption>
+            <langstring>P-value</langstring>
+        </caption>
+        <description>
+            <langstring>A group-dependent measure of item difficulty. It is equal to the percent
+                answering the item correctly.</langstring>
+        </description>
+    </term>
+    <term>
+        <termIdentifier>PHI</termIdentifier>
+        <caption>
+            <langstring>Phi-coefficient</langstring>
+        </caption>
+        <description>
+            <langstring>A group-dependent measure of item discrimination, Phi is the correlation of
+                two dichotomous variables. In item analysis, it is generally the correlation between
+                getting an item right or wrong and some dichotomous variable, e.g., pass, fail.</langstring>
+        </description>
+    </term>
+    <term>
+        <termIdentifier>rbis</termIdentifier>
+        <caption>
+            <langstring>r-biserial</langstring>
+        </caption>
+        <description>
+            <langstring>A group-dependent measure of item discrimination, r-biserial is an estimate
+                of the biserial correlation between a latent continuous variable hypothesized to
+                underlie performance on a dichotomous item (i.e. item score) and a criterion which
+                is a variable than can take many possible values, such as total score on the test.</langstring>
+        </description>
+    </term>
+    <term>
+        <termIdentifier>PTbis</termIdentifier>
+        <caption>
+            <langstring>r-pointbiserial</langstring>
+        </caption>
+        <description>
+            <langstring>A group-dependent measure of item discrimination, r-pointbiserial is the
+                point biserial correlation between the score on a dichotomous item and a criterion
+                which is a variable than can take many possible values, such as total score on the test.</langstring>
+        </description>
+    </term>
+    <term>
+        <termIdentifier>Polyserial</termIdentifier>
+        <caption>
+            <langstring>Polyserial</langstring>
+        </caption>
+        <description>
+            <langstring>The polyserial correlation is the generalization of the biserial correlation
+                for use with either dichotomous or polytomous items. For example, it may be the
+                generalized form of the correlation with a criterion. It is the correlation of the
+                item score with some continuous variable, usually the total score on the test.</langstring>
+        </description>
+    </term>
+</vdex>

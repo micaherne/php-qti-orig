@@ -1,0 +1,698 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="LASTUPDATED" content="04/03/08 06:15:47">
+<title>IMS Question and Test Interoperability Addendum</title>
+
+<link rel="alternate" media="print" href="http://www.imsglobal.org/printer.cfm">
+<script language ="Javascript" TYPE="text/javascript" >
+<!--Style sheet selector
+if (navigator.appVersion.indexOf('Mac') != -1)
+document.write ('<LINK REL=stylesheet HREF="../../../macimsstyles.css" TYPE="text/css">');
+if (navigator.appName == 'Netscape')
+document.write ('<LINK REL=stylesheet HREF="../../../try2netscape.css" TYPE="text/css">');
+if (navigator.appName == 'Microsoft Internet Explorer')
+document.write ('<LINK REL=stylesheet HREF="../../../try2.css" TYPE="text/css">');
+else
+document.write ('<LINK REL=stylesheet HREF="../../../try2.css" TYPE="text/css">');
+//-->
+</script>
+</head>
+
+<body>
+
+<table border="0" summary="layout table" cellspacing="0" width="100%" >
+<tr>
+<td valign="middle" width="19%" class="mainbody"><img src="images/speclogo.jpg" height="234" width="117" alt="IMS Logo"></td>
+
+<td valign="middle" width="81%" class="mainbody">
+
+<h1>
+IMS Question and Test Interoperability Addendum</h1>
+
+<h2>Version 2.1 Public Draft (update) Specification</h2>
+</td>
+</tr>
+</table>
+
+<p class="mainbody">
+Copyright &copy; 2008 IMS Global Learning Consortium, Inc. All Rights Reserved.<br>
+The IMS Logo is a registered trademark of IMS GLC<br>
+Document Name: IMS Question and Test Interoperability Addendum<br>
+<br>
+
+<hr>
+
+<table summary="This table describes the document status" border="0" cellpadding="5" cellspacing="0">
+    <tr>
+      <td>Date Issued:<br>
+      </td>
+      <td>28 March 2008<br>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" rowspan="1">
+      <br>
+      <br>
+<p>Caution: this specification is incomplete in its current state.  The IMS QTI project group is in the process of evolving this specification based on input from market participants. Suppliers of products and services are encouraged to participate by contacting Mark McKell at mmckell@imsglobal.org. This specification will be superseded by an updated release based on the input of the project group participants.
+
+<p>Please note that supplier's claims as to implementation of QTI v2.1 and conformance to it HAVE NOT BEEN VALIDATED by IMS GLC. While such suppliers are likely well-intentioned, IMS GLC member organizations have not yet put in place the testing process to validate these claims. IMS GLC currently grants a conformance mark to the Common Cartridge profile of QTI v1.2.1. The authoritative source of products and services that meet this conformance is contained in the IMS online product directory <a href="http://www.imsglobal.org/ProductDirectory/directory.cfm">http://www.imsglobal.org/ProductDirectory/directory.cfm</a>
+
+<p>Thank you for your interest in and support of IMS QTI.
+
+<p><b>IPR and Distribution Notices</b></p>
+<p>Recipients of this document are requested to submit, with their comments, notification of any relevant patent claims or other intellectual property rights of which they may be aware that might be infringed by any implementation of the specification set forth in this document, and to provide supporting documentation.</p>
+<p>IMS takes no position regarding the validity or scope of any intellectual property or other rights that might be claimed to pertain to the implementation or use of the technology described in this document or the extent to which any license under such rights might or might not be available; neither does it represent that it has made any effort to identify any such rights. Information on IMS's procedures with respect to rights in IMS specifications can be found at the IMS Intellectual Property Rights web page: <a href="http://www.imsglobal.org/ipr/imsipr_policyFinal.pdf">http://www.imsglobal.org/ipr/imsipr_policyFinal.pdf</a>.</p>
+<p>Copyright © 2008 IMS Global Learning Consortium. All Rights Reserved.</p>
+<p>If you wish to copy or distribute this document, you must complete a valid Registered User license registration with IMS and receive an email from IMS granting the license to distribute the specification. To register, follow the instructions on the IMS website: <a href="http://www.imsglobal.org/specificationdownload.cfm">http://www.imsglobal.org/specificationdownload.cfm</a>.</p>
+<p>This document may be copied and furnished to others by Registered Users who have registered on the IMS website provided that the above copyright notice and this paragraph are included on all such copies. However, this document itself may not be modified in any way, such as by removing the copyright notice or references to IMS, except as needed for the purpose of developing IMS specifications, under the auspices of a chartered IMS project group.</p>
+<p>Use of this specification to develop products or services is governed by the license with IMS found on the IMS website: <a href="http://www.imsglobal.org/license.html">http://www.imsglobal.org/license.html</a>.</p>
+<p>The limited permissions granted above are perpetual and will not be revoked by IMS or its successors or assigns.</p>
+<p>THIS SPECIFICATION IS BEING OFFERED WITHOUT ANY WARRANTY WHATSOEVER, AND IN PARTICULAR, ANY WARRANTY OF NONINFRINGEMENT IS EXPRESSLY DISCLAIMED. ANY USE OF THIS SPECIFICATION SHALL BE MADE ENTIRELY AT THE IMPLEMENTER'S OWN RISK, AND NEITHER THE CONSORTIUM, NOR ANY OF ITS MEMBERS OR SUBMITTERS, SHALL HAVE ANY LIABILITY WHATSOEVER TO ANY IMPLEMENTER OR THIRD PARTY FOR ANY DAMAGES OF ANY NATURE WHATSOEVER, DIRECTLY OR INDIRECTLY, ARISING FROM THE USE OF THIS SPECIFICATION.</p>
+      </td>
+    </tr>
+</table>
+
+
+
+
+<p>
+<a name="1735781"> </a>
+
+<h1>
+  <a name="1747938"> </a>Overview
+</h1>
+<a name="1750724"> </a><span>Based on feedback from implementers and reviewers of the specification, the QTI project group has made bug fixes and updates to some of the examples, the specification documents, and the XML schema. The changes are summarized in this Addendum document and the updated examples and schema are also made available on the IMS website: </span><a href="http://www.imsglobal.org/question/index.html">http://www.imsglobal.org/question/index.html</a><br>
+
+<h1>
+  <a name="1751985"> </a>Table of contents
+</h1>
+<br><a name="1751987"> </a><a href="imsqti_addendumv2p1pd2.html#1747938">Overview   </a><br>
+<br><a name="1751989"> </a><a href="imsqti_addendumv2p1pd2.html#1750740">1.   Implementation Guide   </a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a name="1751991"> </a><a href="imsqti_addendumv2p1pd2.html#1750741">   1.   §3.2 Simple Items   </a><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;<a name="1751993"> </a><a href="imsqti_addendumv2p1pd2.html#1750746">   1.   §3.6 Adaptive Items   </a><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;<a name="1751995"> </a><a href="imsqti_addendumv2p1pd2.html#1750751">   1.   §3.8.6 Number Formatting   </a><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;<a name="1751997"> </a><a href="imsqti_addendumv2p1pd2.html#1750753">   1.   §4 Tests (Assessments)   </a><br>
+
+<br><a name="1751999"> </a><a href="imsqti_addendumv2p1pd2.html#1750770">2.   Assessment Test, Section and Item Information Model   </a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a name="1752001"> </a><a href="imsqti_addendumv2p1pd2.html#1750772">   2.   §5 Item Variables   </a><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;<a name="1752003"> </a><a href="imsqti_addendumv2p1pd2.html#1750776">   2.   §5.1 Response Variables   </a><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;<a name="1752005"> </a><a href="imsqti_addendumv2p1pd2.html#1750782">   2.   §7.1 Simple Interactions   </a><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;<a name="1752007"> </a><a href="imsqti_addendumv2p1pd2.html#1750784">   2.   §7.2 Text-based Interactions   </a><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;<a name="1752009"> </a><a href="imsqti_addendumv2p1pd2.html#1750791">   2.   §8.2 Generalized Response Processing   </a><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;<a name="1752011"> </a><a href="imsqti_addendumv2p1pd2.html#1750794">   2.   §10.3 Template Processing   </a><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;<a name="1752013"> </a><a href="imsqti_addendumv2p1pd2.html#1750797">   2.   §11.2 Test Structure   </a><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;<a name="1752015"> </a><a href="imsqti_addendumv2p1pd2.html#1750799">   2.   §12 Outcome Processing   </a><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;<a name="1752017"> </a><a href="imsqti_addendumv2p1pd2.html#1750802">   2.   §15.2 Expressions Used only in Outcomes Processing   </a><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;<a name="1752019"> </a><a href="imsqti_addendumv2p1pd2.html#1751326">   2.   §15.3 Operators   </a><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;<a name="1752021"> </a><a href="imsqti_addendumv2p1pd2.html#1750809">   2.   §16 Item and Test Fragments   </a><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;<a name="1752023"> </a><a href="imsqti_addendumv2p1pd2.html#1751826">   2.   §17 Basic Data Types   </a><br>
+
+<br><a name="1752025"> </a><a href="imsqti_addendumv2p1pd2.html#1750818">3.   Meta-data and Usage Data   </a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a name="1752027"> </a><a href="imsqti_addendumv2p1pd2.html#1750819">   3.   §3 New meta-data elements in IMS QTI v2.0   </a><br>
+
+<br><a name="1752029"> </a><a href="imsqti_addendumv2p1pd2.html#1750821">4.   Results Reporting   </a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a name="1752031"> </a><a href="imsqti_addendumv2p1pd2.html#1750823">   4.   §3 Assessment Result   </a><br>
+
+<br><a name="1752033"> </a><a href="imsqti_addendumv2p1pd2.html#1750836">5.   Integration Guide   </a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a name="1752035"> </a><a href="imsqti_addendumv2p1pd2.html#1750837">   5.   §5 Simple Sequencing   </a><br>
+
+<br><a name="1752037"> </a><a href="imsqti_addendumv2p1pd2.html#1750840">6.   XML Binding   </a><br>
+<br><a name="1752039"> </a><a href="imsqti_addendumv2p1pd2.html#1750842">7.   Example Files   </a><br>
+<br><a name="1752041"> </a><a href="imsqti_addendumv2p1pd2.html#1750852">8.   Appendix   </a><br>
+<br><a name="1752043"> </a><a href="imsqti_addendumv2p1pd2.html#1738687">About this document   </a><br>
+
+<h1>
+  <a name="1750740"> </a>1.    Implementation Guide
+</h1>
+
+<h2>
+  <a name="1750741"> </a>§3.2 Simple Items
+</h2>
+<p>
+<a name="1750742"> </a><em>A new example has been added:</em>
+<p>
+<a name="1750743"> </a><strong>Writing a Postcard with Rubric Information<br></strong><a href="http://www.imsglobal.org/question/qtiv2p1pd2/examples/items/extended_text_rubric.xml">http://www.imsglobal.org/question/qtiv2p1pd2/examples/items/extended_text_rubric.xml</a>
+<p>
+<a name="1750745"> </a>A <u>rubricBlock</u> can be used to add instructions about the way the item should be scored by a human scorer. The view attribute is used to indicate that the information should only be made visible to users in certain roles.
+
+<h2>
+  <a name="1750746"> </a>§3.6 Adaptive Items
+</h2>
+<p>
+<a name="1750747"> </a><em>The following example now has an updated description:</em>
+<a name="1751107"> </a><strong>Mexican President with adaptive feedback</strong><br>
+<a name="1750749"> </a><a href="http://www.imsglobal.org/question/qtiv2p1pd2/examples/items/feedback_adaptive.xml">http://www.imsglobal.org/question/qtiv2p1pd2/examples/items/feedback_adaptive.xml</a><br>
+<p>
+<a name="1750750"> </a>In this adaptive example, the candidate receives different feedback for each attempt. The item allows for four incorrect attempts before the correct answer is provided. This example takes advantage of the built-in response variable numAttempts and uses the persistence of outcome values in adaptive items to keep track of the responses given so far (using the variable PREVIOUSRESPONSES) adjusting the inline feedback accordingly.
+
+<h2>
+  <a name="1750751"> </a>§3.8.6 Number Formatting
+</h2>
+<p>
+<a name="1750752"> </a>A typographical error in row 6 of the table has been corrected. The example format specification demonstrating the hyphen flag has been corrected from %-8f to %-8i
+
+<h2>
+  <a name="1750753"> </a>§4 Tests (Assessments)
+</h2>
+<p>
+<a name="1750754"> </a><em>In the explanation of </em><em>Golden (required) Items and Sections</em><em> the first paragraph ("This example shows...") was copied in error and has been deleted.</em>
+<p>
+<a name="1750755"> </a><em>Several of the examples used the placeholder name </em><em>Steve's Test</em><em>. These have been updated as follows:</em>
+<p>
+<a name="1750756"> </a><strong>Controlling the duration of an item attempt<br></strong><a href="http://www.imsglobal.org/question/qtiv2p1pd2/examples/tests/rtest09.xml">http://www.imsglobal.org/question/qtiv2p1pd2/examples/tests/rtest09.xml</a>
+<p>
+<a name="1750758"> </a><strong>Early termination of test based on accumulated item outcomes<br></strong><a href="http://www.imsglobal.org/question/qtiv2p1pd2/examples/tests/rtest10.xml">http://www.imsglobal.org/question/qtiv2p1pd2/examples/tests/rtest10.xml</a>
+<p>
+<a name="1750760"> </a><strong>Branching based on the response to an assessmentItem<br></strong><a href="http://www.imsglobal.org/question/qtiv2p1pd2/examples/tests/rtest13.xml">http://www.imsglobal.org/question/qtiv2p1pd2/examples/tests/rtest13.xml</a>
+<p>
+<a name="1750762"> </a><strong>Mapping item outcomes prior to aggregation<br></strong><a href="http://www.imsglobal.org/question/qtiv2p1pd2/examples/tests/rtest26.xml">http://www.imsglobal.org/question/qtiv2p1pd2/examples/tests/rtest26.xml</a>
+<p>
+<a name="1750764"> </a>The following example also has an updated description:
+<p>
+<a name="1751147"> </a><strong>Branching based on the response to an assessmentItem<br></strong><a href="http://www.imsglobal.org/question/qtiv2p1pd2/examples/tests/rtest13.xml">http://www.imsglobal.org/question/qtiv2p1pd2/examples/tests/rtest13.xml</a>
+<p>
+<a name="1750767"> </a>This example shows the support for branching based on the response to an assessmentItem. The example uses the <u>preCondition</u> element and the <u>branchRule</u> element.
+<p>
+<a name="1750768"> </a>The <u>preCondition</u> element sets the conditions that need to be met for an assessmentItem or assessmentSection to be displayed. In nonlinear mode, pre-conditions are ignored.
+<p>
+<a name="1750769"> </a>The <u>branchRule</u> element contains a rule, evaluated during the test, for setting an alternative target as the next item or section. As with preconditions, branch rules are ignored in nonlinear mode. The second <u>branchRule</u> element contains a special targetItem EXIT_SECTION which means exit this section of the test.
+
+<h1>
+  <a name="1750770"> </a>2.    Assessment Test, Section and Item Information Model
+</h1>
+<p>
+<a name="1750771"> </a><em>The use of the {ordered} constraint in the definitions was generally inconsistent and has caused some confusion. The {ordered} constraint has now been added to all definitions where the order of multiple attributes or child objects is significant. Although this information is not represented in the resulting XML schema, it may be used by implementers when determining the appropriate data structures to use internally in their applications and should also be used when comparing instances of the declared classes. For example, in the definition of assessmentItem at the beginning of §4 the order of the optional stylesheet and modalFeedback children is significant whereas the order of responseDeclarations (for example) is not. For completeness, the affected definitions are listed in the Appendix.</em>
+
+<h2>
+  <a name="1750772"> </a>§5 Item Variables
+</h2>
+<p>
+<a name="1750773"> </a><em>The ordering constraint for </em><em>defaultValue.value</em><em> is now clarified as follows:</em>
+<p>
+<a name="1750774"> </a><strong>Contains</strong> : value [1..*] {ordered}
+<p>
+<a name="1750775"> </a>The order of the values is significant only if the variable being set has ordered cardinality.
+
+<h2>
+  <a name="1750776"> </a>§5.1 Response Variables
+</h2>
+<p>
+<a name="1750777"> </a><em>The first paragraph of the definition of </em><em>responseDeclaration</em><em> is clarified as follows:</em>
+<p>
+<a name="1750778"> </a>Response variables are declared by response declarations and bound to interactions in the itemBody. Each response variable declared may be bound to one and only one interaction.
+<p>
+<a name="1750779"> </a><em>The ordering constraint for correctResponse.value is now clarified as follows:</em>
+<p>
+<a name="1750780"> </a><strong>Contains</strong> : value [1..*] {ordered}
+<p>
+<a name="1750781"> </a>The order of the values is significant only when the response is of ordered cardinality.
+
+<h2>
+  <a name="1750782"> </a>§7.1 Simple Interactions
+</h2>
+<p>
+<a name="1750783"> </a><em>The first paragraph of the definition of choiceInteraction has had the sentence "There is no corresponding minimum number of choices." removed. This text is inconsistent with the new minChoices attribute that was introduced in the second public draft.</em>
+
+<h2>
+  <a name="1750784"> </a>§7.2 Text-based Interactions
+</h2>
+<p>
+<a name="1750785"> </a><em>The definition of inlineChoice given was missing the declaration of its children. This affected the resulting XML schema documents causing validation failures when this element was used. This has been corrected as follows:</em>
+<p>
+<a name="1750786"> </a><strong>Class</strong> : inlineChoice (<u>choice</u>)
+<p>
+<a name="1750787"> </a>Associated classes:
+<p>
+<a name="1750788"> </a><u>inlineChoiceInteraction</u>
+<p>
+<a name="1750789"> </a>A simple run of text to be displayed to the user, may be subject to variable value substitution with <u>printedVariable</u>.
+<p>
+<a name="1750790"> </a><span>Contains</span> : <u>textOrVariable</u> [*] {ordered}
+
+<h2>
+  <a name="1750791"> </a>§8.2 Generalized Response Processing
+</h2>
+<p>
+<a name="1750792"> </a><em>As well as adding the {ordered} constraint to the definition of responseProcessing.responseRule, the following clarifying statement has been added to emphasize the change:</em>
+<p>
+<a name="1750793"> </a>Result rules are followed in the order given. Variables updated by a rule take their new value when evaluated as part of any following rules.
+
+<h2>
+  <a name="1750794"> </a>§10.3 Template Processing
+</h2>
+<p>
+<a name="1750795"> </a><em>As well as adding the {ordered} constraint to the definition of templateProcessing.templateRule, the following clarifying statement has been added to emphasize the change:</em>
+<p>
+<a name="1750796"> </a>Template rules are followed in the order given. Variables updated by a rule take their new value when evaluated as part of any following rules.
+
+<h2>
+  <a name="1750797"> </a>§11.2 Test Structure
+</h2>
+<p>
+<a name="1750798"> </a><em>The definition of the weight class was inconsistent with the definition of the corresponding element in the XML schema and the examples were mutually inconsistent. This was due to errors in the schema and the examples which have now been corrected. The published definition is unchanged.</em>
+
+<h2>
+  <a name="1750799"> </a>§12 Outcome Processing
+</h2>
+<p>
+<a name="1750800"> </a><em>As well as adding the {ordered} constraint to the definition of outcomeProcessing.outcomeRule, the following clarifying statement has been added to emphasize the change:</em>
+<p>
+<a name="1750801"> </a>Outcome rules are followed in the order given. Variables updated by a rule take their new value when evaluated as part of any following rules.
+
+<h2>
+  <a name="1750802"> </a>§15.2 Expressions Used only in Outcomes Processing
+</h2>
+<p>
+<a name="1750803"> </a><em>The definition of the weightIdentifier attribute of the class testVariables has been clarified as follows:</em>
+<p>
+<a name="1750804"> </a><strong>Attribute</strong> : weightIdentifier [0..1]: identifier
+<p>
+<a name="1750805"> </a>If specified, the defined <u>weight</u> is applied to each variable as described in the definition of <u>weightIdentifier</u> for a single variable. <span>The behavior of this attribute is only defined if the </span><span>baseType</span><span> attribute is float or omitted</span>. When a weighting is specified the result of the expression always has base-type float. Note that this option is incompatible with baseType integer. This restriction ensures that the value of the baseType attribute remains consistent with the resulting container type.
+
+<h2>
+  <a name="1751326"> </a>§15.3 Operators
+</h2>
+<p>
+<a name="1751327"> </a><em>The handling of NULL values by the index operator has been clarified in the definition of the index class as follows:</em>
+<p>
+<a name="1751328"> </a>The index operator takes a sub-expression with an ordered container value and any base-type. The result is the nth value of the container. The result has the same base-type as the sub-expression but single cardinality. The first value of a container has index 1, the second 2 and so on. n must be a positive integer. If n exceeds the number of values in the container (or the sub-expression is NULL) then the result of the index operator is NULL.
+
+<h2>
+  <a name="1750809"> </a>§16 Item and Test Fragments
+</h2>
+<p>
+<a name="1750810"> </a><em>The definition of the include class was confusing and its representation was incorrect in the schema. The introductory paragraph has been reworded as follows:</em>
+<p>
+<a name="1750811"> </a>An Item Fragment is part of an item that is managed independently of the items that depend on it. Similarly, a Test Fragment is part of a test that is managed independently of the tests that depend on it. Fragments are packaged as separate resources and can be transported independently. A fragment may appear anywhere in the model where one of the following abstract classes may appear: <u>flowStatic</u>, <u>inlineStatic</u>, <u>blockStatic</u>, <u>responseRule</u>, <u>sectionPart</u> or <u>outcomeRule</u>. For example, an item fragment may be a division of the <u>itemBody</u> represented by an instance of the <u>div</u> class or a single <u>interaction</u>.
+<p>
+<a name="1751824"> </a><em>The class definition has been updated to show the correct list of classes from which it inherits:</em>
+<p>
+<a name="1751825"> </a><strong>Class</strong> : include (blockStatic, flowStatic, inlineStatic, outcomeRule, responseRule, sectionPart)
+
+<h2>
+  <a name="1751826"> </a>§17 Basic Data Types
+</h2>
+<p>
+<a name="1750815"> </a><em>The definition of the identifier type has been updated to reflect the new use of the period character as a prefix delimitter. This change replaces the reference to "future ues" and re-enforces the fact that the period must not be used except when used as a prefix delimiter:</em>
+<p>
+<a name="1750816"> </a><strong>Datatype: identifier</strong>
+<p>
+<a name="1750817"> </a>An identifier is simply a logical reference to another object in the item, such as an itemVariable or choice. An identifier is a string of characters that must start with a Letter or an underscore ('_') and contain only Letters, underscores, hyphens ('-'), period ('.', a.k.a. full-stop), Digits, CombiningChars and Extenders. Identifiers containing the period character are reserved for use in prefixing, as described in the definition of variable. The character classes Letter, Digit, CombiningChar and Extender are defined in the Extensible Markup Language (XML) 1.0 (Second Edition) [XML]. Note particularly that identifiers may not contain the colon (':') character. Identifiers should have no more than 32 characters for compatibility with version 1. They are always compared case-sensitively.
+
+<h1>
+  <a name="1750818"> </a>3.    Meta-data and Usage Data
+</h1>
+
+<h2>
+  <a name="1750819"> </a>§3 New meta-data elements in IMS QTI v2.0
+</h2>
+<p>
+<a name="1750820"> </a><em>The definition of the enumeration interactionType has been updated to include the mediaInteraction which was omitted in error. This change also affects the XML schema.</em>
+
+<h1>
+  <a name="1750821"> </a>4.    Results Reporting
+</h1>
+<p>
+<a name="1750822"> </a><em>The {ordering} constraint has been applied where necessary (see above for more details).</em>
+
+<h2>
+  <a name="1750823"> </a>§3 Assessment Result
+</h2>
+<p>
+<a name="1750824"> </a><em>The usage of correctResponse in responseVariable has been clarified as follows:</em>
+<p>
+<a name="1750825"> </a><strong>Contains</strong> : correctResponse [0..1]
+<p>
+<a name="1750826"> </a>The correct response may be output as part of the report if desired. Systems are not limited to reporting correct responses declared in responseDeclarations. For example, a correct response may be set by a templateRule or may simply have been suppressed from the declaration passed to the delivery engine (e.g., for security).
+<p>
+<a name="1750827"> </a><em>As well as adding the {ordered} constraint the definition of candidateResponse.value has been updated as follows:</em>
+<p>
+<a name="1750828"> </a><strong>Contains</strong> : value [*] {ordered}
+<p>
+<a name="1750829"> </a>The value(s) of the response variable. A NULL value, resulting from no response, is indicated by the absence of any value. The order of the values is significant only if the response was declared with ordered cardinality.
+<p>
+<a name="1750830"> </a><em>As well as adding the {ordered} constraint the definition of outcomeVariable.value has been updated as follows:</em>
+<p>
+<a name="1750831"> </a><strong>Contains</strong> : value [*] {ordered}
+<p>
+<a name="1750832"> </a>The value(s) of the outcome variable. The order of the values is significant only if the outcome was declared with ordered cardinality.
+<p>
+<a name="1750833"> </a><em>As well as adding the {ordered} constraint the definition of templateVariable.value has been updated as follows:</em>
+<p>
+<a name="1750834"> </a><strong>Contains</strong> : value [*] {ordered}
+<p>
+<a name="1750835"> </a>The value(s) of the template variable. The order of the values is significant only if the template variable was declared with ordered cardinality.
+
+<h1>
+  <a name="1750836"> </a>5.    Integration Guide
+</h1>
+
+<h2>
+  <a name="1750837"> </a>§5 Simple Sequencing
+</h2>
+<p>
+<a name="1750838"> </a><em>The first sentence of the last paragraph has been updated to read:</em>
+<p>
+<a name="1750839"> </a>Note that assessment items have resource type imsqti_item_xmlv2p1 (or imsqti_item_xmlv2p0) and not webcontent.
+
+<h1>
+  <a name="1750840"> </a>6.    XML Binding
+</h1>
+<p>
+<a name="1750841"> </a><em>The XML schema has been updated to include fixes (as described above) for the correct usage of xi:include and for the definitions of the inlineChoice and weight elements.</em>
+
+<h1>
+  <a name="1750842"> </a>7.    Example Files
+</h1>
+<p>
+<a name="1750843"> </a><em>The example files have been corrected to validate against the updated schema (where necessary) and to reflect current best practice in the use of the specification. These changes have affected the entire example set.</em>
+<p>
+<a name="1750844"> </a><em>The main issues addressed were:</em>
+<ul>
+  <li><a name="1750845"> </a><em>Consistent use of the 2.1 schema in all examples including removal of local copies and associated references of the schema definition</em>
+  <li><a name="1750846"> </a><em>Updates to the manifest files in the packaged examples to use an updated and corrected schema for IMS Meta-data</em>
+  <li><a name="1750847"> </a><em>Corrections to examples using the weight element</em>
+  <li><a name="1750848"> </a><em>Corrections to some examples using time limits incorrectly</em>
+  <li><a name="1750849"> </a><em>Addition of descriptive titles to some test examples</em>
+</ul>
+<p>
+<a name="1750850"> </a><em>In addition to the above, a number of more minor typographical errors in the examples have been corrected.</em>
+
+<h1>
+  <a name="1750852"> </a>8.    Appendix
+</h1>
+<p>
+<a name="1750853"> </a><em>Elements that are newly labelled {ordered} in the specification:</em>
+<p>
+<a name="1750854"> </a><em>assessmentItem.modalFeedback</em>
+<p>
+<a name="1750855"> </a><em>assessmentItem.stylesheet</em>
+<p>
+<a name="1750856"> </a><em>assessmentSection.rubricBlock</em>
+<p>
+<a name="1750857"> </a><em>assessmentSection.sectionPart</em>
+<p>
+<a name="1750858"> </a><em>assessmentTest.testFeedback</em>
+<p>
+<a name="1750859"> </a><em>assessmentTest.testPart</em>
+<p>
+<a name="1750860"> </a><em>associateInteraction.simpleAssociableChoice</em>
+<p>
+<a name="1750861"> </a><em>atomicBlock.inline</em>
+<p>
+<a name="1750862"> </a><em>candidateResponse.value</em>
+<p>
+<a name="1750863"> </a><em>caption.inline</em>
+<p>
+<a name="1750864"> </a><em>choiceInteraction.simpleChoice</em>
+<p>
+<a name="1750865"> </a><em>colgroup.col</em>
+<p>
+<a name="1750866"> </a><em>contains.expression</em>
+<p>
+<a name="1750867"> </a><em>correctResponse.value</em>
+<p>
+<a name="1750868"> </a><em>customOperator.expression</em>
+<p>
+<a name="1750869"> </a><em>dd.flow</em>
+<p>
+<a name="1750870"> </a><em>defaultValue.value</em>
+<p>
+<a name="1750871"> </a><em>delete.expression</em>
+<p>
+<a name="1750872"> </a><em>div.flow</em>
+<p>
+<a name="1750873"> </a><em>divide.expression</em>
+<p>
+<a name="1750874"> </a><em>dl.dlElement</em>
+<p>
+<a name="1750875"> </a><em>dt.inline</em>
+<p>
+<a name="1750876"> </a><em>durationGTE.expression</em>
+<p>
+<a name="1750877"> </a><em>durationLT.expression</em>
+<p>
+<a name="1750878"> </a><em>equal.expression</em>
+<p>
+<a name="1750879"> </a><em>gapMatchInteraction.blackStatic</em>
+<p>
+<a name="1750880"> </a><em>gapMatchInteraction.gapChoice</em>
+<p>
+<a name="1750881"> </a><em>gapText.textOrVariable</em>
+<p>
+<a name="1750882"> </a><em>graphicAssociateInteraction.associableHotspot</em>
+<p>
+<a name="1750883"> </a><em>graphicGapMatchInteraction.associableHotspot</em>
+<p>
+<a name="1750884"> </a><em>graphicGapMatchInteraction.gapImg</em>
+<p>
+<a name="1750885"> </a><em>graphicOrderInteraction.hotspotChoice</em>
+<p>
+<a name="1750886"> </a><em>gt.expression</em>
+<p>
+<a name="1750887"> </a><em>gte.expression</em>
+<p>
+<a name="1750888"> </a><em>hottext.inlineStatic</em>
+<p>
+<a name="1750889"> </a><em>hottextInteraction.blockStatic</em>
+<p>
+<a name="1750890"> </a><em>inlineChoice.textOrVariable</em>
+<p>
+<a name="1750891"> </a><em>inlineChoiceInteraction.inlineChoice</em>
+<p>
+<a name="1750892"> </a><em>integerDivide.expression</em>
+<p>
+<a name="1750893"> </a><em>integerModulus.expression</em>
+<p>
+<a name="1750894"> </a><em>interpolationTable.interpolationTableEntry</em>
+<p>
+<a name="1750895"> </a><em>itemBody.block</em>
+<p>
+<a name="1750896"> </a><em>li.flow</em>
+<p>
+<a name="1750897"> </a><em>lt.expression</em>
+<p>
+<a name="1750898"> </a><em>lte.expression</em>
+<p>
+<a name="1750899"> </a><em>match.expression</em>
+<p>
+<a name="1750900"> </a><em>matchTable.matchTableEntry</em>
+<p>
+<a name="1750901"> </a><em>member.expression</em>
+<p>
+<a name="1750902"> </a><em>modalFeedback.flowStatic</em>
+<p>
+<a name="1750903"> </a><em>object.objectFlow</em>
+<p>
+<a name="1750904"> </a><em>ol.li</em>
+<p>
+<a name="1750905"> </a><em>orderInteractino.simpleChoice</em>
+<p>
+<a name="1750906"> </a><em>ordered.expression</em>
+<p>
+<a name="1750907"> </a><em>outcomeCondition.outcomeElseIf</em>
+<p>
+<a name="1750908"> </a><em>outcomeElse.outcomeRule</em>
+<p>
+<a name="1750909"> </a><em>outcomeElseIf.outcomeRule</em>
+<p>
+<a name="1750910"> </a><em>outcomeIf.outcomeRule</em>
+<p>
+<a name="1750911"> </a><em>outcomeProcessing.outcomeRule</em>
+<p>
+<a name="1750912"> </a><em>outcomeProcessingFragment.outcomeRule</em>
+<p>
+<a name="1750913"> </a><em>outcomeVariable.value</em>
+<p>
+<a name="1750914"> </a><em>positionObjectStage.positionObjectInteraction</em>
+<p>
+<a name="1750915"> </a><em>power.expression</em>
+<p>
+<a name="1750916"> </a><em>prompt.inlineStatic</em>
+<p>
+<a name="1750917"> </a><em>responseElse.responseRule</em>
+<p>
+<a name="1750918"> </a><em>responseElseIf.responseRule</em>
+<p>
+<a name="1750919"> </a><em>responseIf.responseRule</em>
+<p>
+<a name="1750920"> </a><em>responseProcessing.responseRule</em>
+<p>
+<a name="1750921"> </a><em>responseProcessingFragment.responseRule</em>
+<p>
+<a name="1750922"> </a><em>responseVariable.choiceSequence</em>
+<p>
+<a name="1750923"> </a><em>sectionPart.branchRule</em>
+<p>
+<a name="1750924"> </a><em>sectionPart.preCondition</em>
+<p>
+<a name="1750925"> </a><em>simpleAssociableChoice.flowStatic</em>
+<p>
+<a name="1750926"> </a><em>simpleBlock.block</em>
+<p>
+<a name="1750927"> </a><em>simpleChoice.flowStatic</em>
+<p>
+<a name="1750928"> </a><em>simpleInline.inline</em>
+<p>
+<a name="1750929"> </a><em>simpleMatchSet.simpleAssociableChoice</em>
+<p>
+<a name="1750930"> </a><em>stringMatch.expression</em>
+<p>
+<a name="1750931"> </a><em>substring.expression</em>
+<p>
+<a name="1750932"> </a><em>subtract.expression</em>
+<p>
+<a name="1750933"> </a><em>table.col</em>
+<p>
+<a name="1750934"> </a><em>table.colgroup</em>
+<p>
+<a name="1750935"> </a><em>table.tbody</em>
+<p>
+<a name="1750936"> </a><em>tableCell.flow</em>
+<p>
+<a name="1750937"> </a><em>tbody.tr</em>
+<p>
+<a name="1750938"> </a><em>templateBlock.blockStatic</em>
+<p>
+<a name="1750939"> </a><em>templateBlock.inlineStatic</em>
+<p>
+<a name="1750940"> </a><em>templateCondition.templateElseIf</em>
+<p>
+<a name="1750941"> </a><em>templateElse.templateRule</em>
+<p>
+<a name="1750942"> </a><em>templateElseIf.templateRule</em>
+<p>
+<a name="1750943"> </a><em>templateIf.templateRule</em>
+<p>
+<a name="1750944"> </a><em>templateProcessing.templateRule</em>
+<p>
+<a name="1750945"> </a><em>templateVaraible.value</em>
+<p>
+<a name="1750946"> </a><em>testFeedback.flowStatic</em>
+<p>
+<a name="1750947"> </a><em>testPart.assessmentSection</em>
+<p>
+<a name="1750948"> </a><em>testPart.branchRule</em>
+<p>
+<a name="1750949"> </a><em>testPart.preCondition</em>
+<p>
+<a name="1750950"> </a><em>testPart.testFeedback</em>
+<p>
+<a name="1750951"> </a><em>tfoot.tr</em>
+<p>
+<a name="1750952"> </a><em>thead.tr</em>
+<p>
+<a name="1750953"> </a><em>tr.tableCell</em>
+<p>
+<a name="1750735"> </a><em>ul.li</em>
+<p>
+<a name="1750736"> </a>
+<p>
+<a name="1750737"> </a>
+
+<h1>
+  <a name="1738687"> </a>About this document
+</h1>
+<p>
+<a name="1741490"> </a>
+
+<table border="1" cellpadding="5" cellspacing="0" summary="This table describes the document properties">
+  <caption></caption>
+  <tr>
+    <td class="mainbody"><a name="1741437"> </a><strong>Title</strong><br>
+</td>
+    <td class="mainbody"><a name="1741444"> </a>IMS Question and Test Interoperability Addendum<br>
+</td>
+  </tr>
+  <tr>
+    <td class="mainbody"><a name="1741447"> </a><strong>Editors</strong><br>
+</td>
+    <td class="mainbody"><p>
+<a name="1741510"> </a><span>Steve Lay (University of Cambridge), Pierre Gorissen (SURF)</span>
+</td>
+  </tr>
+  <tr>
+    <td class="mainbody"><a name="1741518"> </a>Co-chairs<br>
+</td>
+    <td class="mainbody"><p>
+<a name="1751847"> </a><span>Steve Lay (University of Cambridge), Pierre Gorissen (SURF)</span>
+</td>
+  </tr>
+  <tr>
+    <td class="mainbody"><a name="1741451"> </a><strong>Version</strong><br>
+</td>
+    <td class="mainbody"><a name="1741453"> </a>v2.1 (Public Draft v2.0 update)<br>
+</td>
+  </tr>
+  <tr>
+    <td class="mainbody"><a name="1741455"> </a><strong>Version Date</strong><br>
+</td>
+    <td class="mainbody"><a name="1741457"> </a>28 March 2008<br>
+</td>
+  </tr>
+  <tr>
+    <td class="mainbody"><a name="1741459"> </a><strong>Status</strong><br>
+</td>
+    <td class="mainbody"><p>
+<a name="1741541"> </a><span>Public Draft v2.0 update</span>
+</td>
+  </tr>
+  <tr>
+    <td class="mainbody"><a name="1741463"> </a><strong>Summary</strong><br>
+</td>
+    <td class="mainbody"><a name="1741465"> </a>This Addendum provides an overview of the updates, bug fixes, corrections to the IMS Question and Test Interoperability v2.1 specification.<br>
+</td>
+  </tr>
+  <tr>
+    <td class="mainbody"><a name="1741470"> </a><strong>Revision Information</strong><br>
+</td>
+    <td class="mainbody"><a name="1741472"> </a>28 March 2008<br>
+</td>
+  </tr>
+  <tr>
+    <td class="mainbody"><a name="1741474"> </a><strong>Purpose</strong><br>
+</td>
+    <td class="mainbody"><a name="1741478"> </a>This document is circulated for public adoption. Organizations are encouraged to implement this version of the specification and to provide feedback to the project group.<br>
+</td>
+  </tr>
+  <tr>
+    <td class="mainbody"><a name="1741482"> </a>Document Location<br>
+</td>
+    <td class="mainbody"><a name="1741485"> </a><a href="http://www.imsglobal.org/question/index.html">http://www.imsglobal.org/question/index.html</a><br>
+</td>
+  </tr>
+</table>
+<center>
+<p>&nbsp;
+<p>&nbsp;
+<p>&nbsp;
+<p class="mainbody"><center><em>
+IMS Global Learning Consortium, Inc. (“IMS GLC”) is publishing the information contained in this </em>IMS Question and Test Interoperability Addendum <em>(“Specification”) for purposes of scientific, experimental, and scholarly collaboration only.<br><br>
+IMS GLC makes no warranty or representation regarding the accuracy or completeness of the Specification. <br>
+This material is provided on an “As Is” and “As Available” basis.<br><br>
+The Specification is at all times subject to change and revision without notice.<br><br>
+It is your sole responsibility to evaluate the usefulness, accuracy, and completeness of the Specification as it relates to you.<br><br>
+IMS GLC would appreciate receiving your comments and suggestions.<br><br>
+Please contact IMS GLC through our website at <a href ="http://www.imsglobal.org">http://www.imsglobal.org</a><br><br>
+Please refer to Document Name: </em>IMS Question and Test Interoperability Addendum <em>Date:</em> 28 March 2008
+</center><hr>
+
+</body>
+</html>

@@ -1,0 +1,2124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+
+
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+
+
+  
+  
+  <title>IMS Question and Test Interoperability Meta-data and Usage Data</title>
+  <link rel="alternate" media="print" href="http://www.imsglobal.org/printer.cfm">
+
+
+  
+  <link rel="stylesheet" href="stylesheet.css" type="text/css">
+</head>
+
+
+<body>
+
+
+<table summary="layout table" border="0" cellspacing="0" width="100%">
+
+
+  <tbody>
+
+    <tr>
+
+
+      <td valign="middle" width="19%"><img src="images/speclogo.jpg" alt="IMS Logo" height="245" width="117"></td>
+
+
+      <td valign="middle" width="81%">
+      
+      <h1>IMS Question and Test Interoperability Meta-data and Usage Data</h1>
+
+
+      
+      <h2>Version 2.1 Public Draft revision 2 Specification</h2>
+
+
+      </td>
+
+
+    </tr>
+
+
+  
+  </tbody>
+</table>
+
+
+<p>Copyright &copy; 2006 IMS Global Learning Consortium, Inc. All Rights Reserved.<br>
+
+
+The IMS Logo is a registered trademark of IMS GLC.<br>
+
+
+Document Name: IMS Question and Test Interoperability Meta-data and Usage Data<br>
+
+</p>
+
+
+<hr>
+<p></p>
+
+
+<p></p>
+
+
+<table summary="This table describes the document status" border="0" cellpadding="5" cellspacing="0">
+    <tr>
+      <td>Date Issued:<br>
+      </td>
+      <td>8 June 2006<br>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" rowspan="1">
+      <br>
+      <br>
+<p>Caution: this specification is incomplete in its current state.  The IMS QTI project group is in the process of evolving this specification based on input from market participants. Suppliers of products and services are encouraged to participate by contacting Mark McKell at mmckell@imsglobal.org. This specification will be superseded by an updated release based on the input of the project group participants.
+
+<p>Please note that supplier's claims as to implementation of QTI v2.1 and conformance to it HAVE NOT BEEN VALIDATED by IMS GLC. While such suppliers are likely well-intentioned, IMS GLC member organizations have not yet put in place the testing process to validate these claims. IMS GLC currently grants a conformance mark to the Common Cartridge profile of QTI v1.2.1. The authoritative source of products and services that meet this conformance is contained in the IMS online product directory <a href="http://www.imsglobal.org/ProductDirectory/directory.cfm">http://www.imsglobal.org/ProductDirectory/directory.cfm</a>
+
+<p>Thank you for your interest in and support of IMS QTI.
+
+<p><b>IPR and Distribution Notices</b></p>
+<p>Recipients of this document are requested to submit, with their comments, notification of any relevant patent claims or other intellectual property rights of which they may be aware that might be infringed by any implementation of the specification set forth in this document, and to provide supporting documentation.</p>
+<p>IMS takes no position regarding the validity or scope of any intellectual property or other rights that might be claimed to pertain to the implementation or use of the technology described in this document or the extent to which any license under such rights might or might not be available; neither does it represent that it has made any effort to identify any such rights. Information on IMS's procedures with respect to rights in IMS specifications can be found at the IMS Intellectual Property Rights web page: <a href="http://www.imsglobal.org/ipr/imsipr_policyFinal.pdf">http://www.imsglobal.org/ipr/imsipr_policyFinal.pdf</a>.</p>
+<p>Copyright © 2006 IMS Global Learning Consortium. All Rights Reserved.</p>
+<p>If you wish to copy or distribute this document, you must complete a valid Registered User license registration with IMS and receive an email from IMS granting the license to distribute the specification. To register, follow the instructions on the IMS website: <a href="http://www.imsglobal.org/specificationdownload.cfm">http://www.imsglobal.org/specificationdownload.cfm</a>.</p>
+<p>This document may be copied and furnished to others by Registered Users who have registered on the IMS website provided that the above copyright notice and this paragraph are included on all such copies. However, this document itself may not be modified in any way, such as by removing the copyright notice or references to IMS, except as needed for the purpose of developing IMS specifications, under the auspices of a chartered IMS project group.</p>
+<p>Use of this specification to develop products or services is governed by the license with IMS found on the IMS website: <a href="http://www.imsglobal.org/license.html">http://www.imsglobal.org/license.html</a>.</p>
+<p>The limited permissions granted above are perpetual and will not be revoked by IMS or its successors or assigns.</p>
+<p>THIS SPECIFICATION IS BEING OFFERED WITHOUT ANY WARRANTY WHATSOEVER, AND IN PARTICULAR, ANY WARRANTY OF NONINFRINGEMENT IS EXPRESSLY DISCLAIMED. ANY USE OF THIS SPECIFICATION SHALL BE MADE ENTIRELY AT THE IMPLEMENTER'S OWN RISK, AND NEITHER THE CONSORTIUM, NOR ANY OF ITS MEMBERS OR SUBMITTERS, SHALL HAVE ANY LIABILITY WHATSOEVER TO ANY IMPLEMENTER OR THIRD PARTY FOR ANY DAMAGES OF ANY NATURE WHATSOEVER, DIRECTLY OR INDIRECTLY, ARISING FROM THE USE OF THIS SPECIFICATION.</p>
+      </td>
+    </tr>
+</table>
+
+
+<h2><a name="section10000">Table of Contents</a></h2>
+
+
+<dl>
+
+
+  <dt><a name="section10000">1. </a><a href="#section10001">Introduction</a></dt>
+
+
+  <dt>2. <a href="#section10002">References</a></dt>
+
+
+  <dt>3. <a href="#section10003">New meta-data elements in IMS QTI v2.0</a></dt>
+
+
+  <dt>4. <a href="#section10004">IEEE LOM Profile</a></dt>
+
+
+  <dd>
+    
+    <dl>
+
+
+      <dt>4.1. <a href="#section10005">General</a></dt>
+
+
+      <dd>
+        
+        <dl>
+
+
+          <dt>4.1.1. <a href="#section10006">identifier</a></dt>
+
+
+          <dt>4.1.2. <a href="#section10007">title</a></dt>
+
+
+          <dt>4.1.3. <a href="#section10008">language</a></dt>
+
+
+          <dt>4.1.4. <a href="#section10009">description</a></dt>
+
+
+          <dt>4.1.5. <a href="#section10010">keyword</a></dt>
+
+
+          <dt>4.1.6. <a href="#section10011">coverage</a></dt>
+
+
+        
+        </dl>
+
+      </dd>
+
+
+      <dt>4.2. <a href="#section10012">Lifecycle</a></dt>
+
+
+      <dd>
+        
+        <dl>
+
+
+          <dt>4.2.1. <a href="#section10013">version</a></dt>
+
+
+          <dt>4.2.2. <a href="#section10014">status</a></dt>
+
+
+          <dt>4.2.3. <a href="#section10015">contribute</a></dt>
+
+
+        
+        </dl>
+
+      </dd>
+
+
+      <dt>4.3. <a href="#section10016">meta_metadata</a></dt>
+
+
+      <dd>
+        
+        <dl>
+
+
+          <dt>4.3.1. <a href="#section10017">identifier</a></dt>
+
+
+          <dt>4.3.2. <a href="#section10018">contribute</a></dt>
+
+
+          <dt>4.3.3. <a href="#section10019">metadata_schema</a></dt>
+
+
+          <dt>4.3.4. <a href="#section10020">language</a></dt>
+
+
+        
+        </dl>
+
+      </dd>
+
+
+      <dt>4.4. <a href="#section10021">Technical</a></dt>
+
+
+      <dd>
+        
+        <dl>
+
+
+          <dt>4.4.1. <a href="#section10022">format</a></dt>
+
+
+          <dt>4.4.2. <a href="#section10023">size</a></dt>
+
+
+          <dt>4.4.3. <a href="#section10024">location</a></dt>
+
+
+          <dt>4.4.4. <a href="#section10025">Other Platform Requirements</a></dt>
+
+
+        
+        </dl>
+
+      </dd>
+
+
+      <dt>4.5. <a href="#section10026">Educational</a></dt>
+
+
+      <dd>
+        
+        <dl>
+
+
+          <dt>4.5.1. <a href="#section10027">learning_resource_type</a></dt>
+
+
+          <dt>4.5.2. <a href="#section10028">Context</a></dt>
+
+
+          <dt>4.5.3. <a href="#section10029">typical_learning_time</a></dt>
+
+
+          <dt>4.5.4. <a href="#section10030">description</a></dt>
+
+
+          <dt>4.5.5. <a href="#section10031">language</a></dt>
+
+
+        
+        </dl>
+
+      </dd>
+
+
+      <dt>4.6. <a href="#section10032">Rights</a></dt>
+
+
+      <dd>
+        
+        <dl>
+
+
+          <dt>4.6.1. <a href="#section10033">cost</a></dt>
+
+
+          <dt>4.6.2. <a href="#section10034">copyright_and_other_restrictions</a></dt>
+
+
+          <dt>4.6.3. <a href="#section10035">description</a></dt>
+
+
+        
+        </dl>
+
+      </dd>
+
+
+      <dt>4.7. <a href="#section10036">Relation</a></dt>
+
+
+      <dd>
+        
+        <dl>
+
+
+          <dt>4.7.1. <a href="#section10037">kind</a></dt>
+
+
+          <dt>4.7.2. <a href="#section10038">resource</a></dt>
+
+
+        
+        </dl>
+
+      </dd>
+
+
+      <dt>4.8. <a href="#section10039">Annotation</a></dt>
+
+
+      <dt>4.9. <a href="#section10040">Classification</a></dt>
+
+
+    
+    </dl>
+
+  </dd>
+
+
+  <dt>5. <a href="#section10041">Usage Data</a></dt>
+
+
+  <dd>
+    
+    <dl>
+
+
+      <dt>5.1. <a href="#section10042">Vocabulary for the Exchange of Item Statistics</a></dt>
+
+
+    
+    </dl>
+
+  </dd>
+
+
+  <dt>6. <a href="#section10043">XML Binding</a></dt>
+
+
+</dl>
+
+
+
+<h2><a name="section10001">1. Introduction</a></h2>
+
+
+<p><a name="section10001">Previous versions of the IMS QTI specification had a specific meta-data set contained
+                within the data structures themselves, i.e., the ASI. That meta-data vocabulary had
+                its own set of names, all of which started with the characters 'qmd_'.</a></p>
+
+
+<p><a name="section10001">In QTI version 2.0, QTI-specific meta-data was brought into line with the IEEE LOM in
+                accordance with the IMS Meta-data Best Practice and Implementation Guide for </a><a href="#ref_LOM">[LOM]</a>. The IEEE LOM standard defines a set of meta-data elements that can
+                be used to describe learning resources, but does not describe assessment resources
+                in sufficient detail. The application profile provided in this document therefore
+                extends the IEEE LOM to meet the specific needs of QTI developers wishing to
+                associate meta-data with items (as defined by the accompanying Item Information
+                Model). QTI version 2.1 further extends this to enable the description of <span>tests, pools, and object banks.</span>
+			</p>
+
+
+
+<h2><a name="section10002">2. References</a></h2>
+
+
+<dl>
+
+
+  <dt><a name="ref_IMS_MD_Binding">IMS_MD_Binding
+    </a></dt>
+
+  <dd><a name="ref_IMS_MD_Binding">IMS Learning Resource Meta-Data XML Binding, Version 1.2.1
+    </a></dd>
+
+  <dt><a name="ref_LOM">LOM
+    </a></dt>
+
+  <dd><a name="ref_LOM">IEEE 1484.12.1-2002 Standard for Learning Object Meta-data             (LOM)
+    </a></dd>
+
+  <dt><a name="ref_RDN">RDN
+    </a></dt>
+
+  <dd><a name="ref_RDN">RDN/LTSN resource type vocabulary
+    </a></dd>
+
+  <dd><a href="http://www.rdn.ac.uk/publications/rdn-ltsn/types/">http://www.rdn.ac.uk/publications/rdn-ltsn/types/</a></dd>
+
+
+  <dt><a name="ref_VDEX">VDEX
+    </a></dt>
+
+  <dd><a name="ref_VDEX">IMS Vocabulary Definition Exchange, Version 1.0
+    </a></dd>
+
+  <dd><a href="http://www.imsglobal.org/vdex/index.html">http://www.imsglobal.org/vdex/index.html</a></dd>
+
+
+  <dd>Published: 2004-02-24</dd>
+
+
+</dl>
+
+
+
+<h2><a name="section10003">3. New Meta-data Elements in IMS QTI v2.0</a></h2>
+
+
+<p><a name="section10003">The IEEE LOM permits extensions to be made to the conceptual data schema, in the form
+                of new terms for existing vocabularies, new vocabularies for existing elements, or
+                new elements, which may be inserted into the schema provided they do not subvert the
+                existing chain of references or introduce new data types for existing fields.</a></p>
+
+
+<p><a name="section10003">It should be noted that extensions are community specific and will impact
+                significantly on the interoperability of the meta-data which contains them.</a></p>
+
+
+<p><a name="section10003">Secondary meta-data, sometimes known as 'usage data' (item statistics), is defined
+                separately in its own data model. See </a><a href="#section10041">Usage Data</a> later in this
+                document.</p>
+
+
+<p>The following class describes a new category of meta-data for the recording of QTI
+                specific information. It is designed to be treated as an additional top-level
+                category to augment the LOM profile described in the next section.</p>
+
+
+<div class="class-body">
+<div class="class-head">
+<p class="class-head"><a name="element10747"><b>Class</b> : <code>qtiMetadata</code>
+</a></p>
+
+</div>
+
+
+
+<a name="element10747">				</a>
+<p class="class-subbody"><a name="element10748"><b>Contains</b> : <code>itemTemplate </code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10715">boolean</a> [0..1]<br>
+
+
+ True if the item is actually an item template, in other words, the item
+                    changes its appearance based on some random or external factor. An <a href="imsqti_infov2p1pd2.html#element10012">assessmentItem</a> that contains a <a href="imsqti_infov2p1pd2.html#element10447">templateProcessing</a> section. </p>
+
+
+
+				
+<p class="class-subbody"><a name="element10749"><b>Contains</b> : <code>timeDependent </code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10715">boolean</a> [0..1]<br>
+
+
+Whether or not the item is time dependent. A time dependent item takes the
+                    length of time taken for an attempt into consideration when scoring.</p>
+
+
+
+				
+<p class="class-subbody"><a name="element10750"><b>Contains</b> : <code>composite </code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10715">boolean</a> [0..1]<br>
+
+
+ True if the item comprises more than one interaction, for example, an
+                        <a href="imsqti_infov2p1pd2.html#element10012">assessmentItem</a> that contains more than one
+                        <a href="imsqti_infov2p1pd2.html#element10264">interaction</a>.</p>
+
+
+
+				
+<p class="class-subbody"><a name="element10751"><b>Contains</b> : <code></code></a><a class="class-subbody" href="#element10761">interactionType</a> [*]<br>
+
+
+The interaction type(s) of the item. The vocabulary is comprised of the names,
+                    as defined in the information model, of the leaf classes derived from
+                        <a href="imsqti_infov2p1pd2.html#element10264">interaction</a>.</p>
+
+
+
+				
+<p class="class-subbody"><a name="element10752"><b>Contains</b> : <code></code></a><a class="class-subbody" href="#element10757">feedbackType</a> [0..1]<br>
+
+
+Describes the type of feedback, if any, available in the item. If feedback is
+                    available then it is described as being non-adaptive or adaptive depending on
+                    whether the item is itself adaptive. A non-adaptive item generates feedback
+                    based on the responses submitted as part of (the last) attempt only. An adaptive
+                    item generates feedback that takes into consideration the path taken through the
+                    item, in other words, feedback based on the accumulation of all attempts and not
+                    just the last.</p>
+
+
+
+				
+<p class="class-subbody"><a name="element10753"><b>Contains</b> : <code>solutionAvailable </code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10715">boolean</a> [0..1]<br>
+
+
+Set to true if a model solution is available for the item. For example, an
+                        <a href="imsqti_infov2p1pd2.html#element10012">assessmentItem</a> that provides correct responses for all
+                    declared response variables.</p>
+
+
+
+				
+<p class="class-subbody"><a name="element10754"><b>Contains</b> : <code>toolName </code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10736">string256</a> [0..1]<br>
+
+
+The name of the tool used to author the evaluation object.</p>
+
+
+
+				
+<p class="class-subbody"><a name="element10755"><b>Contains</b> : <code>toolVersion </code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10736">string256</a> [0..1]<br>
+
+
+The version of the tool used to author the evaluation object.</p>
+
+
+
+				
+<p class="class-subbody"><a name="element10756"><b>Contains</b> : <code>toolVendor </code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10736">string256</a> [0..1]<br>
+
+
+The company which produced the tool used to author the evaluation
+                object.</p>
+
+
+
+			</div>
+
+
+<div class="class-body">
+<div class="class-head">
+<h4><a name="element10757">Enumeration: <code>feedbackType</code></a></h4>
+
+
+</div>
+
+
+
+<a name="element10757">				</a>
+<p class="class-subbody"><a name="element10758"><code>none</code><br>
+
+
+No feedback is available.</a></p>
+
+
+
+<a name="element10758">				</a>
+<p class="class-subbody"><a name="element10759"><code>nonadaptive</code><br>
+
+
+Feedback is available but it is non-adaptive. In other
+                    words, the item is a non-adaptive item.</a></p>
+
+
+
+<a name="element10759">				</a>
+<p class="class-subbody"><a name="element10760"><code>adaptive</code><br>
+
+
+Feedback is available and is adaptive. In other words, the
+                    item is an adaptive item.</a></p>
+
+
+
+<a name="element10760">			</a></div>
+
+
+<div class="class-body">
+<div class="class-head">
+<h4><a name="element10761">Enumeration: <code>interactionType</code></a></h4>
+
+
+</div>
+
+
+
+<a name="element10761">				</a>
+<p class="class-subbody"><a name="element10762"><code>associateInteraction</code></a></p>
+
+
+
+<a name="element10762">				</a>
+<p class="class-subbody"><a name="element10763"><code>choiceInteraction</code></a></p>
+
+
+
+<a name="element10763">				</a>
+<p class="class-subbody"><a name="element10764"><code>customInteraction</code></a></p>
+
+
+
+<a name="element10764">				</a>
+<p class="class-subbody"><a name="element10765"><code>drawingInteraction</code></a></p>
+
+
+
+<a name="element10765">				</a>
+<p class="class-subbody"><a name="element10766"><code>endAttemptInteraction</code></a></p>
+
+
+
+<a name="element10766">				</a>
+<p class="class-subbody"><a name="element10767"><code>extendedTextInteraction</code></a></p>
+
+
+
+<a name="element10767">				</a>
+<p class="class-subbody"><a name="element10768"><code>gapMatchInteraction</code></a></p>
+
+
+
+<a name="element10768">				</a>
+<p class="class-subbody"><a name="element10769"><code>graphicAssociateInteraction</code></a></p>
+
+
+
+<a name="element10769">				</a>
+<p class="class-subbody"><a name="element10770"><code>graphicGapMatchInteraction</code></a></p>
+
+
+
+<a name="element10770">				</a>
+<p class="class-subbody"><a name="element10771"><code>graphicOrderInteraction</code></a></p>
+
+
+
+<a name="element10771">				</a>
+<p class="class-subbody"><a name="element10772"><code>hotspotInteraction</code></a></p>
+
+
+
+<a name="element10772">				</a>
+<p class="class-subbody"><a name="element10773"><code>hottextInteraction</code></a></p>
+
+
+
+<a name="element10773">				</a>
+<p class="class-subbody"><a name="element10774"><code>inlineChoiceInteraction</code></a></p>
+
+
+
+<a name="element10774">				</a>
+<p class="class-subbody"><a name="element10775"><code>matchInteraction</code></a></p>
+
+
+
+<a name="element10775">				</a>
+<p class="class-subbody"><a name="element10776"><code>orderInteraction</code></a></p>
+
+
+
+<a name="element10776">				</a>
+<p class="class-subbody"><a name="element10777"><code>positionObjectInteraction</code></a></p>
+
+
+
+<a name="element10777">				</a>
+<p class="class-subbody"><a name="element10778"><code>selectPointInteraction</code></a></p>
+
+
+
+<a name="element10778">				</a>
+<p class="class-subbody"><a name="element10779"><code>sliderInteraction</code></a></p>
+
+
+
+<a name="element10779">				</a>
+<p class="class-subbody"><a name="element10780"><code>textEntryInteraction</code></a></p>
+
+
+
+<a name="element10780">				</a>
+<p class="class-subbody"><a name="element10781"><code>uploadInteraction</code></a></p>
+
+
+
+<a name="element10781">			</a></div>
+
+
+
+<h2><a name="section10004">4. IEEE LOM Profile</a></h2>
+
+
+<p><a name="section10004">QTI v2.0 deprecated use of the <em>relation</em> category when creating meta-data
+                instances for QTI items, reserving it for future use. A number of use cases which
+                informed the work on v2.1 raised scenarios which could be best addressed through the
+                use of this category.</a></p>
+
+
+<h3><a name="section10005">4.1. General</a></h3>
+
+
+<p><a name="section10005">Note that the LOM-defined <em>Structure</em> and <em>AggregationLevel</em> fields
+                    are not recommended by this profile.</a></p>
+
+
+<h4><a name="section10006">4.1.1. identifier</a></h4>
+
+
+<p><a name="section10006">One of the values given for the identifier must have an entry that matches
+                        the </a><a href="imsqti_infov2p1pd2.html#element10013">identifier</a> of the associated item,
+                        test, or <span>object bank</span>.</p>
+
+
+<h4><a name="section10007">4.1.2. title</a></h4>
+
+
+<p><a name="section10007">The title must have a value that matches the value of the </a><a href="imsqti_infov2p1pd2.html#element10014">title</a> attribute of the associated item, test or
+                            <span>object bank</span>. The language used to interpret
+                        the title is taken from the <a href="imsqti_infov2p1pd2.html#element10016">lang</a>
+                        attribute of the associated item, test, or <span>object
+                        bank</span>.</p>
+
+
+<h4><a name="section10008">4.1.3. language</a></h4>
+
+
+<p><a name="section10008">There must be one value for each of the languages referred to by the language
+                        attributes on the associated </a><a href="imsqti_infov2p1pd2.html#element10012">assessmentItem</a>, test, or
+                            <span>object bank</span> and its <a href="imsqti_infov2p1pd2.html#element10112">bodyElement</a>s.</p>
+
+
+<h4><a name="section10009">4.1.4. description</a></h4>
+
+
+<p><a name="section10009">When transforming item meta-data records with no description into systems
+                        that require a value for this field, the title of the item, test, or <span>object bank</span> should be used to set the value of the
+                        description.</a></p>
+
+
+<h4><a name="section10010">4.1.5. keyword</a></h4>
+
+
+<p><a name="section10010">When transforming item meta-data records with no keywords into systems that
+                        require a value for this field, the title of the item, test, or <span>object bank</span> should be used to derive a set of
+                        keywords. It should be noted that LOM specifically indicates the use of
+                        classification for the description of subject area, and specifies that
+                        general.keyword 'should not be used for characteristics that can be
+                        described by other data elements'.</a></p>
+
+
+<h4><a name="section10011">4.1.6. coverage</a></h4>
+
+
+<p><a name="section10011">Usage as defined by </a><a href="#ref_LOM">[LOM]</a>.</p>
+
+
+<h3><a name="section10012">4.2. Lifecycle</a></h3>
+
+
+<h4><a name="section10013">4.2.1. version</a></h4>
+
+
+<p><a name="section10013">See comment in </a><a href="#section10014">status</a> below for important
+                        information about the use of this field.</p>
+
+
+<h4><a name="section10014">4.2.2. status</a></h4>
+
+
+<p><a name="section10014">It is anticipated that systems for handling assessment resources would prefer
+                        to draw from wider vocabularies than the one defined by </a><a href="#ref_LOM">[LOM]</a>.
+                        However, in order to facilitate the transformation of meta-data instances to
+                        systems that require the use of the LOM vocabulary for this field it is
+                        recommended that the <a href="#section10013">version</a> is used to achieve the
+                        tracking of items, tests, and <span>object bank</span>s
+                        through more complex production processes. The classification category may
+                        also be used to express the status and availability of assessment
+                    resources.</p>
+
+
+<h4><a name="section10015">4.2.3. contribute</a></h4>
+
+
+<p><a name="section10015">Usage as defined by </a><a href="#ref_LOM">[LOM]</a>.</p>
+
+
+<h3><a name="section10016">4.3. meta_metadata</a></h3>
+
+
+<h4><a name="section10017">4.3.1. identifier</a></h4>
+
+
+<p><a name="section10017">A globally unique label that identifies this meta-data record.</a></p>
+
+
+<h4><a name="section10018">4.3.2. contribute</a></h4>
+
+
+<p><a name="section10018">Usage as defined by </a><a href="#ref_LOM">[LOM]</a>.</p>
+
+
+<h4><a name="section10019">4.3.3. metadata_schema</a></h4>
+
+
+<p><a name="section10019">Meta-data records that adhere to this profile are conforming LOM instances,
+                        therefore references to both this specification and LOM are applicable. The
+                        appropriate references are <em>IMSQTIv2.1</em> and <em>LOMv1.0</em>.
+                        References to other schemas to which the meta-data instance conforms are
+                        also permitted.</a></p>
+
+
+<h4><a name="section10020">4.3.4. language</a></h4>
+
+
+<p><a name="section10020">There are two approaches to providing multilingual information in LOM-based
+                        meta-data records which can be used separately or in combination. The first
+                        is to translate the meta-data on a field-by-field basis providing each field
+                        value as a set of strings, each individually language tagged. The
+                        alternative is to generate multiple equivalent meta-data records and use
+                        this language field (on the meta-meta-data category) to set the default
+                        language for the whole record. This profile prefers the latter approach,
+                        meta-data records conforming to this profile should not provide multilingual
+                        values to individual fields within the record.</a></p>
+
+
+<h3><a name="section10021">4.4. Technical</a></h3>
+
+
+<p><a name="section10021">Note that the LOM-defined <em>Requirement</em>, <em>Installation Remarks</em> and
+                        <em>Duration</em> fields are not recommended by this profile.</a></p>
+
+
+<h4><a name="section10022">4.4.1. format</a></h4>
+
+
+<p><a name="section10022">There should be at least one instance of format with the value
+                            <em>text/x-imsqti-item-xml, text/x-imsqti-test-xml or 
+                            <span>application/xml</span>
+                        </em>.</a></p>
+
+
+<h4><a name="section10023">4.4.2. size</a></h4>
+
+
+<p><a name="section10023">Usage as defined by </a><a href="#ref_LOM">[LOM]</a>.</p>
+
+
+<h4><a name="section10024">4.4.3. location</a></h4>
+
+
+<p><a name="section10024">Usage as defined by </a><a href="#ref_LOM">[LOM]</a>.</p>
+
+
+<h4><a name="section10025">4.4.4. Other Platform Requirements</a></h4>
+
+
+<p><a name="section10025">Usage as defined by </a><a href="#ref_LOM">[LOM]</a>.</p>
+
+
+<h3><a name="section10026">4.5. Educational</a></h3>
+
+
+<p><a name="section10026">Note that the LOM-defined <em>Interactivity Type</em>, <em>Interactivity
+                    Level</em>, <em>Semantic Density</em>, <em>Intended End User Role</em>,
+                        <em>Typical Age Range</em> and <em>Difficulty</em> fields are not
+                    recommended by this profile.</a></p>
+
+
+<h4><a name="section10027">4.5.1. learning_resource_type</a></h4>
+
+
+<p><a name="section10027">QTI objects are designed to be reusable in a variety of assessment scenarios.
+                        Therefore, the LOM-defined values <em>self assessment</em> and <em>exam</em>
+                        are forbidden. If the standard LOM vocabulary is used then only the values
+                            <em>exercise</em> or <em>questionnaire</em> should be used to describe
+                        an item. An alternative vocabulary for this field has been defined in </a><a href="#ref_RDN">[RDN]</a>, when using that vocabulary the value <em>AssessmentItem,
+                            AssessmentTest, and AssessmentPool</em> are recommended.</p>
+
+
+<h4><a name="section10028">4.5.2. Context</a></h4>
+
+
+<p><a name="section10028">This is used to provide an educational context for the value given in typical
+                        learning time.</a></p>
+
+
+<h4><a name="section10029">4.5.3. typical_learning_time</a></h4>
+
+
+<p><a name="section10029">In the context of a QTI object, the typical learning time is interpreted as
+                        the length of time the candidate would normally be allocated to complete the
+                        object. <em>It is not a time limit</em>, however, when building a
+                        time-limited test from an item bank the typical learning times of the
+                        selected items may be added together to estimate the expected duration of
+                        the test and used to calculate a time limit <em>for the test</em> if
+                        required.</a></p>
+
+
+<h4><a name="section10030">4.5.4. description</a></h4>
+
+
+<p><a name="section10030">Item, test, or pool objectives should be included in this field if
+                    required.</a></p>
+
+
+<h4><a name="section10031">4.5.5. language</a></h4>
+
+
+<p><a name="section10031">Usage as defined by </a><a href="#ref_LOM">[LOM]</a>.</p>
+
+
+<h3><a name="section10032">4.6. Rights</a></h3>
+
+
+<p><a name="section10032">Note that the LOM-defined <em>cost</em> and
+                    <em>copyright_and_other_restrictions</em> fields are highly problematic, and
+                    that a more detailed rights description language is necessary to adequately
+                    express the often complex rights issues surrounding resource creation and reuse.
+                    However, the vast majority of application profiles mandate the rights category,
+                    and it is therefore recommended for use within this application profile.</a></p>
+
+
+<p><a name="section10032">Care should be taken when an item depends on a (shared) media file
+                    with its own meta-data to ensure that restrictions on the use of the media file
+                    are reflected in the overall rights description of the item itself.</a></p>
+
+
+<h4><a name="section10033">4.6.1. cost</a></h4>
+
+
+<p><a name="section10033">Usage as defined by </a><a href="#ref_LOM">[LOM]</a>.</p>
+
+
+<h4><a name="section10034">4.6.2. copyright_and_other_restrictions</a></h4>
+
+
+<p><a name="section10034">Usage as defined by </a><a href="#ref_LOM">[LOM]</a>.</p>
+
+
+<h4><a name="section10035">4.6.3. description</a></h4>
+
+
+<p><a name="section10035">Usage as defined by </a><a href="#ref_LOM">[LOM]</a>.</p>
+
+
+<h3><a name="section10036">4.7. Relation</a></h3>
+
+
+<p><a name="section10036">The LOM relation category is used to describe the relationship between learning
+                    objects, and was reserved in QTI v2.0 for future use. In v2.1, this category is
+                    used to express the relationship between items and tests, fragments and the
+                    objects that include them and individual relationships between items.</a></p>
+
+
+<h4><a name="section10037">4.7.1. kind</a></h4>
+
+
+<p><a name="section10037">A number of relationships between items may be described without extending
+                        the LOM vocabulary. However, a new vocabulary element has been introduced to
+                        allow one of the more complex inter-item relationships commonly expressed in
+                        item banks. In addition, interpretations of some LOM vocabulary elements are
+                        provided. It should be noted that each target should have a new relationship
+                        instance.</a></p>
+
+
+<table border="1" cellspacing="0" frame="border" rules="all">
+
+
+
+                        <tbody>
+
+    <tr>
+
+
+                            <th>Element name</th>
+
+
+
+                            <th>Present in LOM?</th>
+
+
+
+                            <th>Explanation</th>
+
+
+
+                        </tr>
+
+
+
+                        <tr>
+
+
+                            <td>ispartof</td>
+
+
+
+                            <td>Y</td>
+
+
+
+                            <td>A fragment may refer to the objects which include it using this
+                                term. The relation.resource.identifier containing the identifier(s)
+                                of the including objects.</td>
+
+
+
+                        </tr>
+
+
+
+                        <tr>
+
+
+                            <td>haspart</td>
+
+
+
+                            <td>Y</td>
+
+
+
+                            <td>An object my refer to the fragments which it includes using this
+                                term. The relation.resource.identifier containing the fragment's
+                                identifier(s).</td>
+
+
+
+                        </tr>
+
+
+
+                        <tr>
+
+
+                            <td>isversionof</td>
+
+
+
+                            <td>Y</td>
+
+
+
+                            <td>Usage as defined by <a href="#ref_LOM">[LOM]</a>.</td>
+
+
+
+                        </tr>
+
+
+
+                        <tr>
+
+
+                            <td>hasversion</td>
+
+
+
+                            <td>Y</td>
+
+
+
+                            <td>Usage as defined by <a href="#ref_LOM">[LOM]</a>.</td>
+
+
+
+                        </tr>
+
+
+
+                        <tr>
+
+
+                            <td>isformatof</td>
+
+
+
+                            <td>Y</td>
+
+
+
+                            <td>Usage as defined by <a href="#ref_LOM">[LOM]</a>.</td>
+
+
+
+                        </tr>
+
+
+
+                        <tr>
+
+
+                            <td>hasformat</td>
+
+
+
+                            <td>Y</td>
+
+
+
+                            <td>Usage as defined by <a href="#ref_LOM">[LOM]</a>.</td>
+
+
+
+                        </tr>
+
+
+
+                        <tr>
+
+
+                            <td>references</td>
+
+
+
+                            <td>Y</td>
+
+
+
+                            <td>Usage as defined by <a href="#ref_LOM">[LOM]</a>.</td>
+
+
+
+                        </tr>
+
+
+
+                        <tr>
+
+
+                            <td>isreferencedby</td>
+
+
+
+                            <td>Y</td>
+
+
+
+                            <td>Usage as defined by <a href="#ref_LOM">[LOM]</a>.</td>
+
+
+
+                        </tr>
+
+
+
+                        <tr>
+
+
+                            <td>isbasedon</td>
+
+
+
+                            <td>Y</td>
+
+
+
+                            <td>Usage as defined by <a href="#ref_LOM">[LOM]</a>.</td>
+
+
+
+                        </tr>
+
+
+
+                        <tr>
+
+
+                            <td>isbasisfor</td>
+
+
+
+                            <td>Y</td>
+
+
+
+                            <td>Usage as defined by <a href="#ref_LOM">[LOM]</a>.</td>
+
+
+
+                        </tr>
+
+
+
+                        <tr>
+
+
+                            <td>requires</td>
+
+
+
+                            <td>Y</td>
+
+
+
+                            <td>Usage as defined by <a href="#ref_LOM">[LOM]</a>. Note that this is the
+                                appropriate way to represent the relationship between a test or test
+                                fragment and the items that it refers to.</td>
+
+
+
+                        </tr>
+
+
+
+                        <tr>
+
+
+                            <td>isrequiredby</td>
+
+
+
+                            <td>Y</td>
+
+
+
+                            <td>Usage as defined by <a href="#ref_LOM">[LOM]</a>. Note that this is the
+                                appropriate way to represent the relationship between an item and
+                                the tests or test fragments that refer to it.</td>
+
+
+
+                        </tr>
+
+
+
+                        <tr>
+
+
+                            <td>precludes</td>
+
+
+
+                            <td>N</td>
+
+
+
+                            <td>This term can be used to indicate items which must not be
+                                incorporated into the same test as each other (sometimes referred to
+                                as <em>enemy items</em>). This relationship is symmetric.</td>
+
+
+
+                        </tr>
+
+
+
+                    
+  
+  </tbody>
+</table>
+
+
+<h4><a name="section10038">4.7.2. resource</a></h4>
+
+
+<p><a name="section10038">Usage as defined by </a><a href="#ref_LOM">[LOM]</a>.</p>
+
+
+<h3><a name="section10039">4.8. Annotation</a></h3>
+
+
+<p><a name="section10039">Usage as defined by </a><a href="#ref_LOM">[LOM]</a>.</p>
+
+
+<h3><a name="section10040">4.9. Classification</a></h3>
+
+
+<p><a name="section10040">Usage as defined by </a><a href="#ref_LOM">[LOM]</a>. The preferred solution for the
+                    description of an item_s subject area is to used the LOM classification category
+                    with the value classification.purpose = "discipline". This allows the use of any
+                    recognized or bespoke subject classification scheme such as the top level(s) of
+                    the Library of Congress Classification (LCC) and Dewey Decimal Classification
+                    (DDC), or institutional, regional or national curriculum classifications, as
+                    specified under classification.taxonPath.source. For more detailed description of
+                    topics within subject areas, the value classification.purpose = "idea" may be
+                    used with further levels of LCC, DDC or subject-specific classification schemes.
+                    The classification category may also be used to describe the visibility and
+                    availability of items beyond the limited vocabulary provided by LOM
+                    lifecycle.status. The use of custom schemes for classification enables
+                    repository administrators to capture all the information they need to capture,
+                    using the terms most appropriate for that institution. There may be multiple
+                    instances of the classification category, enabling detailed classification of
+                    assessments by subject area and association of an assessment with a number of
+                    different subject areas or topics.</p>
+
+
+
+<h2><a name="section10041">5. Usage Data</a></h2>
+
+
+<div class="class-body">
+<div class="class-head">
+<p class="class-head"><a name="element10782"><b>Class</b> : <code>usageData</code>
+</a></p>
+
+</div>
+
+
+
+<a name="element10782">				</a>
+<p><a name="element10782">Usage data, most commonly <em>item statistics</em>, do not form part of an
+                        </a><a href="imsqti_infov2p1pd2.html#element10012">assessmentItem</a> directly because they always relate to
+                    some context or domain in which the statistics are valid. Therefore, this
+                    specification defines a separate class for describing these statistics.</p>
+
+
+
+				
+<p>Each statistic refers to both its context and to the <a href="imsqti_infov2p1pd2.html#element10012">assessmentItem</a>(s) it relates to. Therefore, instances of this class
+                    are bound and packaged separately for interoperability. </p>
+
+
+
+				
+<p class="class-subbody"><a name="element10783"><b>Attribute</b> : <code>glossary [0..1]: </code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10738">uri</a><br>
+
+
+An optional URI that identifies the default glossary in which the names of the
+                        <a href="#element10785">itemStatistic</a>s are defined.</p>
+
+
+
+				
+<p class="class-subbody"><a name="element10784"><b>Contains</b> : <code></code></a><a class="class-subbody" href="#element10785">itemStatistic</a> [*]</p>
+
+
+
+			</div>
+
+
+<div class="class-body">
+<div class="class-head">
+<p class="class-head"><a name="element10785"><b>Abstract class</b> : <code>itemStatistic</code>
+</a></p>
+
+<dl>
+
+
+  <dt><a name="element10785">Derived classes:</a></dt>
+
+  <dd><code><a class="class-head" href="#element10799">categorizedStatistic</a>, <a class="class-head" href="#element10797">ordinaryStatistic</a></code></dd>
+
+
+  <dt>Associated classes:</dt>
+
+  <dd><code><a class="class-head" href="#element10782">usageData</a></code></dd>
+
+
+</dl>
+
+</div>
+
+
+
+				
+<p>A value or set of values that describe the performance of the item within a
+                    specific context. Common measures include the item's difficulty and how well it
+                    discriminates between various candidate ability levels</p>
+
+
+
+				
+<p class="class-subbody"><a name="element10786"><b>Attribute</b> : <code>name [1]: </code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10721">identifier</a><br>
+
+
+The unique identifier of
+                    the item statistic. Glossaries of identifiers defined by this specification for
+                    commonly used item and distractor statistics are defined and should be used
+                    where possible. See <a href="#section10042">Vocabulary for the Exchange of Item Statistics</a> for more details. </p>
+
+
+
+				
+<p class="class-subbody"><a name="element10787"><b>Attribute</b> : <code>glossary [0..1]: </code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10738">uri</a><br>
+
+
+An optional URI that
+                    identifies the glossary in which the <a href="#element10786">name</a> is
+                    defined. This value overrides any default glossary provided by the <a href="#element10783">glossary</a> attribute of the parent <a href="#element10782">usageData</a>.</p>
+
+
+
+				
+<p class="class-subbody"><a name="element10788"><b>Attribute</b> : <code>context [1]: </code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10738">uri</a><br>
+
+
+ A Uniform Resource Identifier
+                    that points to information about the context within which the item statistic was
+                    created. For example, the URI may point to the sample of item scores and the
+                    specifics of computations that created item statistics. The URI may be a URL, a
+                    database index, or other valid identifier </p>
+
+
+
+				
+<p class="class-subbody"><a name="element10789"><b>Attribute</b> : <code>caseCount [0..1]: </code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10722">integer</a><br>
+
+
+ The number of cases
+                    in the sample used to create the item statistic. </p>
+
+
+
+				
+<p class="class-subbody"><a name="element10790"><b>Attribute</b> : <code>stdError [0..1]: </code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10720">float</a><br>
+
+
+ The standard error of
+                    the item statistic, also known as the variance. </p>
+
+
+
+				
+<p class="class-subbody"><a name="element10791"><b>Attribute</b> : <code>stdDeviation [0..1]: </code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10720">float</a><br>
+
+
+ The standard
+                    deviation of the item statistic (i.e. the square root of the standard error). </p>
+
+
+
+				
+<p class="class-subbody"><a name="element10792"><b>Attribute</b> : <code>lastUpdated [0..1]: </code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10717">date</a><br>
+
+
+ Date of the last
+                    update to the item statistic value. </p>
+
+
+
+				
+<p class="class-subbody"><a name="element10793"><b>Contains</b> : <code></code></a><a class="class-subbody" href="#element10794">targetObject</a> [1..*]</p>
+
+
+
+			</div>
+
+
+<div class="class-body">
+<div class="class-head">
+<p class="class-head"><a name="element10794"><b>Class</b> : <code>targetObject</code>
+</a></p>
+
+<dl>
+
+
+  <dt><a name="element10794">Associated classes:</a></dt>
+
+  <dd><code><a class="class-head" href="#element10785">itemStatistic</a></code></dd>
+
+
+</dl>
+
+</div>
+
+
+
+				
+<p>The targetObject is used to refer to an assessment object. This object may be an
+                        <a href="imsqti_infov2p1pd2.html#element10012">assessmentItem</a> or some other type of object defined
+                    outside the scope of this specification, for example, an entire test. In some
+                    cases it is desirable to refer not just to the assessment object but to a
+                    specific part of that object, in which case the optional <a href="#element10796">partIdentifier</a> can be used.</p>
+
+
+
+				
+<p class="class-subbody"><a name="element10795"><b>Attribute</b> : <code>identifier [1]: </code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10735">string</a><br>
+
+
+The identifier of the
+                        <a href="imsqti_infov2p1pd2.html#element10012">assessmentItem</a> or other target object.</p>
+
+
+
+				
+<p class="class-subbody"><a name="element10796"><b>Attribute</b> : <code>partIdentifier [0..1]: </code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10721">identifier</a><br>
+
+
+An optional
+                    identifier to a specific part (e.g. an <a href="imsqti_resultv2p1pd2.html#element10828">itemVariable</a>)
+                    defined within the assessment object. In the case of an <a href="imsqti_infov2p1pd2.html#element10012">assessmentItem</a> the partIdentifier typically refers to an outcome
+                    variable but can refer to other objects identified in the same namespace, such
+                    as a specific choice within an interaction. If no partIdentifier is given the
+                    statistic is considered to refer to the target object as a whole. </p>
+
+
+
+			</div>
+
+
+<div class="class-body">
+<div class="class-head">
+<p class="class-head"><a name="element10797"><b>Class</b> : <code>ordinaryStatistic (</code></a><a class="class-head" href="#element10785">itemStatistic</a>)
+</p>
+
+</div>
+
+
+
+				
+<p>An item statistic that consists of a single numeric value.</p>
+
+
+
+				
+<p class="class-subbody"><a name="element10798"><b>Contains</b> : <code></code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10042">value</a> [1]</p>
+
+
+
+			</div>
+
+
+<div class="class-body">
+<div class="class-head">
+<p class="class-head"><a name="element10799"><b>Class</b> : <code>categorizedStatistic (</code></a><a class="class-head" href="#element10785">itemStatistic</a>)
+</p>
+
+</div>
+
+
+
+				
+<p>An item statistic that consists of multiple values, e.g., IRT Dispersion
+                    Parameters.</p>
+
+
+
+				
+<p class="class-subbody"><a name="element10800"><b>Contains</b> : <code></code></a><a class="class-subbody" href="imsqti_infov2p1pd2.html#element10065">mapping</a> [1]</p>
+
+
+
+			</div>
+
+
+<h3><a name="section10042">5.1. Vocabulary for the Exchange of Item Statistics</a></h3>
+
+
+<p><a name="section10042">This specification defines a vocabulary to aid the exchange of commonly used
+                    statistics. The vocabulary is split into two glossaries.</a></p>
+
+
+<p><a name="auxFile.itemStatistics"><b>Item Statistics</b><br>
+
+
+<code></code></a><a href="glossaries/item_statistics.xml">glossaries/item_statistics.xml</a></p>
+
+
+
+					
+<p>The main item statistics glossary defines statistics that refer to a specific
+                        outcome of an item (typically the outcome variable SCORE).</p>
+
+
+
+				
+<p><a name="auxFile.distractorStatistics"><b>Distractor Statistics</b><br>
+
+
+<code></code></a><a href="glossaries/distractor_statistics.xml">glossaries/distractor_statistics.xml</a></p>
+
+
+
+					
+<p>The distractor statistics glossary defines statistics that refer to a
+                        specific response (typically a <a href="imsqti_infov2p1pd2.html#element10289">simpleChoice</a>) within an
+                        item. </p>
+
+
+
+				
+<p>These vocabularies have been defined using <a href="#ref_VDEX">[VDEX]</a>. It
+                    is recognized that vocabularies may differ widely across application areas.
+                    Users of this specification are encouraged to document and share their own
+                    vocabularies using this common format.</p>
+
+
+
+<h2><a name="section10043">6. XML Binding</a></h2>
+
+
+<p><a name="section10043">The accompanying XML binding provides a binding for the qtiMetadata object that is
+                consistent with the binding given in </a><a href="#ref_IMS_MD_Binding">[IMS_MD_Binding]</a>. The qtiMetadata
+                class defines a new category that could appear alongside LOM categories such as
+                    <em>General</em>, <em>Lifecycle</em>, etc. In the context of the IMS binding,
+                that means it would naturally appear as a direct descendant of the
+                &lt;lom&gt; object itself. The IMS binding does not support extension at
+                this point in the XML binding however, so <a href="#element10747">qtiMetadata</a> is bound
+                separately and must be used in parallel to the LOM object as an additional meta-data
+                object.</p>
+
+
+<p>At the time of writing, the IEEE itself is working on a binding document for <a href="#ref_LOM">[LOM]</a>. In the future, an XML binding more consistent with the approach
+                taken by the IEEE is expected to be recommended.</p>
+
+
+<h2>About This Document</h2>
+
+
+<p></p>
+
+
+<table summary="This table describes the document properties" border="1" cellpadding="5" cellspacing="0">
+
+
+  <tbody>
+
+    <tr>
+
+
+      <td><strong>Title</strong><br>
+
+      </td>
+
+
+      <td>IMS Question and Test Interoperability Meta-data and Usage Data<br>
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td><strong>Editors</strong><br>
+
+      </td>
+
+
+      <td>Steve Lay (Cambridge Assessment), Pierre Gorissen (SURF)<br>
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td><strong>Version</strong><br>
+
+      </td>
+
+
+      <td>Public Draft v2.1 (revision 2)<br>
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td><strong>Version Date</strong><br>
+
+      </td>
+
+
+      <td>8 June 2006<br>
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td><strong>Status</strong><br>
+
+      </td>
+
+
+      <td><strong>Public Draft (revision 2) Specification</strong><br>
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td><strong>Summary</strong><br>
+
+      </td>
+
+
+      <td>This document describes the QTI Meta-data and Usage Data specification.<br>
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td><strong>Revision Information</strong><br>
+
+      </td>
+
+
+      <td>8 June 2006<br>
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td><strong>Purpose</strong><br>
+
+      </td>
+
+
+      <td>This document has been approved by the IMS Technical Board and is made available for public review and comment.<br>
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td><strong>Document Location</strong><br>
+
+      </td>
+
+
+      <td><a href="http://www.imsglobal.org/question/qtiv2p1pd2/imsqti_mdudv2p1pd2.html">
+http://www.imsglobal.org/question/qtiv2p1pd2/imsqti_mdudv2p1pd2.html</a><br>
+
+      </td>
+
+
+    </tr>
+
+
+  
+  </tbody>
+</table>
+
+
+<p></p>
+
+
+<p></p>
+
+
+<p></p>
+
+
+<table summary="This table lists link to register comments" border="1" cellpadding="5" cellspacing="0">
+
+
+  <tbody>
+
+    <tr>
+
+
+      <td>To register any comments or questions about this specification please visit: <a href="http://www.imsglobal.org/developers/ims/imsforum/categories.cfm?catid=23">
+http://www.imsglobal.org/developers/ims/imsforum/categories.cfm?catid=23</a><br>
+
+      </td>
+
+
+    </tr>
+
+
+  
+  </tbody>
+</table>
+
+
+<p></p>
+
+
+<p></p>
+
+
+<h3>List of Contributors</h3>
+
+
+<p>The following individuals contributed to the development of this document:</p>
+
+
+<p></p>
+
+
+<table summary="This table describes The list of contributors for this document" border="0" cellpadding="5" cellspacing="0">
+
+
+  <tbody>
+
+    <tr>
+
+
+      <th scope="col"><strong>Name</strong></th>
+
+
+      <th scope="col">
+      <strong>Organization</strong></th>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td>Dick Bacon<br>
+
+      </td>
+
+
+      <td>University of Surrey<br>
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td>Niall Barr<br>
+
+      </td>
+
+
+      <td>Question Mark<br>
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td>Lance Blackstone<br>
+
+      </td>
+
+
+      <td>Pearson VUE<br>
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td>Jeanne Ferrante<br>
+
+      </td>
+
+
+      <td>ETS<br>
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td>Pierre Gorissen<br>
+
+      </td>
+
+
+      <td>SURF<br>
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td>Regina Hoag<br>
+
+      </td>
+
+
+      <td>ETS<br>
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td>Gopal Krishnan<br>
+
+      </td>
+
+
+      <td>Pearson VUE<br>
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td>Steve Lay<br>
+
+      </td>
+
+
+      <td>Cambridge Assessment<br>
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td>Rowin Young<br>
+
+      </td>
+
+
+      <td>CETIS<br>
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td><br>
+
+      </td>
+
+
+    </tr>
+
+
+  
+  </tbody>
+</table>
+
+
+<h2>Revision History</h2>
+
+
+<p></p>
+
+
+<table summary="This table describes document revision history" border="1" cellpadding="5" cellspacing="0">
+
+
+  <tbody>
+
+    <tr bgcolor="#cccccc">
+
+
+      <th scope="col"><strong>Version No.</strong></th>
+
+
+      <th scope="col"><strong>Release Date</strong></th>
+
+
+      <th scope="col"><strong>Comments</strong></th>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td>Base Document 2.1<br>
+
+      </td>
+
+
+      <td>14 October 2005<br>
+
+      </td>
+
+
+      <td>The first version of the QTI v2.1 specification.<br>
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td>Public Draft 2.1<br>
+
+      </td>
+
+
+      <td>9 January 2006<br>
+
+      </td>
+
+
+      <td>The Public Draft v2.1 of the QTI specification.<br>
+
+      </td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td>Public Draft 2.1 (revision 2)<br>
+
+      </td>
+
+
+      <td>8 June 2006<br>
+
+      </td>
+
+
+      <td>The Public Draft v2.1 (revision 2) of the QTI specification.<br>
+
+      </td>
+
+
+    </tr>
+
+
+  
+  </tbody>
+</table>
+
+
+
+<center>
+<p>&nbsp;</p>
+
+
+<p>&nbsp;</p>
+
+
+<p>&nbsp;</p>
+
+
+<p><em>IMS Global Learning Consortium, Inc. ("IMS/GLC") is publishing the information contained in this</em> IMS Question and Test Interoperability Meta-data and Usage Data <em>("Specification") for purposes of scientific, experimental, and scholarly collaboration only.<br>
+
+
+<br>
+
+
+IMS/GLC makes no warranty or representation regarding the accuracy or completeness of the Specification.<br>
+
+
+This material is provided on an "As Is" and "As Available" basis.<br>
+
+
+<br>
+
+
+The Specification is at all times subject to change and revision without notice.<br>
+
+
+<br>
+
+
+It is your sole responsibility to evaluate the usefulness, accuracy, and completeness of the Specification as it relates to you.<br>
+
+
+<br>
+
+
+IMS/GLC would appreciate receiving your comments and suggestions.<br>
+
+
+<br>
+
+
+Please contact IMS/GLC through our website at <a href="http://www.imsglobal.org">http://www.imsglobal.org</a><br>
+
+
+<br>
+
+
+Please refer to Document Name:</em> IMS Question and Test Interoperability Meta-data and Usage Data <em>Revision:</em> 8 June 2006</p>
+
+
+</center>
+
+
+<hr>
+</body>
+</html>
