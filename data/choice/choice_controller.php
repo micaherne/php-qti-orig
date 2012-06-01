@@ -13,7 +13,7 @@ class choice_controller extends qti_item_controller {
         parent::beginAttempt();
         
         $this->response['RESPONSE'] = new qti_variable('single', 'identifier', array(
-            'correct' => 'choiceA'
+            'correct' => 'ChoiceA'
         ));
         $this->outcome['SCORE'] = new qti_variable('single', 'integer', array(
             'default' => 0
@@ -41,6 +41,7 @@ class choice_controller extends qti_item_controller {
                 )
             )
         );
+        $p->execute();
     }
     
 }
