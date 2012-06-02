@@ -21,9 +21,10 @@ class qti_item_controller {
     public $persistence; // provides existing values of variables
 
     public $rootdir;
+    public $view;
 
     public function __construct() {
-        $this->rootdir = dirname(__FILE__);
+        //$this->rootdir = dirname(__FILE__);
     }
 
     public function setUpDefaultVars() {
@@ -34,7 +35,7 @@ class qti_item_controller {
     }
 
     public function showItemBody() {
-        include $rootdir . '/gen_choice_view.php'; // TODO: fix - needs to be correct view file
+        include $this->view; //rootdir . '/gen_choice_view.php'; // TODO: fix - needs to be correct view file
     }
 
     public function run() {
@@ -50,6 +51,8 @@ class qti_item_controller {
                 $this->showItemBody();
             }
         }
+
+        echo "<hr />Memory: " . memory_get_peak_usage() / (1024 * 1024) . "Mb"; // TODO: Remove this debugging
 
         $this->persistence->persist($this);
     }
@@ -69,11 +72,10 @@ class qti_item_controller {
         $this->processResponse();
         $this->state = qti_item_controller::STATE_CLOSED; // TODO: What should this be? Does it depend on response processing?
     }
-    
+
     // Bind the responses to the controller variables
     public function bindVariables() {
         foreach($this->response as $key => $val) {
-            // TODO: Make this work for multiple valued interactions
             if($submittedvalue = $this->response_source->get($key)) {
                 $this->response[$key]->value = $submittedvalue;
             }
@@ -95,6 +97,7 @@ class qti_variable {
     public $value;
     public $correct;
     public $default;
+    public $mapping;
 
     /**
      * Create a qti variable
@@ -102,7 +105,7 @@ class qti_variable {
      * @param string $type
      * @param array $params
      */
-    public function __construct($cardinality, $type, $params) {
+    public function __construct($cardinality, $type, $params = array()) {
         $this->cardinality = $cardinality;
         $this->type = $type;
 
@@ -123,6 +126,30 @@ class qti_variable {
         }
     }
     
+    // Implement mapResponse processing here because it's sensible!
+    public function mapResponse() {
+        // TODO: Check mapping is defined here?
+        if ($this->cardinality == 'single') {
+            if (in_array($this->value, $this->mapping->mapEntry)) {
+                $value = $this->mapping->mapEntry[$this->value];
+            } else {
+                $value = $this->mapping->defaultValue;
+            }
+        } else {
+            $value = 0;
+            // array_unique used because values should only be counted once - see mapResponse documentation
+            foreach(array_unique($this->value) as $response) {
+                if (array_key_exists($response, $this->mapping->mapEntry)) {
+                    $value += $this->mapping->mapEntry[$response];
+                } else {
+                    $value += $this->mapping->defaultValue;
+                }
+            }
+        }
+        
+        return new qti_variable('single', 'float', array('value' => $value));
+    }
+
     // TODO: Make this work for things other than strings
     public static function compare($variable1, $variable2) {
         return strcmp($variable1->value, $variable2->value);
@@ -145,7 +172,28 @@ class qti_variable {
     public function setValue($value) {
         $this->value = $value->value;
     }
-    
+
+    public function __toString(){
+        return $this->cardinality . ' ' . $this->type . ' [' . (is_array($this->value) ? implode(',', $this->value) : $this->value) . ']';
+    }
+
+}
+
+class qti_mapping {
+
+    public $lowerBound;
+    public $upperBound;
+    public $defaultValue;
+
+    public $mapEntry = array();
+
+    public function __construct($params) {
+        // TODO: Check the params are OK
+        foreach($params as $key => $value) {
+            $this->$key = $value;
+        }
+    }
+
 }
 
 class qti_persistence {
@@ -177,11 +225,11 @@ class qti_persistence {
 class qti_http_response_source {
 
     public function get($name) {
-        return $_GET[$name];
+        return $_POST[$name];
     }
 
     public function isEndAttempt() {
-        return count($_GET) > 0; // TODO: Finish - how do we really check if they've ended the attempt
+        return count($_POST) > 0; // TODO: Finish - how do we really check if they've ended the attempt
     }
 
 }
@@ -233,7 +281,7 @@ class qti_response_processing {
 
     public function execute() {
         ($this->processingFunction->__invoke($this->controller));
-        echo "DEBUG: SCORE = " . print_r($this->controller->outcome['SCORE'], true);
+        echo "DEBUG: SCORE = " . $this->controller->outcome['SCORE'];
     }
 
     /*
@@ -347,11 +395,18 @@ class qti_response_processing {
                 throw new qti_response_processing_exception("Variable $varname not found");
             }
         };
-        
+
     }
 
     public function _mapResponse($attrs, $children) {
-        throw new Exception("Not implemented");
+        return function($controller) use ($attrs, $children) {
+            $varname = $attrs['identifier'];
+            if(isset($controller->response[$varname])) {
+                return $controller->response[$varname]->mapResponse();
+            } else {
+                throw new qti_response_processing_exception("Variable $varname not found");
+            }
+        };
     }
 
     public function _mapResponsePoint($attrs, $children) {
@@ -396,7 +451,10 @@ class qti_response_processing {
     }
 
     public function _isNull($attrs, $children) {
-        throw new Exception("Not implemented");
+        return function($controller) use ($attrs, $children) {
+            $what = $children[0]->__invoke($controller);
+            return (!isset($what->value) || is_null($what->value));
+        };
     }
 
     public function _index($attrs, $children) {

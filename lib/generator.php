@@ -5,14 +5,14 @@
 
 // Test stuff - to be refactored out
 $dom = new DOMDocument();
-$dom->load('data/choice/choice.xml');
-$gen = new qti_php_generator($dom);
+$dom->load('data/choice_multiple/choice_multiple.xml');
+$gen = new qti_item_generator($dom);
 
-$out = fopen('data/choice/gen_choice_view.php', 'w');
+$out = fopen('data/choice_multiple/gen_choice_multiple_view.php', 'w');
 fputs($out, $gen->generate_view());
 fclose($out);
 
-class qti_php_generator {
+class qti_item_generator {
     
     protected $responseDeclarations = null;
     protected $outcomeDeclarations = null;
@@ -57,11 +57,13 @@ class qti_php_generator {
         
         $itemBody = $itemBodyNodes->item(0);
         
-        $result = '';
+        $result = '<div>';
         foreach($itemBody->childNodes as $node) {
             
             $result .= $this->rendernode($node);
         }
+        
+        $result .= '</div>';
         
         return $result;
     }
@@ -107,15 +109,17 @@ class qti_php_generator {
     // TODO: Support shuffle & fixed
     public function renderview_choiceInteraction($node) {
         $responseIdentifier = $node->getAttribute('responseIdentifier');
-        $result = "<form id=\"choiceInteraction_{$responseIdentifier}\" class=\"qti_blockInteraction\">";
+        $result = "<form method=\"post\" id=\"choiceInteraction_{$responseIdentifier}\" class=\"qti_blockInteraction\">";
         
         // Work out what kind of HTML tag will be used for simpleChoices
         if (!isset($this->responseDeclarations[$responseIdentifier])) {
             throw new Exception("Declaration for $responseIdentifier not found");
         }
         $simpleChoiceType = 'radio';
+        $brackets = ''; // we need brackets for multiple responses
         if ($this->responseDeclarations[$responseIdentifier]->cardinality == 'multiple') {
             $simpleChoiceType = 'checkbox';
+            $brackets = '[]';
         }
         
         // Process child nodes
@@ -131,7 +135,7 @@ class qti_php_generator {
                 }
                 $result .= "</span>";
             } else if ($child->nodeName == 'simpleChoice') {
-                $result .= "<input type=\"{$simpleChoiceType}\" name=\"{$responseIdentifier}\" class=\"qti_simpleChoice\" value=\"{$child->getAttribute('identifier')}\"/>{$child->nodeValue}";
+                $result .= "<input type=\"{$simpleChoiceType}\" name=\"{$responseIdentifier}{$brackets}\" class=\"qti_simpleChoice\" value=\"{$child->getAttribute('identifier')}\"/>{$child->nodeValue}";
             } 
         }
         $result .= "<input type=\"submit\" />";

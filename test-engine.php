@@ -16,12 +16,16 @@
 
 require_once 'lib/core.php';
 
-$controller_file = 'data/choice/choice_controller.php';
-$controller_class = 'choice_controller';
+$item = $_GET['item'];
+list($package, $itemid) = explode('/', $item);
+$controller_file = "data/{$package}/{$itemid}_controller.php";
+$controller_class = "{$itemid}_controller";
 
 require_once $controller_file;
 $controller = new $controller_class();
 $controller->persistence = new qti_persistence();
 $controller->response_source = new qti_http_response_source();
+
+$controller->view = 'data/choice_multiple/gen_choice_multiple_view.php';
 
 $controller->run();

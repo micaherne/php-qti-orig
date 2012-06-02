@@ -2,11 +2,8 @@
 
 class choice_controller extends qti_item_controller {
     
-    public $rootdir = 'data/choice';
-    
     public function __construct() {
-        parent::__construct();
-        
+        $this->rootdir = dirname(__FILE__);
     }
     
     public function beginAttempt() {

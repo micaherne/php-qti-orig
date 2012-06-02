@@ -1,0 +1,3 @@
+<div>
+		<form method="post" id="choiceInteraction_RESPONSE" class="qti_blockInteraction"><span class="qti_prompt">Which of the following elements are used to form water?</span><input type="checkbox" name="RESPONSE[]" class="qti_simpleChoice" value="H"/>Hydrogen<input type="checkbox" name="RESPONSE[]" class="qti_simpleChoice" value="He"/>Helium<input type="checkbox" name="RESPONSE[]" class="qti_simpleChoice" value="C"/>Carbon<input type="checkbox" name="RESPONSE[]" class="qti_simpleChoice" value="O"/>Oxygen<input type="checkbox" name="RESPONSE[]" class="qti_simpleChoice" value="N"/>Nitrogen<input type="checkbox" name="RESPONSE[]" class="qti_simpleChoice" value="Cl"/>Chlorine<input type="submit" /></form>
+	</div>
