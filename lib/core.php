@@ -19,12 +19,13 @@ class qti_item_controller {
 
     public $response_source; // provides response values for variables
     public $persistence; // provides existing values of variables
+    public $resource_provider; // provides URLs for images etc.
 
     public $rootdir;
     public $view;
 
     public function __construct() {
-        //$this->rootdir = dirname(__FILE__);
+        
     }
 
     public function setUpDefaultVars() {
@@ -35,7 +36,8 @@ class qti_item_controller {
     }
 
     public function showItemBody() {
-        include $this->view; //rootdir . '/gen_choice_view.php'; // TODO: fix - needs to be correct view file
+        $resource_provider = $this->resource_provider;
+        include $this->view; // TODO: fix - needs to be correct view file
     }
 
     public function run() {
@@ -87,6 +89,7 @@ class qti_item_controller {
         // TODO: How do we know what state to put it into?
         echo "DEBUG: You chose: " . $this->response_source->get('RESPONSE');
     }
+    
 }
 
 class qti_variable {

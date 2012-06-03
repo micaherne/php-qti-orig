@@ -3,7 +3,7 @@
 class choice_controller extends qti_item_controller {
     
     public function __construct() {
-        $this->rootdir = dirname(__FILE__);
+
     }
     
     public function beginAttempt() {

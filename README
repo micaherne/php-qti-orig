@@ -1,0 +1,8 @@
+PHP QTI 2.1
+-----------
+
+Requirements
+------------
+
+# PHP 5.3+
+# fileinfo extension

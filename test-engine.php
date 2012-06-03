@@ -18,14 +18,64 @@ require_once 'lib/core.php';
 
 $item = $_GET['item'];
 list($package, $itemid) = explode('/', $item);
+
+// If it's a request for a resource, serve it
+if (isset($_GET['resource'])) {
+    if (!isset($_GET['path'])) {
+        die('Path required'); // TODO: Should be bad request header
+    }
+    $path = "data/{$package}/" . $_GET['path'];
+    if (!file_exists(dirname(__FILE__). '/' . $path)) {
+        header("HTTP/1.0 404 Not found");
+        die("$path Not found");
+    }
+    
+    $finfo = new finfo(FILEINFO_MIME_TYPE);
+    $mimetype = $finfo->file($path);
+    header("Content-Type: $mimetype");
+    readfile($path);
+    exit;
+}
+
 $controller_file = "data/{$package}/{$itemid}_controller.php";
 $controller_class = "{$itemid}_controller";
 
 require_once $controller_file;
 $controller = new $controller_class();
+$controller->rootDir = dirname(__FILE__). '/data/' . $package;
 $controller->persistence = new qti_persistence();
 $controller->response_source = new qti_http_response_source();
+$controller->resource_provider = new qti_resource_provider($_SERVER['SCRIPT_NAME'], $item);
 
-$controller->view = 'data/choice_multiple/gen_choice_multiple_view.php';
+$controller->view = "data/{$package}/gen_{$itemid}_view.php";
 
 $controller->run();
+
+
+/**
+ * Given a relative URL such as 'images/sign.png' will provide an absolute URL
+ * that will serve the given resource.
+ * @author Michael
+ *
+ */
+class qti_resource_provider {
+    // TODO: Where on earth should this class go?? Is it part of core or the engine?
+
+    public $script;
+    public $item;
+    public $package;
+    public $itemid;
+
+    public function __construct($script, $item) {
+        $this->script = $script;
+        $this->item = $item;
+        list($package, $itemid) = explode('/', $item);
+        $this->package = $package;
+        $this->itemid = $itemid;
+    }
+
+    public function urlFor($relativePath) {
+        return $this->script . '?resource=true&path=' . urlencode($relativePath) . '&item=' . urlencode($this->item); 
+    }
+
+}
