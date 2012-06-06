@@ -1,5 +1,126 @@
 <?php
 
+/* Begin QTI Element classes
+ *
+* These are directly related to a QTI element type
+*
+*/
+
+class qti_choiceInteraction extends qti_element{
+
+        /* TODO: We'd really like to tell the simpleChoice elements what type of
+         * input control they're to display in the constructor, but we don't have access to the
+        * variable declarations.
+        */
+    
+    public $simpleChoice = array();
+    public $fixed = array(); // indices of simpleChoices with fixed set to true
+    public $prompt;
+
+    public function __invoke($controller) {
+        $variableName = $this->attrs['responseIdentifier'];
+        $result = "<form method=\"post\" id=\"choiceInteraction_{$variableName}\" class=\"qti_blockInteraction\">";
+
+        // Work out what kind of HTML tag will be used for simpleChoices
+        if (!isset($controller->response[$variableName])) {
+            throw new Exception("Declaration for $variableName not found");
+        }
+
+        $responseVariable = $controller->response[$variableName];
+        $simpleChoiceType = 'radio';
+        $brackets = ''; // we need brackets for multiple responses
+        if ($responseVariable->cardinality == 'multiple') {
+            $simpleChoiceType = 'checkbox';
+            $brackets = '[]';
+        }
+
+        $this->simpleChoice = array();
+        $this->fixed = array();
+        // Process child nodes
+        foreach($this->children as $child) {
+            if ($child instanceof qti_prompt) {
+                $this->prompt = $child;
+            } else if ($child instanceof qti_simpleChoice) {
+                $child->inputType = $simpleChoiceType;
+                $child->name = $variableName.$brackets;
+                $this->simpleChoice[] = $child;
+                if($child->attrs['fixed'] === 'true') {
+                    $this->fixed[] = count($this->simpleChoice) - 1;
+                }
+            }
+        }
+        $result .= $this->prompt->__invoke($controller);
+        
+        // Work out an order to display them in
+        // TODO: Worst implementation ever!
+        $order = range(0, count($this->simpleChoice) - 1);
+        if ($this->attrs['shuffle'] === 'true') {
+            $notfixed = array_diff($order, $this->fixed);
+            shuffle($notfixed);
+            $shuffledused = 0;
+            for($i = 0; $i < count($this->simpleChoice); $i++) {
+                if(in_array($i, $this->fixed)) {
+                    $result .= $this->simpleChoice[$i]->__invoke($controller);
+                } else {
+                    $result .= $this->simpleChoice[$notfixed[$shuffledused++]]->__invoke($controller);
+                }
+            }
+        } else {
+            foreach($order as $i) {
+                $result .= $this->simpleChoice[$i]->__invoke($controller);
+            }
+        }
+        
+        $result .= "<input type=\"submit\" />";
+        $result .= "</form>";
+        return $result;
+    }
+
+}
+
+class qti_element {
+
+    public $attrs;
+    public $children;
+
+    public function __construct($attrs, $children) {
+        $this->attrs = $attrs;
+        $this->children = $children;
+    }
+    
+}
+
+class qti_prompt extends qti_element{
+
+    public function __invoke($controller) {
+        $result .= '<span class="qti_prompt">';
+        foreach($this->children as $child) {
+            $result .= $child->__invoke($controller);
+        }
+        $result .= "</span>";
+        return $result;
+    }
+
+}
+
+class qti_simpleChoice extends qti_element{
+
+    public function __invoke($controller) {
+        $result = "<span class=\"qti_simpleChoice\">\n";
+        $result .= "<input type=\"{$this->inputType}\" name=\"{$this->name}\" value=\"{$this->attrs['identifier']}\"></input>\n";
+        foreach($this->children as $child) {
+            $result .= $child($controller);
+        }
+        $result .= "</span>";
+        return $result;
+    }
+
+}
+
+/* End QTI Element classes */
+
+/* Begin PHP-QTI operational classes */
+
 
 class qti_item_controller {
 
@@ -21,11 +142,14 @@ class qti_item_controller {
     public $persistence; // provides existing values of variables
     public $resource_provider; // provides URLs for images etc.
 
+    public $response_processing; // closure which processes responses
+    public $item_body; // closure which displays item body
+
     public $rootdir;
     public $view;
 
     public function __construct() {
-        
+
     }
 
     public function setUpDefaultVars() {
@@ -36,8 +160,9 @@ class qti_item_controller {
     }
 
     public function showItemBody() {
+        // TODO: Does this resource provider thing work with the new item_body function?
         $resource_provider = $this->resource_provider;
-        include $this->view; // TODO: fix - needs to be correct view file
+        echo $this->item_body->execute();
     }
 
     public function run() {
@@ -85,11 +210,9 @@ class qti_item_controller {
     }
 
     public function processResponse() {
-        // TODO: This should be overriden for all controllers - what's a sensible default here?
-        // TODO: How do we know what state to put it into?
-        echo "DEBUG: You chose: " . $this->response_source->get('RESPONSE');
+        $this->response_processing->execute();
     }
-    
+
 }
 
 class qti_variable {
@@ -128,7 +251,7 @@ class qti_variable {
             $this->value = $this->default;
         }
     }
-    
+
     // Implement mapResponse processing here because it's sensible!
     public function mapResponse() {
         // TODO: Check mapping is defined here?
@@ -149,7 +272,7 @@ class qti_variable {
                 }
             }
         }
-        
+
         return new qti_variable('single', 'float', array('value' => $value));
     }
 
@@ -241,6 +364,108 @@ class qti_response_processing_exception extends Exception {
 
 }
 
+class qti_item_body {
+
+    protected $controller;
+
+    protected $displayFunction;
+
+    public function __construct(qti_item_controller $controller) {
+        $this->controller = $controller;
+    }
+
+    /**
+     * Magic function to simplify creating processing methods. If the first string
+     * passed to the function is an array, it will be assumed to be an associative
+     * array of attribute name/value pairs, otherwise an empty attribute array will
+     * be passed to the underlying method.
+     *
+     * e.g. __call('test', array('id' => 12), object1, object2) will cause the following
+     * method call: _test(array('id' => 12), object1, object2)
+     * whereas __call('test', object1, object2) will cause the following:
+     * _test(array(), object1, object2)
+     *
+     * This is because most processing instructions don't need attributes, but it could
+     * be a source of bugs if we had to remember to generate an empty array each time.
+     * @param unknown_type $name
+     * @param unknown_type $args
+     * @throws Exception
+     */
+    public function __call($name, $args) {
+        if (count($args) > 0 && is_array($args[0])) {
+            $attrs = array_shift($args);
+        } else {
+            $attrs = array();
+        }
+        $realclassname = "qti_$name";
+        if (class_exists($realclassname)) {
+            return new $realclassname($attrs, $args);
+        }
+        $realmethodname = "_$name";
+        if (method_exists($this, $realmethodname)) {
+            return $this->$realmethodname($attrs, $args);
+        }
+
+        // default to just creating a basic HTML element
+        return $this->__default($name, $attrs, $args);
+    }
+
+    // Just return a function to create a basic HTML element
+    public static function __default($name, $attrs, $args) {
+        return function($controller) use ($name, $attrs, $args) {
+            $result = "<$name";
+            if(!empty($attrs)) {
+                foreach($attrs as $key => $value) {
+                    $result .= " $key=\"$value\"";
+                }
+            }
+            $result .= ">";
+            if(!empty($args)) {
+                foreach($args as $child) {
+                    $result .= $child->__invoke($controller);
+                }
+            }
+            $result .= "</$name>";
+            return $result;
+        };
+    }
+
+    /*     public static function _choiceInteraction($attrs, $children) {
+     // test
+    $result = new qti_choiceInteraction($attrs, $children);
+
+    return $result;
+    }
+
+    public static function _simpleChoice($attrs, $children) {
+    // test
+    $result = new qti_simpleChoice($attrs, $children);
+
+    return $result;
+    } */
+
+    public static function __text($text) {
+        return function($controller) use ($text) {
+            return $text;
+        };
+    }
+
+    public function execute() {
+        return ($this->displayFunction->__invoke($this->controller));
+    }
+
+    public function _itemBody($attrs, $children) {
+        $this->displayFunction = function($controller) use($children) {
+            $result = '';
+            foreach($children as $child) {
+                $result .= $child->__invoke($controller);
+            }
+            return $result;
+        };
+    }
+
+}
+
 class qti_response_processing {
 
     protected $controller;
@@ -282,8 +507,14 @@ class qti_response_processing {
         throw new Exception("qti_response_processing method _$name not found");
     }
 
+    public function __text($text) {
+        return function($controller) use ($text) {
+            return $text;
+        };
+    }
+
     public function execute() {
-        ($this->processingFunction->__invoke($this->controller));
+        $this->processingFunction->__invoke($this->controller);
         echo "DEBUG: SCORE = " . $this->controller->outcome['SCORE'];
     }
 
@@ -358,7 +589,7 @@ class qti_response_processing {
     public function _baseValue($attrs, $children) {
         return function($controller) use ($attrs, $children) {
             return new qti_variable('single', $attrs['baseType'], array(
-            	'value' => $children[0]
+            	'value' => $children[0]($controller)
             ));
         };
     }
@@ -508,6 +739,7 @@ class qti_response_processing {
         return function($controller) use ($attrs, $children) {
             $val1 = $children[0]->__invoke($controller);
             $val2 = $children[1]->__invoke($controller);
+            print_r($val1); print_r($val2);
             // TODO: Make work for arrays, floats etc.
             return  new qti_variable('single', 'boolean', array(
                 'value' => (qti_variable::compare($val1, $val2) === 0) ? true : false
@@ -602,11 +834,5 @@ class qti_response_processing {
     public function _customOperator($attrs, $children) {
         throw new Exception("Not implemented");
     }
-
-
-
-
-
-
 
 }

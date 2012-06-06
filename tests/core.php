@@ -12,4 +12,16 @@ class QTIVariableTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('multiple identifier [A,B]', $variable2);
 
     }
+    
+    public function testItemBody() {
+        $controller = new qti_item_controller();
+        $b = new qti_item_body($controller);
+        $b->itemBody(
+            $b->choiceInteraction(
+                $b->simpleChoice(),
+                $b->simpleChoice()
+            )    
+        );
+        print_r($b);
+    }
 }

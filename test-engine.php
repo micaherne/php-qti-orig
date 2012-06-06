@@ -22,6 +22,7 @@ list($package, $itemid) = explode('/', $item);
 // If it's a request for a resource, serve it
 if (isset($_GET['resource'])) {
     if (!isset($_GET['path'])) {
+        header("HTTP/1.0 400 Bad request");
         die('Path required'); // TODO: Should be bad request header
     }
     $path = "data/{$package}/" . $_GET['path'];
@@ -46,8 +47,6 @@ $controller->rootDir = dirname(__FILE__). '/data/' . $package;
 $controller->persistence = new qti_persistence();
 $controller->response_source = new qti_http_response_source();
 $controller->resource_provider = new qti_resource_provider($_SERVER['SCRIPT_NAME'], $item);
-
-$controller->view = "data/{$package}/gen_{$itemid}_view.php";
 
 $controller->run();
 
