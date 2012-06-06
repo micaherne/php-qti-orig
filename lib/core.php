@@ -221,8 +221,8 @@ class qti_variable {
     public $type;
     // For response vars, QTI has a candidateResponse wrapper for the value - any reason to implement?
     public $value;
-    public $correct;
-    public $default;
+    public $correctResponse;
+    public $defaultValue;
     public $mapping;
 
     /**
@@ -241,14 +241,19 @@ class qti_variable {
         }
 
         $this->correct = null;
-        if(isset($params['correct'])) {
-            $this->correct = $params['correct'];
+        if(isset($params['correctResponse'])) {
+            $this->correctResponse = $params['correctResponse'];
         }
 
-        $this->default = null;
-        if(isset($params['default'])) {
-            $this->default = $params['default'];
-            $this->value = $this->default;
+        $this->defaultValue = null;
+        if(isset($params['defaultValue'])) {
+            $this->defaultValue = $params['defaultValue'];
+            $this->value = $this->defaultValue;
+        }
+        
+        $this->mapping = null;
+        if(isset($params['mapping'])) {
+            $this->mapping = $params['mapping'];
         }
     }
 
@@ -256,19 +261,19 @@ class qti_variable {
     public function mapResponse() {
         // TODO: Check mapping is defined here?
         if ($this->cardinality == 'single') {
-            if (in_array($this->value, $this->mapping->mapEntry)) {
-                $value = $this->mapping->mapEntry[$this->value];
+            if (in_array($this->value, $this->mapping['mapEntry'])) {
+                $value = $this->mapping['mapEntry'][$this->value];
             } else {
-                $value = $this->mapping->defaultValue;
+                $value = $this->mapping['defaultValue'];
             }
         } else {
             $value = 0;
             // array_unique used because values should only be counted once - see mapResponse documentation
             foreach(array_unique($this->value) as $response) {
-                if (array_key_exists($response, $this->mapping->mapEntry)) {
-                    $value += $this->mapping->mapEntry[$response];
+                if (array_key_exists($response, $this->mapping['mapEntry'])) {
+                    $value += $this->mapping['mapEntry'][$response];
                 } else {
-                    $value += $this->mapping->defaultValue;
+                    $value += $this->mapping['defaultValue'];
                 }
             }
         }
@@ -282,13 +287,13 @@ class qti_variable {
     }
 
     // Return a qti_variable representing the default
-    public function getDefault() {
-        return new qti_variable($this->cardinality, $this->type, array('value' => $this->default));
+    public function getDefaultValue() {
+        return new qti_variable($this->cardinality, $this->type, array('value' => $this->defaultValue));
     }
 
     // Return a qti_variable representing the correct value
-    public function getCorrect() {
-        return new qti_variable($this->cardinality, $this->type, array('value' => $this->correct));
+    public function getCorrectResponse() {
+        return new qti_variable($this->cardinality, $this->type, array('value' => $this->correctResponse));
     }
 
     /**
@@ -611,9 +616,9 @@ class qti_response_processing {
         return function($controller) use ($attrs, $children) {
             $varname = $attrs['identifier'];
             if(isset($controller->response[$varname])) {
-                return $controller->response[$varname]->getDefault();
+                return $controller->response[$varname]->getDefaultValue();
             } else if (isset($controller->outcome[$varname])) {
-                return $controller->outcome[$varname]->getDefault();
+                return $controller->outcome[$varname]->getDefaultValue();
             } else {
                 throw new qti_response_processing_exception("Variable $varname not found");
             }
@@ -624,7 +629,7 @@ class qti_response_processing {
         return function($controller) use ($attrs, $children) {
             $varname = $attrs['identifier'];
             if(isset($controller->response[$varname])) {
-                return $controller->response[$varname]->getCorrect();
+                return $controller->response[$varname]->getCorrectResponse();
             } else {
                 throw new qti_response_processing_exception("Variable $varname not found");
             }
@@ -739,7 +744,6 @@ class qti_response_processing {
         return function($controller) use ($attrs, $children) {
             $val1 = $children[0]->__invoke($controller);
             $val2 = $children[1]->__invoke($controller);
-            print_r($val1); print_r($val2);
             // TODO: Make work for arrays, floats etc.
             return  new qti_variable('single', 'boolean', array(
                 'value' => (qti_variable::compare($val1, $val2) === 0) ? true : false

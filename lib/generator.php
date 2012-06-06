@@ -17,33 +17,6 @@ class qti_item_generator {
         
     public function __construct($dom) {
         $this->dom = $dom;
-        $this->parse_declarations();
-    }
-    
-    public function parse_declarations() {
-        // Get response variable types (needed to work out how to render interactions)
-        $this->responseDeclarations = array();
-        $responseDeclarationNodes = $this->dom->getElementsByTagNameNS ('http://www.imsglobal.org/xsd/imsqti_v2p1', 'responseDeclaration');
-        foreach($responseDeclarationNodes as $node) {
-            $responseDeclaration = new stdClass();
-            $identifier = $node->getAttribute('identifier');
-            $responseDeclaration->identifier = $identifier;
-            $responseDeclaration->cardinality = $node->getAttribute('cardinality');
-            $responseDeclaration->baseType = $node->getAttribute('baseType');
-            
-            $this->responseDeclarations[$identifier] = $responseDeclaration;
-        }
-        
-        $this->outcomeDeclarations = array();
-        $outcomeDeclarationNodes = $this->dom->getElementsByTagNameNS ('http://www.imsglobal.org/xsd/imsqti_v2p1', 'outcomeDeclaration');
-        foreach($outcomeDeclarationNodes as $node) {
-            $outcomeDeclaration = new stdClass();
-            $identifier = $node->getAttribute('identifier');
-            $outcomeDeclaration->identifier = $identifier;
-            $outcomeDeclaration->cardinality = $node->getAttribute('cardinality');
-            $outcomeDeclaration->baseType = $node->getAttribute('baseType');
-            $this->outcomeDeclarations[$identifier] = $outcomeDeclaration;
-        }
     }
     
     public function generate_controller($id) {
@@ -89,16 +62,20 @@ class qti_item_generator {
         $result .= "}";
         // TODO: Add: "public function beginAttempt() {" etc.
         $result .= "    public function beginAttempt() {
-        parent::beginAttempt();
+        parent::beginAttempt();\n";
 
-        \$this->response['RESPONSE'] = new qti_variable('single', 'identifier', array(
-            'correct' => 'ChoiceA'
-        ));
-        \$this->outcome['SCORE'] = new qti_variable('single', 'integer', array(
-            'default' => 0
-        ));
+        foreach($this->dom->getElementsByTagNameNS ('http://www.imsglobal.org/xsd/imsqti_v2p1', 'responseDeclaration') as $responseDeclarationNode) {
+            $result .= $this->variable_declaration($responseDeclarationNode);
+        }
+        
+        foreach($this->dom->getElementsByTagNameNS ('http://www.imsglobal.org/xsd/imsqti_v2p1', 'outcomeDeclaration') as $outcomeDeclarationNode) {
+            $result .= $this->variable_declaration($outcomeDeclarationNode);
+        }
+        
+        // TODO: Implement templateDeclaration
 
-    }";
+        // Close beginAttempt
+        $result .= "}";
         // Close class
         $result .= "}";
         return $result;
@@ -132,6 +109,80 @@ class qti_item_generator {
             }
             $result .= implode(",\n", $children);
         $result .= ')';
+        return $result;
+    }
+    
+    // Return a qti_variable constructor given a responseDeclaration or outcomeDeclaration node
+    public function variable_declaration($node) {
+        /* \$this->response['RESPONSE'] = new qti_variable('single', 'identifier', array(
+                    'correct' => 'ChoiceA'
+        )); */
+        $identifier = $node->getAttribute('identifier');
+        $cardinality = $node->getAttribute('cardinality');
+        $type = str_replace('Declaration', '', $node->nodeName);
+        $result = '$this->' . $type . "['$identifier'] = new qti_variable('";
+        $result .= $cardinality . "', '";
+        $result .= $node->getAttribute('baseType') . "', array(";
+        
+        // Create params
+        // TODO: Support things like "interpretation" attribute, record types etc.
+        $params = array();
+        foreach($node->childNodes as $child) {
+            switch($child->nodeName) {
+                case 'defaultValue':
+                    $defaultValue = array();
+                    foreach($child->childNodes as $valueNode) {
+                        if ($valueNode->nodeType == XML_TEXT_NODE) {
+                            continue;
+                        }
+                        $defaultValue[] = $valueNode->nodeValue;
+                    }
+                    if ($cardinality == 'single') {
+                        $params[] = "'defaultValue' => '{$defaultValue[0]}'";
+                    } else {
+                        $params[] = "'defaultValue' => array('" . implode("','", $defaultValue) . "')";
+                    }
+                    break;
+                case 'correctResponse':
+                    $correctResponse = array();
+                    foreach($child->childNodes as $valueNode) {
+                        if ($valueNode->nodeType == XML_TEXT_NODE) {
+                            continue;
+                        }
+                        $correctResponse[] = $valueNode->nodeValue;
+                    }
+                    if ($cardinality == 'single') {
+                        $params[] = "'correctResponse' => '{$correctResponse[0]}'";
+                    } else {
+                        $params[] = "'correctResponse' => array('" . implode("','", $correctResponse) . "')";
+                    }
+                    break;
+                case 'mapping':
+                    $mapping = array();
+                    foreach($child->attributes as $attr) {
+                        $mapping[] = "'{$attr->name}' => '{$attr->value}'";
+                    }
+                    
+                    $mapEntry = array();
+                    foreach($child->childNodes as $valueNode) {
+                        if ($valueNode->nodeType == XML_TEXT_NODE) {
+                            continue;
+                        }
+                        $mapEntry[] = "'{$valueNode->getAttribute('mapKey')}' => '{$valueNode->getAttribute('mappedValue')}'";
+                    }
+                    
+                    $mapping['mapEntry'] = "'mapEntry' => array(" . implode(",", $mapEntry) . ')';
+                    
+                    $params[] = "'mapping' => array(" . implode(",", $mapping) . ')';
+                    break;
+                    
+                // TODO: Implement areaMapping
+            }
+        }
+        
+        $result .= implode(',', $params);
+        
+        $result .= '));';
         return $result;
     }
 }
