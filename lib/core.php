@@ -6,13 +6,82 @@
 *
 */
 
+class qti_orderInteraction extends qti_element {
+
+    /* TODO: We'd really like to tell the simpleChoice elements what type of
+     * input control they're to display in the constructor, but we don't have access to the
+    * variable declarations.
+    */
+
+    public $simpleChoice = array();
+    public $fixed = array(); // indices of simpleChoices with fixed set to true
+    public $prompt;
+
+    public function __invoke($controller) {
+        $variableName = $this->attrs['responseIdentifier'];
+        $result = "<form method=\"post\" id=\"orderInteraction_{$variableName}\" class=\"qti_blockInteraction\">";
+
+        // Work out what kind of HTML tag will be used for simpleChoices
+        if (!isset($controller->response[$variableName])) {
+            throw new Exception("Declaration for $variableName not found");
+        }
+
+        $responseVariable = $controller->response[$variableName];
+        $simpleChoiceType = 'input';
+        $brackets = ''; // we need brackets for multiple responses
+        
+        $this->simpleChoice = array();
+        $this->fixed = array();
+        // Process child nodes
+        foreach($this->children as $child) {
+            if ($child instanceof qti_prompt) {
+                $this->prompt = $child;
+            } else if ($child instanceof qti_simpleChoice) {
+                $child->inputType = 'input';
+                $child->interactionType = 'orderInteraction';
+                $child->name = $variableName.$brackets;
+                $this->simpleChoice[] = $child;
+                if($child->attrs['fixed'] === 'true') {
+                    $this->fixed[] = count($this->simpleChoice) - 1;
+                }
+            }
+        }
+        $result .= $this->prompt->__invoke($controller);
+
+        // Work out an order to display them in
+        // TODO: Worst implementation ever!
+        $order = range(0, count($this->simpleChoice) - 1);
+        if ($this->attrs['shuffle'] === 'true') {
+            $notfixed = array_diff($order, $this->fixed);
+            shuffle($notfixed);
+            $shuffledused = 0;
+            for($i = 0; $i < count($this->simpleChoice); $i++) {
+                if(in_array($i, $this->fixed)) {
+                    $result .= $this->simpleChoice[$i]->__invoke($controller);
+                } else {
+                    $result .= $this->simpleChoice[$notfixed[$shuffledused++]]->__invoke($controller);
+                }
+            }
+        } else {
+            foreach($order as $i) {
+                $result .= $this->simpleChoice[$i]->__invoke($controller);
+            }
+        }
+
+        $result .= "<input type=\"submit\" />";
+        $result .= "</form>";
+        return $result;
+    }
+
+}
+
 class qti_choiceInteraction extends qti_element{
 
-        /* TODO: We'd really like to tell the simpleChoice elements what type of
-         * input control they're to display in the constructor, but we don't have access to the
-        * variable declarations.
-        */
-    
+    /* TODO: We'd really like to tell the simpleChoice elements what type of
+     * input control they're to display in the constructor, but we don't have access to the
+    * variable declarations.
+    */
+
     public $simpleChoice = array();
     public $fixed = array(); // indices of simpleChoices with fixed set to true
     public $prompt;
@@ -50,7 +119,7 @@ class qti_choiceInteraction extends qti_element{
             }
         }
         $result .= $this->prompt->__invoke($controller);
-        
+
         // Work out an order to display them in
         // TODO: Worst implementation ever!
         $order = range(0, count($this->simpleChoice) - 1);
@@ -70,13 +139,14 @@ class qti_choiceInteraction extends qti_element{
                 $result .= $this->simpleChoice[$i]->__invoke($controller);
             }
         }
-        
+
         $result .= "<input type=\"submit\" />";
         $result .= "</form>";
         return $result;
     }
 
 }
+
 
 class qti_element {
 
@@ -87,7 +157,7 @@ class qti_element {
         $this->attrs = $attrs;
         $this->children = $children;
     }
-    
+
 }
 
 class qti_prompt extends qti_element{
@@ -103,11 +173,17 @@ class qti_prompt extends qti_element{
 
 }
 
-class qti_simpleChoice extends qti_element{
+class qti_simpleChoice extends qti_element {
+    
+    public $interactionType = 'choiceInteraction';
 
     public function __invoke($controller) {
         $result = "<span class=\"qti_simpleChoice\">\n";
-        $result .= "<input type=\"{$this->inputType}\" name=\"{$this->name}\" value=\"{$this->attrs['identifier']}\"></input>\n";
+        if ($this->interactionType == 'choiceInteraction') {
+            $result .= "<input type=\"{$this->inputType}\" name=\"{$this->name}\" value=\"{$this->attrs['identifier']}\"></input>\n";
+        } else if ($this->interactionType = 'orderInteraction') {
+            $result .= "<input type=\"{$this->inputType}\" name=\"{$this->name}[{$this->attrs['identifier']}]\" value=\"\"></input>\n";
+        }
         foreach($this->children as $child) {
             $result .= $child($controller);
         }
@@ -203,9 +279,7 @@ class qti_item_controller {
     // Bind the responses to the controller variables
     public function bindVariables() {
         foreach($this->response as $key => $val) {
-            if($submittedvalue = $this->response_source->get($key)) {
-                $this->response[$key]->value = $submittedvalue;
-            }
+            $this->response_source->bindVariable($key, $val);
         }
     }
 
@@ -250,7 +324,7 @@ class qti_variable {
             $this->defaultValue = $params['defaultValue'];
             $this->value = $this->defaultValue;
         }
-        
+
         $this->mapping = null;
         if(isset($params['mapping'])) {
             $this->mapping = $params['mapping'];
@@ -281,9 +355,31 @@ class qti_variable {
         return new qti_variable('single', 'float', array('value' => $value));
     }
 
-    // TODO: Make this work for things other than strings
+    // TODO: Make this work for things other than strings and arrays
     public static function compare($variable1, $variable2) {
-        return strcmp($variable1->value, $variable2->value);
+        if (!is_array($variable1->value) && !(is_array($variable2->value))) {
+            return strcmp($variable1->value, $variable2->value);
+        }
+        if (count($variable1->value) != count($variable2->value)) {
+            // This doesn't mean anything
+            return count($variable1->value) - count($variable2->value);
+        }
+        // If it's multiple just do a diff
+        if ($variable1->cardinality == 'multiple') {
+            return count(array_diff($variable1->value, $variable2->value));
+        } else if ($variable1->cardinality == 'ordered') {
+            // check them pairwise
+            for($i = 0; $i < count($variable1->value); $i++) {
+                if ($variable1->value[$i] != $variable2->value[$i]) {
+                    // This doesn't mean too much either
+                    return strcmp($variable1->value[$i], $variable2->value[$i]);
+                }
+            }
+            return 0;
+        }
+        
+        // default to not equal
+        return -1;
     }
 
     // Return a qti_variable representing the default
@@ -355,6 +451,42 @@ class qti_persistence {
 
 class qti_http_response_source {
 
+    /**
+     * Update a variable with values from $_POST
+     * @param string $name
+     * @param qti_variable $variable
+     */
+    
+    public function bindVariable($name, qti_variable &$variable) {
+        switch ($variable->cardinality) {
+            case 'single':
+                if($submittedvalue = $this->get($name)) {
+                    $variable->value = $submittedvalue;
+                }
+                break;
+            case 'multiple':
+                if($submittedvalue = $this->get($name)) {
+                    $variable->value = $submittedvalue;
+                }
+                break;
+            case 'ordered':
+                /* Ordered variables use inputs with names like:
+                 * RESPONSE[choiceA] which have integer values giving
+                 * the order
+                 * 
+                 * TODO: Deal with unset options
+                 */
+                $values = $this->get($name);
+                $values = array_flip($values);
+                ksort($values);
+                $variable->value = array_values($values);
+                break;
+            default:
+                throw new Exception('qti_http_response_source does not support variable cardinality ' . $variable->cardinality);
+        }
+         
+    }
+    
     public function get($name) {
         return $_POST[$name];
     }
@@ -434,6 +566,23 @@ class qti_item_body {
             return $result;
         };
     }
+    
+    public static function __basicElement($name, $attrs, $args) {
+        $result = "<$name";
+        if(!empty($attrs)) {
+            foreach($attrs as $key => $value) {
+                $result .= " $key=\"$value\"";
+            }
+        }
+        $result .= ">";
+        if(!empty($args)) {
+            foreach($args as $child) {
+                $result .= $child->__invoke($controller);
+            }
+        }
+        $result .= "</$name>";
+        return $result;
+    }
 
     /*     public static function _choiceInteraction($attrs, $children) {
      // test
@@ -452,6 +601,15 @@ class qti_item_body {
     public static function __text($text) {
         return function($controller) use ($text) {
             return $text;
+        };
+    }
+
+    public function _img($attrs, $args) {
+        return function($controller) use ($attrs) {
+            if(isset($attrs['src'])) {
+                $attrs['src'] = $controller->resource_provider->urlFor($attrs['src']);
+            }
+            return qti_item_body::__basicElement('img', $attrs, $args);
         };
     }
 

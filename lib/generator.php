@@ -4,7 +4,7 @@
 // This assumes that the XML is a valid QTI 2.1 item
 
 // Test stuff - to be refactored out
-$example = "choice_multiple";
+$example = "order";
 $dom = new DOMDocument();
 $dom->load("data/$example/$example.xml");
 $gen = new qti_item_generator($dom);

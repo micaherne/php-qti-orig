@@ -36,12 +36,4 @@ $r->__text('0'))))));
 $this->response_processing = $r;
 }    public function beginAttempt() {
         parent::beginAttempt();
-
-        $this->response['RESPONSE'] = new qti_variable('single', 'identifier', array(
-            'correct' => 'ChoiceA'
-        ));
-        $this->outcome['SCORE'] = new qti_variable('single', 'integer', array(
-            'default' => 0
-        ));
-
-    }}
+$this->response['RESPONSE'] = new qti_variable('single', 'identifier', array('correctResponse' => 'ChoiceA'));$this->outcome['SCORE'] = new qti_variable('single', 'integer', array('defaultValue' => '0'));}}

@@ -1,15 +1,9 @@
 <?php
 
 /*
- * This is a test engine which just passes off all work to examples/choice_controller.php
+ * This is a test engine which just passes off all work to c
  * 
- * It should really:
- * 
- * 1. examine the request to discover what item is being requested
- * 2. create the correct controller class for that item
- * 3. pass control to the controller
- * 
- * In theory it should also be able to display multiple items on the same page and
+ * In theory this should be able to display multiple items on the same page and
  * their controllers should be able to understand whether that particular item instance
  * has been submitted (multiple instances of same item should be allowed)
  */
