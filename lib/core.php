@@ -619,10 +619,17 @@ class qti_item_body {
 
     public function _itemBody($attrs, $children) {
         $this->displayFunction = function($controller) use($children) {
-            $result = '';
+            $result = "<div";
+            if(!empty($attrs)) { // add stuff like "class" attribute
+                foreach($attrs as $key => $value) {
+                    $result .= " $key=\"$value\"";
+                }
+            }
+            $result .= ">";
             foreach($children as $child) {
                 $result .= $child->__invoke($controller);
             }
+            $result .= "</div>";
             return $result;
         };
     }
@@ -840,7 +847,23 @@ class qti_response_processing {
     }
 
     public function _ordered($attrs, $children) {
-        throw new Exception("Not implemented");
+        return function($controller) use ($attrs, $children) {
+            $result = new qti_variable('ordered', null);
+            $value = array();
+            foreach($children as $child) {
+                $var = $child->__invoke($controller);
+                if (is_null($result->type)) {
+                    $result->type = $var->type;
+                }
+                if ($var->cardinality == 'single') {
+                    $value[] = $var->value;
+                } else if ($var->cardinality == 'ordered') {
+                    $value = array_merge($value, $var->value);
+                }
+            }
+            $result->value = $value;
+            return $result;
+        };
     }
 
     public function _containerSize($attrs, $children) {
