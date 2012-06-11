@@ -3,16 +3,6 @@
 // An attempt to generate PHP controller / view for a QTI item without XSLT
 // This assumes that the XML is a valid QTI 2.1 item
 
-// Test stuff - to be refactored out
-$example = "order_partial_scoring";
-$dom = new DOMDocument();
-$dom->load("data/$example/$example.xml");
-$gen = new qti_item_generator($dom);
-
-$out = fopen("data/$example/{$example}_controller.php", 'w');
-fputs($out, $gen->generate_controller($example));
-fclose($out);
-
 class qti_item_generator {
         
     public function __construct($dom) {
@@ -22,6 +12,13 @@ class qti_item_generator {
     public function generate_controller($id) {
         $result = "<?php \nclass {$id}_controller extends qti_item_controller {\n
     		public function __construct() {\n";
+        
+        // Get things like title
+        foreach($this->dom->documentElement->attributes as $attr) {
+            if(in_array($attr->name, array('identifier', 'title', 'adaptive', 'timeDependent'))) {
+                $result .= '$this->' . $attr->name . " = '{$attr->value}';\n";
+            }
+        }
         
         // Create the itemBody generator function
         $result .= '$p = new qti_item_body($this);' . "\n";

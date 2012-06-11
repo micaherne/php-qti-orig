@@ -32,6 +32,14 @@ class qti_orderInteraction extends qti_element {
         
         $this->simpleChoice = array();
         $this->fixed = array();
+        
+        // Count simple choices
+        $numberOfChoices = 0;
+        foreach($this->children as $child) {
+            if ($child instanceof qti_simpleChoice) {
+                $numberOfChoices++;
+            }
+        }
         // Process child nodes
         foreach($this->children as $child) {
             if ($child instanceof qti_prompt) {
@@ -40,6 +48,7 @@ class qti_orderInteraction extends qti_element {
                 $child->inputType = 'input';
                 $child->interactionType = 'orderInteraction';
                 $child->name = $variableName.$brackets;
+                $child->numberOfChoices = $numberOfChoices;
                 $this->simpleChoice[] = $child;
                 if($child->attrs['fixed'] === 'true') {
                     $this->fixed[] = count($this->simpleChoice) - 1;
@@ -182,7 +191,13 @@ class qti_simpleChoice extends qti_element {
         if ($this->interactionType == 'choiceInteraction') {
             $result .= "<input type=\"{$this->inputType}\" name=\"{$this->name}\" value=\"{$this->attrs['identifier']}\"></input>\n";
         } else if ($this->interactionType = 'orderInteraction') {
-            $result .= "<input type=\"{$this->inputType}\" name=\"{$this->name}[{$this->attrs['identifier']}]\" value=\"\"></input>\n";
+            $result .= "<select name=\"{$this->name}[{$this->attrs['identifier']}]\">\n";
+            $result .= "<option></option>";
+            for($i = 1; $i <= $this->numberOfChoices; $i++) {
+                $result .= "<option value=\"$i\">$i</option>";
+            }
+            $result .= "</select>";
+            // $result .= "<input type=\"{$this->inputType}\" name=\"{$this->name}[{$this->attrs['identifier']}]\" value=\"\"></input>\n";
         }
         foreach($this->children as $child) {
             $result .= $child($controller);
