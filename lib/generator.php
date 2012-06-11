@@ -16,7 +16,7 @@ class qti_item_generator {
         // Get things like title
         foreach($this->dom->documentElement->attributes as $attr) {
             if(in_array($attr->name, array('identifier', 'title', 'adaptive', 'timeDependent'))) {
-                $result .= '$this->' . $attr->name . " = '{$attr->value}';\n";
+                $result .= '$this->' . $attr->name . " = '" . addslashes($attr->value) . "';\n";
             }
         }
         
