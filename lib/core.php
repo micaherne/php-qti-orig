@@ -77,7 +77,7 @@ class qti_orderInteraction extends qti_element {
             }
         }
 
-        $result .= "<input type=\"submit\" />";
+        $result .= "<input type=\"submit\"  value=\"Submit response\"/>";
         $result .= "</form>";
         return $result;
     }
@@ -149,7 +149,82 @@ class qti_choiceInteraction extends qti_element{
             }
         }
 
-        $result .= "<input type=\"submit\" />";
+        $result .= "<input type=\"submit\" value=\"Submit response\"/>";
+        $result .= "</form>";
+        return $result;
+    }
+
+}
+
+class qti_gapMatchInteraction extends qti_element{
+
+    /* TODO: We'd really like to tell the simpleChoice elements what type of
+     * input control they're to display in the constructor, but we don't have access to the
+    * variable declarations.
+    */
+
+    public $gapChoice = array();
+    public $fixed = array(); // indices of gapChoices with fixed set to true
+    public $prompt;
+
+    public function __invoke($controller) {
+        $variableName = $this->attrs['responseIdentifier'];
+        $result = "<form method=\"post\" id=\"gapMatchInteraction_{$variableName}\" class=\"qti_blockInteraction\">";
+
+        // Find variable
+        if (!isset($controller->response[$variableName])) {
+            throw new Exception("Declaration for $variableName not found");
+        }
+
+        $responseVariable = $controller->response[$variableName];
+        
+        $this->gapChoice = array();
+        // TODO: Implement gapImg
+        $this->fixed = array();
+        $this->displayNodes = array(); // Nodes which will be processed for display as normal
+        // Process child nodes
+        foreach($this->children as $child) {
+            if ($child instanceof qti_prompt) {
+                $this->prompt = $child;
+            } else if ($child instanceof qti_gapChoice) {
+                $this->gapChoice[] = $child;
+                if($child->attrs['fixed'] === 'true') {
+                    $this->fixed[] = count($this->gapChoice) - 1;
+                }
+            } else {
+                $this->displayNodes[] = $child;
+            }
+        }
+        
+        $controller->context['gapMatchInteraction'] = $this;
+        
+        $result .= $this->prompt->__invoke($controller);
+
+        // Work out an order to display them in
+        // TODO: Worst implementation ever!
+        /* $order = range(0, count($this->gapChoice) - 1);
+        if ($this->attrs['shuffle'] === 'true') {
+            $notfixed = array_diff($order, $this->fixed);
+            shuffle($notfixed);
+            $shuffledused = 0;
+            for($i = 0; $i < count($this->gapChoice); $i++) {
+                if(in_array($i, $this->fixed)) {
+                    $result .= $this->gapChoice[$i]->__invoke($controller);
+                } else {
+                    $result .= $this->gapChoice[$notfixed[$shuffledused++]]->__invoke($controller);
+                }
+            }
+        } else {
+            foreach($order as $i) {
+                $result .= $this->gapChoice[$i]->__invoke($controller);
+            }
+        } */
+
+        foreach($this->displayNodes as $node) {
+            $result .= $node->__invoke($controller);
+        }
+        
+        $result .= "<input type=\"submit\" value=\"Submit response\"/>";
         $result .= "</form>";
         return $result;
     }
@@ -166,13 +241,9 @@ class qti_element {
         $this->attrs = $attrs;
         $this->children = $children;
     }
-
-}
-
-class qti_prompt extends qti_element{
-
+    
     public function __invoke($controller) {
-        $result .= '<span class="qti_prompt">';
+        $result .= '<span class="' . get_class($this) . '">';
         foreach($this->children as $child) {
             $result .= $child->__invoke($controller);
         }
@@ -182,6 +253,39 @@ class qti_prompt extends qti_element{
 
 }
 
+class qti_prompt extends qti_element {
+
+}
+
+class qti_gapChoice extends qti_element {
+    
+}
+
+class qti_gapText extends qti_gapChoice {
+    
+    public function __invoke($controller) {
+        // No-op. Only used at function generation time
+    }
+    
+}
+
+class qti_gap extends qti_element {
+    
+    public function __invoke($controller) {
+        $result = "<span class=\"qti_gap\"><select name=\"{$this->attrs['identifier']}\">";
+        foreach($controller->context['gapMatchInteraction']->gapChoice as $choice) {
+            $result .= "<option value=\"{$choice->attrs['identifier']}\">";
+            foreach($choice->children as $child) {
+                $result .= $child->__invoke($controller);
+            }
+            $result .= "</option>";
+        }
+        $result .= '</select></span>';
+        return $result;
+    }
+    
+}
+
 class qti_simpleChoice extends qti_element {
     
     public $interactionType = 'choiceInteraction';
@@ -189,15 +293,27 @@ class qti_simpleChoice extends qti_element {
     public function __invoke($controller) {
         $result = "<span class=\"qti_simpleChoice\">\n";
         if ($this->interactionType == 'choiceInteraction') {
-            $result .= "<input type=\"{$this->inputType}\" name=\"{$this->name}\" value=\"{$this->attrs['identifier']}\"></input>\n";
+            
+            // str_replace is for checkboxes where the element name always has [] at the end
+            $responseValue = $controller->response[str_replace('[]', '', $this->name)]->value;
+            
+            // See if this response was selected already
+            // TODO: Do this checking in qti_variable so it can be reused
+            if (is_array($responseValue)) {
+                echo "array";
+                $checked = in_array($this->attrs['identifier'], $responseValue) ? ' checked="checked"' : '';
+            } else {
+                $checked = $responseValue == $this->attrs['identifier'] ? ' checked="checked"' : '';
+            }
+            $result .= "<input type=\"{$this->inputType}\" name=\"{$this->name}\" value=\"{$this->attrs['identifier']}\" $checked></input>\n";
         } else if ($this->interactionType = 'orderInteraction') {
             $result .= "<select name=\"{$this->name}[{$this->attrs['identifier']}]\">\n";
             $result .= "<option></option>";
             for($i = 1; $i <= $this->numberOfChoices; $i++) {
-                $result .= "<option value=\"$i\">$i</option>";
+                $selected = $controller->response[$this->name]->value[$i - 1] == $this->attrs['identifier'] ? ' selected="selected"' : '';
+                $result .= "<option value=\"$i\" $selected>$i</option>";
             }
             $result .= "</select>";
-            // $result .= "<input type=\"{$this->inputType}\" name=\"{$this->name}[{$this->attrs['identifier']}]\" value=\"\"></input>\n";
         }
         foreach($this->children as $child) {
             $result .= $child($controller);
@@ -238,6 +354,10 @@ class qti_item_controller {
 
     public $rootdir;
     public $view;
+    
+    public $show_debugging = false; // do we show memory usage etc.?
+    
+    public $context = array(); // for passing contextual info (e.g. ancestor nodes) 
 
     public function __construct() {
 
@@ -270,8 +390,10 @@ class qti_item_controller {
             }
         }
 
-        echo "<hr />Memory: " . memory_get_peak_usage() / (1024 * 1024) . "Mb"; // TODO: Remove this debugging
-
+        if ($this->show_debugging) {
+            echo "<hr />Memory: " . memory_get_peak_usage() / (1024 * 1024) . "Mb"; // TODO: Remove this debugging
+        }
+        
         $this->persistence->persist($this);
     }
 
@@ -283,6 +405,7 @@ class qti_item_controller {
 
     public function beginAttempt() {
         $this->state = qti_item_controller::STATE_INTERACTING;
+        $this->outcome['completionStatus']->value = 'unknown';
     }
 
     public function endAttempt() {
@@ -300,6 +423,21 @@ class qti_item_controller {
 
     public function processResponse() {
         $this->response_processing->execute();
+        $this->showItemBody();
+        $this->displayResults();
+    }
+    
+    public function displayResults() {
+        echo "<div class=\"well\">";
+        foreach($this->outcome as $key => $outcome) {
+            echo "$key: " . $outcome . "<br />";
+        }
+        echo "<hr />";
+        foreach($this->response as $key => $response) {
+            echo "$key: " . $response . "<br />";
+        }
+                
+        echo "</div>";
     }
 
 }
@@ -700,7 +838,7 @@ class qti_response_processing {
 
     public function execute() {
         $this->processingFunction->__invoke($this->controller);
-        echo "DEBUG: SCORE = " . $this->controller->outcome['SCORE'];
+        //echo "DEBUG: SCORE = " . $this->controller->outcome['SCORE'];
     }
 
     /*

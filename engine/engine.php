@@ -93,6 +93,8 @@ $controller->persistence = new qti_persistence();
 $controller->response_source = new qti_http_response_source();
 $controller->resource_provider = new qti_resource_provider($_SERVER['SCRIPT_NAME'], $item);
 
+$controller->show_debugging = true;
+
 // $controller->run is called in view.php in the correct place
 
 /**
