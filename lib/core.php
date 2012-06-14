@@ -272,9 +272,19 @@ class qti_gapText extends qti_gapChoice {
 class qti_gap extends qti_element {
     
     public function __invoke($controller) {
-        $result = "<span class=\"qti_gap\"><select name=\"{$this->attrs['identifier']}\">";
-        foreach($controller->context['gapMatchInteraction']->gapChoice as $choice) {
-            $result .= "<option value=\"{$choice->attrs['identifier']}\">";
+        $gapMatchInteraction = $controller->context['gapMatchInteraction'];
+        $identifier = $this->attrs['identifier'];
+        $result = "<span class=\"qti_gap\"><select name=\"{$gapMatchInteraction->attrs['responseIdentifier']}[{$identifier}]\">";
+        $result .= "<option></option>";
+        foreach($gapMatchInteraction->gapChoice as $choice) {
+            $variable = $controller->response[$gapMatchInteraction->attrs['responseIdentifier']];
+            $directedPairString = $choice->attrs['identifier'] . ' ' . $identifier;
+            if ($variable->cardinality == 'single') {
+                $selected = ($variable->value ==  $directedPairString ? ' selected="selected"' : '');
+            } else if ($variable->cardinality == 'multiple') {
+                $selected = (in_array($directedPairString, $variable->value) ? ' selected="selected"' : '');
+            }
+            $result .= "<option value=\"{$choice->attrs['identifier']}\" $selected>";
             foreach($choice->children as $child) {
                 $result .= $child->__invoke($controller);
             }
@@ -613,13 +623,27 @@ class qti_http_response_source {
     public function bindVariable($name, qti_variable &$variable) {
         switch ($variable->cardinality) {
             case 'single':
-                if($submittedvalue = $this->get($name)) {
+                if( $submittedvalue = $this->get($name)) {
                     $variable->value = $submittedvalue;
+                    if ($variable->type == 'directedPair') {
+                    // Gap is target, value is source
+                        foreach($submittedvalue as $target => $source) {
+                            $variable->value = "$source $target";
+                            break; // There should be only one
+                        }
+                    }
                 }
                 break;
             case 'multiple':
                 if($submittedvalue = $this->get($name)) {
                     $variable->value = $submittedvalue;
+                    if ($variable->type == 'directedPair') {
+                        $variable->value = array();
+                        // Gap is target, value is source
+                        foreach($submittedvalue as $target => $source) {
+                            $variable->value[] = "$source $target";
+                        }
+                    }
                 }
                 break;
             case 'ordered':
