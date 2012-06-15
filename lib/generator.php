@@ -55,6 +55,16 @@ class qti_item_generator {
         
         $result .= ";\n" . '$this->response_processing = $r;' . "\n";
         
+        // Create modalFeedback processor, and add modalFeedback processing functions
+        $result .= '$m = new qti_modal_feedback_processing($this);' . "\n";
+        $modalFeedbackTags = $this->dom->getElementsByTagNameNS ('http://www.imsglobal.org/xsd/imsqti_v2p1', 'modalFeedback');
+        foreach($modalFeedbackTags as $node) {
+            $result .= $this->generating_function($node, '$m');
+            $result .= ";\n";
+        }
+        $result .= '$this->modal_feedback_processing = $m;' . "\n";
+        
+        
         // Close __construct
         $result .= "}";
         // TODO: Add: "public function beginAttempt() {" etc.

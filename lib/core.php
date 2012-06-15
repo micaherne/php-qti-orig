@@ -261,6 +261,56 @@ class qti_gapChoice extends qti_element {
     
 }
 
+class qti_feedbackInline extends qti_feedbackElement {
+    
+}
+
+class qti_feedbackElement extends qti_element {
+    
+    public function __invoke($controller) {
+        $outcomeIdentifier = $this->attrs['outcomeIdentifier'];
+        $showHide = $this->attrs['showHide'];
+        $identifier = $this->attrs['identifier'];
+        
+        $class = get_class($this); // for CSS class
+        
+        if (!$variable = $controller->outcome[$outcomeIdentifier]) {
+            return '';
+        }
+        
+        // Create new variable for comparison
+        if ($variable->cardinality == 'multiple') {
+            // TODO: Is this how we're supposed to deserialise multiple cardinality vars
+            // from attribute values? The spec doesn't seem clear.
+            $value = explode(' ', $identifier);
+        } else {
+            $value = $identifier;
+        }
+        $testvar = new qti_variable($variable->cardinality, $variable->type, array(
+            'value' => $value
+        ));
+        $testvar->value = $identifier;
+        
+        if (qti_variable::compare($variable, $testvar) == 0 && $showHide == 'show') {
+            $result = "<span class=\"{$class}\">"; 
+            foreach ($this->children as $child) {
+                $result .= $child->__invoke($controller);
+            }
+            $result .= '</span>';
+            return $result;
+        } else if (qti_variable::compare($variable, $testvar) != 0 && $showHide == 'hide') {
+            $result = "<span class=\"{$class}\">"; 
+            foreach ($this->children as $child) {
+                $result .= $child->__invoke($controller);
+            }
+            $result .= '</span>';
+            return $result;
+        }
+        return '';
+    }
+    
+}
+
 class qti_gapText extends qti_gapChoice {
     
     public function __invoke($controller) {
@@ -279,11 +329,18 @@ class qti_gap extends qti_element {
         foreach($gapMatchInteraction->gapChoice as $choice) {
             $variable = $controller->response[$gapMatchInteraction->attrs['responseIdentifier']];
             $directedPairString = $choice->attrs['identifier'] . ' ' . $identifier;
-            if ($variable->cardinality == 'single') {
-                $selected = ($variable->value ==  $directedPairString ? ' selected="selected"' : '');
-            } else if ($variable->cardinality == 'multiple') {
-                $selected = (in_array($directedPairString, $variable->value) ? ' selected="selected"' : '');
+            
+            // Select correct options if we already have a value (i.e. after end attempt)
+            if (!empty($variable->value)) {
+                if ($variable->cardinality == 'single') {
+                    $selected = ($variable->value ==  $directedPairString ? ' selected="selected"' : '');
+                } else if ($variable->cardinality == 'multiple') {
+                    $selected = (in_array($directedPairString, $variable->value) ? ' selected="selected"' : '');
+                }
+            } else {
+                $selected = '';
             }
+            
             $result .= "<option value=\"{$choice->attrs['identifier']}\" $selected>";
             foreach($choice->children as $child) {
                 $result .= $child->__invoke($controller);
@@ -361,6 +418,7 @@ class qti_item_controller {
 
     public $response_processing; // closure which processes responses
     public $item_body; // closure which displays item body
+    public $modal_feedback_processing; // closure which displays modal feedback
 
     public $rootdir;
     public $view;
@@ -434,6 +492,7 @@ class qti_item_controller {
     public function processResponse() {
         $this->response_processing->execute();
         $this->showItemBody();
+        echo $this->modal_feedback_processing->execute();
         $this->displayResults();
     }
     
@@ -706,6 +765,7 @@ class qti_item_body {
      * @throws Exception
      */
     public function __call($name, $args) {
+        
         if (count($args) > 0 && is_array($args[0])) {
             $attrs = array_shift($args);
         } else {
@@ -761,20 +821,6 @@ class qti_item_body {
         return $result;
     }
 
-    /*     public static function _choiceInteraction($attrs, $children) {
-     // test
-    $result = new qti_choiceInteraction($attrs, $children);
-
-    return $result;
-    }
-
-    public static function _simpleChoice($attrs, $children) {
-    // test
-    $result = new qti_simpleChoice($attrs, $children);
-
-    return $result;
-    } */
-
     public static function __text($text) {
         return function($controller) use ($text) {
             return $text;
@@ -789,7 +835,7 @@ class qti_item_body {
             return qti_item_body::__basicElement('img', $attrs, $args);
         };
     }
-
+    
     public function execute() {
         return ($this->displayFunction->__invoke($this->controller));
     }
@@ -1197,4 +1243,30 @@ class qti_response_processing {
         throw new Exception("Not implemented");
     }
 
+}
+
+// Modal feedback can contain any flowStatic elements, so this class extends qti_item_body
+// TODO: Remove the Bootstrap framework specific code if possible
+class qti_modal_feedback_processing extends qti_item_body {
+    
+    protected $controller;
+    
+    protected $processingFunction = array(); // There can be multiple modalFeedback nodes
+    
+    public function execute() {
+        $result = '<div class="qti_modalFeedback alert"><button class="close" data-dismiss="alert">×</button>';
+        foreach($this->processingFunction as $processingFunction) {
+            $result .= $processingFunction->__invoke($this->controller);
+        }
+        $result .= '</div>';
+        return $result;
+    }
+
+    public function _modalFeedback($attrs, $children) {
+        $this->processingFunction[] = function($controller) use($attrs, $children){
+            // TODO: This seems wrong - modalFeedback should be a class on its own
+            $feedbackElement = new qti_feedbackElement($attrs, $children);
+            return $feedbackElement->__invoke($controller);
+        };
+    }
 }
