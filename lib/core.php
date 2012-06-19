@@ -1262,11 +1262,8 @@ class qti_modal_feedback_processing extends qti_item_body {
         return $result;
     }
 
+    // Modal feedback isn't strictly a subclass of feedbackElement, but it behaves similarly
     public function _modalFeedback($attrs, $children) {
-        $this->processingFunction[] = function($controller) use($attrs, $children){
-            // TODO: This seems wrong - modalFeedback should be a class on its own
-            $feedbackElement = new qti_feedbackElement($attrs, $children);
-            return $feedbackElement->__invoke($controller);
-        };
+        $this->processingFunction[] = new qti_feedbackElement($attrs, $children);
     }
 }
