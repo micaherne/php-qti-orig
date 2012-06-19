@@ -507,7 +507,9 @@ class qti_item_controller {
     public function processResponse() {
         $this->response_processing->execute();
         $this->showItemBody();
-        echo $this->modal_feedback_processing->execute();
+        if ($this->modal_feedback_processing) {
+            echo $this->modal_feedback_processing->execute();
+        }
         $this->displayResults();
     }
     
