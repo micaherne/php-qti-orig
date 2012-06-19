@@ -231,6 +231,18 @@ class qti_gapMatchInteraction extends qti_element{
 
 }
 
+class qti_endAttemptInteraction extends qti_element {
+
+    public function __invoke($controller) {
+        $variableName = $this->attrs['responseIdentifier'];
+        $result = "<form id=\"endAttemptInteraction_{$variableName}\" method=\"post\">";
+        $result .= "<input type=\"hidden\" name=\"{$variableName}\" value=\"true\" />";
+        $result .= "<input type=\"submit\" value=\"{$this->attrs['title']}\" >";
+        $result .= "</form>";
+        return $result;
+    }
+
+}
 
 class qti_element {
 
@@ -436,6 +448,9 @@ class qti_item_controller {
         $this->response['numAttempts'] = new qti_variable('single', 'integer', array('value' => 0));
         $this->response['duration'] = new qti_variable('single', 'float', array('value' => 0));
         $this->outcome['completionStatus'] = new qti_variable('single', 'identifier', array('value' => 'not_attempted'));
+        
+        // TODO: We have this to get around mistakes (?) in the example QTI - should we?
+        $this->outcome['completion_status'] = $this->outcome['completionStatus'];
     }
 
     public function showItemBody() {
@@ -690,6 +705,8 @@ class qti_http_response_source {
                             $variable->value = "$source $target";
                             break; // There should be only one
                         }
+                    } else if ($variable->type == 'boolean') {
+                        $variable->value = ($submittedvalue == 'true');
                     }
                 }
                 break;
@@ -1254,11 +1271,13 @@ class qti_modal_feedback_processing extends qti_item_body {
     protected $processingFunction = array(); // There can be multiple modalFeedback nodes
     
     public function execute() {
-        $result = '<div class="qti_modalFeedback alert"><button class="close" data-dismiss="alert">×</button>';
         foreach($this->processingFunction as $processingFunction) {
             $result .= $processingFunction->__invoke($this->controller);
         }
-        $result .= '</div>';
+        if (!empty($result)) {
+            $result = '<div class="qti_modalFeedback alert"><button class="close" data-dismiss="alert">×</button>' . $result;
+            $result .= '</div>';
+        }
         return $result;
     }
 
