@@ -620,6 +620,231 @@ class qti_variable {
         // default to not equal
         return -1;
     }
+    
+    /* 
+     * Response processing functions.
+     * 
+     * There is a distinction between the notion of a variable and an expression.
+     * In theory, most of these functions apply to expressions in the spec. However, 
+     * in this implementation expressions are translated into closures / classes which, 
+     * when invoked, produce a variable as a result, so it makes a certain amount
+     * of sense to implement these functions in the qti_variable class.
+     * 
+     * In other words, these functions should not be thought of as directly related to the 
+     * expressions with the same name in the spec. The closures and classes produced by 
+     * qti_response_processing are the implementation of expressions, which just happen to
+     * use these functions to do their work.
+     */
+    public static function multiple() {
+        $params = func_get_args();
+
+        // Null if no arguments passed
+        if (count($params) == 0) {
+            return new qti_variable('multiple', 'identifier');
+        } else {
+            $result = new qti_variable('multiple', 'identifier', array('value' => array()));
+        }
+        
+        $allnull = true;
+        foreach ($params as $param) {
+            if (is_null($param->value)) {
+                continue;
+            } else {
+                $allnull = false;
+                $result->type = $param->type;
+                if (is_array($param->value)) {
+                    $result->value = array_merge($result->value, $paramvalue);
+                } else {
+                    $result->value[] = $param->value;
+                }
+            }
+        }
+        if ($allnull) {
+            $result->value = null;
+        }
+        
+        return $result;
+    }
+    
+    /*
+     * It looks from the documentation as if there is no difference
+     * in the functionality of ordered and multiple, it is just the return
+     * type that is different.
+     */
+    public static function ordered() {
+        $params = func_get_args();
+        $result = forward_static_call_array('qti_variable::multiple', $params);
+        $result->cardinality = 'ordered';
+        return $result;
+    }
+    
+    public function containerSize() {
+        $result = new qti_variable('single', 'integer', array('value' => 0));
+        if (is_null($this->value)){
+            return $result;
+        }
+        if (is_array($this->value)) {
+            $result->value = count($this->value);
+        } else {
+            $result->value = 1;
+        }
+        
+        return $result;
+    }
+    
+    // This is an internal isNull function that returns a PHP boolean, not a QTI one
+    private function _isNull() {
+        if (is_null($this->value)) {
+            return true;
+        }
+        if (empty($this->value) && (in_array($this->type, array('multiple', 'ordered', 'string')))) {
+            return true;
+        }
+        return false;
+    }
+    
+    public function isNull() {
+        $result = new qti_variable('single', 'boolean', array('value' => false));
+        $result->value = $this->_isNull();
+        return $result;
+    }
+    
+    public function index($i) {
+        $result = new qti_variable('single', $this->type);
+        if (is_array($this->value) && $i <= count($this->value) && $i > 0) {
+            $result->value = $this->value[$i - 1]; // 1 based indexing
+        }
+        return $result;
+    }
+    
+    public function fieldValue($fieldidentifier) {
+        throw new Exception("Not implemented");
+    }
+    
+    public function random() {
+        $result = clone($this);
+        $result->cardinality = 'single';
+        if ($this->_isNull() || count($this->value) == 0) {
+            $result->value = null;
+        } else {
+            $result->value = $this->value[rand(0, count($this->value))];
+        }
+        return $result;
+    }
+    
+    public function member($container) {
+        $result = new qti_variable('single', 'boolean', array('value' => false));
+        if (!$this->_isNull() && !$container->_isNull()) {
+            $result->value = in_array($this->value, $container->value);
+        }
+        return $result;
+    }
+    
+    public function delete($container) {
+        $result = clone($container);
+        if ($this->_isNull() || $container->_isNull()) {
+            $result->value = null;
+        } else {
+            $thisvaluearray = is_array($this->value) ? $this->value : array($this->value);
+            $result->value = array_diff($container->value, $thisvaluearray);
+        }
+        return $result;
+    }
+    
+    public function contains($subsequence) {
+        $result = new qti_variable('single', 'boolean');
+        if ($this->_isNull() || $subsequence->_isNull()) {
+            $result->value = null;
+        } else {
+            $result->value = false;
+            
+            $testarr = is_array($subsequence->value) ? $subsequence->value : array($subsequence->value);
+            $testcontainer = $this->value; // copy of array, not ref
+            
+            if ($this->cardinality == 'multiple') {
+                // just check all values exist including duplicates
+                foreach($testarr as $val) {
+                    if (false === $key = array_search($val, $testcontainer)) {
+                        $result->value = false;
+                        return $result;
+                    }
+                    unset($testcontainer[$key]);
+                }
+                $result->value = true;
+                return $result;
+            } else if ($this->cardinality == 'ordered') {
+                // check that subsequence is strict
+                $possiblestarts = array_keys($testcontainer, $testarr[0]);
+                if (empty($possiblestarts)) {
+                    $result->value = false;
+                    return $result;
+                }
+                foreach($possiblestarts as $start) {
+                    for($i = 0; $i < count($testarr); $i++) {
+                        // We've reached the end of the container array
+                        if ($start + $i >= count($testcontainer)) {
+                            $result->value = false;
+                            return $result;
+                        }
+                        if ($testarr[$i] != $testcontainer[$start + $i]) {
+                            continue 2; // try next start
+                        }
+                    }
+                    $result->value = true;
+                    return $result;
+                }
+                $result->value = false;
+                return $result;
+            }
+            
+        }
+    }
+    
+    public function substring($biggerstring, $casesensitive = true) {
+        $result = new qti_variable('single', 'boolean');
+        if ($casesensitive) {
+            $result->value = (strpos($biggerstring->value, $this->value) !== false);
+        } else {
+            $result->value = (stripos($biggerstring->value, $this->value) !== false);
+        }
+        return $result;
+    }
+    
+    public function not() {
+        $result = clone($this);
+        if ($this->_isNull()) {
+            $result->value = null;
+        } else {
+            $result->value = !($this->value);
+        }
+        return $result;
+    }
+    
+    // Underscore at end because "and" is a reserved word
+    public static function and_() {
+        $result = new qti_variable('single', 'boolean', array('value' => true));
+        $params = func_get_args();
+        foreach($params as $param) {
+            if (!$param->value) {
+                $result->value = false;
+                return $result;
+            }
+        }
+        return $result;
+    }
+    
+    // Underscore at end because "or" is a reserved word
+    public static function or_() {
+        $result = new qti_variable('single', 'boolean', array('value' => false));
+        $params = func_get_args();
+        foreach($params as $param) {
+            if ($param->value) {
+                $result->value = true;
+                return $result;
+            }
+        }
+        return $result;
+    }
 
     // Return a qti_variable representing the default
     public function getDefaultValue() {
@@ -637,6 +862,10 @@ class qti_variable {
      */
     public function setValue($value) {
         $this->value = $value->value;
+    }
+    
+    public function getValue() {
+        return $this->value;
     }
 
     public function __toString(){
@@ -878,6 +1107,10 @@ class qti_item_body {
 
 }
 
+/* 
+ * TODO: The creation of the expression closures and classes should probably be refactored out into
+ * a qti_expression_factory class, or something like that.
+ */
 class qti_response_processing {
 
     protected $controller;

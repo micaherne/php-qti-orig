@@ -1,0 +1,172 @@
+<?php
+
+require_once '../lib/core.php';
+
+class QTIVariableTest extends PHPUnit_Framework_TestCase {
+    
+    public function testToString() {
+        
+        $variable1 = new qti_variable('single', 'integer', array('value' => 3));
+        $this->assertEquals('single integer [3]', "" . $variable1);
+        
+        $variable2 = new qti_variable('multiple', 'identifier', array('value' => array('A', 'B')));
+        $this->assertEquals('multiple identifier [A,B]', $variable2);
+
+    }
+    
+    public function testMultiple() {
+        $variable1 = new qti_variable('single', 'identifier', array('value' => 'thing1'));
+        $variable2 = new qti_variable('single', 'identifier', array('value' => 'thing2'));
+        $variable3 = new qti_variable('single', 'identifier', array('value' => 'thing3'));
+        
+        $result1 = qti_variable::multiple($variable1, $variable2, $variable3);
+        $this->assertEquals('multiple', $result1->cardinality);
+        $this->assertEquals('identifier', $result1->type);
+        $this->assertEquals(3, count($result1->value));
+        
+        $result2 = qti_variable::multiple();
+        $this->assertNull($result2->value);
+        
+        $null1 = new qti_variable('single', 'identifier');
+        $null2 = new qti_variable('single', 'identifier');
+        $result3 = qti_variable::multiple($null1, $null2);
+        $this->assertNull($result3->value);
+    }
+    
+    public function testOrdered() {
+        $variable1 = new qti_variable('single', 'identifier', array('value' => 'thing1'));
+        $variable2 = new qti_variable('single', 'identifier', array('value' => 'thing2'));
+        $variable3 = new qti_variable('single', 'identifier', array('value' => 'thing3'));
+    
+        $result1 = qti_variable::ordered($variable1, $variable2, $variable3);
+        $this->assertEquals('ordered', $result1->cardinality);
+        $this->assertEquals('identifier', $result1->type);
+        $this->assertEquals(3, count($result1->value));
+    }
+    
+    public function testContainerSize() {
+        $variable1 = new qti_variable('single', 'identifier', array('value' => 12));
+        $result1 = $variable1->containerSize();
+        $this->assertEquals(1, $result1->value);
+        
+        $variable2 = new qti_variable('multiple', 'identifier', array('value' => array('thing1', 'thing2')));
+        $result2 = $variable2->containerSize();
+        $this->assertEquals(2, $result2->value);
+    }
+    
+    public function testIsNull() {
+        $variable1 = new qti_variable('single', 'identifier');
+        $result1 = $variable1->isNull();
+        $this->assertEquals('single', $result1->cardinality);
+        $this->assertEquals('boolean', $result1->type);
+        $this->assertTrue($result1->value);
+        
+        // only empty strings and containers should be treated as null, not (e.g.) booleans
+        $variable2 = new qti_variable('single', 'boolean', array('value' => false));
+        $this->assertFalse($variable2->isNull()->value);
+    }
+    
+    public function testIndex() {
+        $variable1 = new qti_variable('multiple', 'identifier', array('value' => array('thing1', 'thing2')));
+        $this->assertEquals("thing2", $variable1->index(2)->value);
+    }
+    
+    public function testRandom() {
+        $variable1 = new qti_variable('multiple', 'identifier', array('value' => array(2, 4, 6, 8, 10)));
+        $result1 = $variable1->random();
+        $this->assertEquals('single', $result1->cardinality);
+        $this->assertEquals('identifier', $result1->type);
+        $this->assertTrue($result1->value <= 10 && $result->value % 2 == 0);
+    }
+    
+    public function testMember() {
+        $variable1 = new qti_variable('single', 'identifier', array('value' => 6));
+        $variable2 = new qti_variable('multiple', 'identifier', array('value' => array(2, 4, 6, 8, 10)));
+        $variable3 = new qti_variable('single', 'identifier', array('value' => 5));
+        
+        $result1 = $variable1->member($variable2);
+        $this->assertEquals('single', $result1->cardinality);
+        $this->assertEquals('boolean', $result1->type);
+        $this->assertTrue($result1->value);
+        
+        $result2 = $variable3->member($variable2);
+        $this->assertFalse($result2->value);
+    }
+    
+    public function testDelete() {
+        $variable1 = new qti_variable('single', 'identifier', array('value' => 6));
+        $variable2 = new qti_variable('multiple', 'identifier', array('value' => array(2, 4, 6, 8, 10)));
+        
+        $result1 = $variable1->delete($variable2);
+        $this->assertEquals('multiple', $result1->cardinality);
+        $this->assertEquals('identifier', $result1->type);
+        $this->assertEquals(4, count($result1->value));
+    
+    }
+    
+    public function testArrays() {
+        $arr1 = array(1, 5, 10, 15, 15, 20, 25);
+        $arr2 = array(15, 20);
+    }
+    
+    public function testContains() {
+        $variable1 = new qti_variable('single', 'identifier', array('value' => 6));
+        $variable2 = new qti_variable('multiple', 'identifier', array('value' => array(2, 4, 6, 8, 10)));
+        $this->assertTrue($variable2->contains($variable1)->value);
+        
+        $variable3 = new qti_variable('multiple', 'identifier', array('value' => array(6, 8)));
+        $this->assertTrue($variable2->contains($variable3)->value);
+        
+        $variable4 = new qti_variable('multiple', 'identifier', array('value' => array(6, 8, 8)));
+        $this->assertFalse($variable2->contains($variable4)->value);
+        
+        // Test ordered
+        $variable2->cardinality = 'ordered';
+        $variable5 = new qti_variable('ordered', 'identifier', array('value' => array(6, 8)));
+        $this->assertTrue($variable2->contains($variable5)->value);
+        
+        $variable6 = new qti_variable('ordered', 'identifier', array('value' => array(8, 6)));
+        $this->assertFalse($variable2->contains($variable6)->value);
+        
+        $variable7 = new qti_variable('ordered', 'identifier', array('value' => array(8, 10)));
+        $this->assertTrue($variable2->contains($variable7)->value);
+        
+    }
+    
+    public function testSubstring() {
+        $variable1 = new qti_variable('single', 'string', array('value' => 'Scunthorpe'));
+        $variable2 = new qti_variable('single', 'string', array('value' => 'thor'));
+        $this->assertTrue($variable2->substring($variable1)->value);
+        
+        $variable3 = new qti_variable('single', 'string', array('value' => 'Thor'));
+        $this->assertFalse($variable3->substring($variable1)->value);
+        $this->assertTrue($variable3->substring($variable1, false)->value);
+    }
+    
+    public function testNot() {
+        $variable1 = new qti_variable('single', 'boolean', array('value' => true));
+        $this->assertFalse($variable1->not()->value);
+        
+        $variable1->value = false;
+        $this->assertTrue($variable1->not()->value);
+        
+        $variable1->value = null;
+        $this->assertTrue($variable1->not()->isNull()->value);
+    }
+    
+    public function testAnd() {
+        $variable1 = new qti_variable('single', 'boolean', array('value' => true));
+        $variable2 = new qti_variable('single', 'boolean', array('value' => false));
+        $this->assertTrue(qti_variable::and_($variable1, $variable1)->value);
+        $this->assertFalse(qti_variable::and_($variable1, $variable2, $variable1)->value);
+    }
+    
+    public function testOr() {
+        $variable1 = new qti_variable('single', 'boolean', array('value' => true));
+        $variable2 = new qti_variable('single', 'boolean', array('value' => false));
+        $this->assertTrue(qti_variable::or_($variable1, $variable1)->value);
+        $this->assertTrue(qti_variable::or_($variable2, $variable1, $variable2)->value);
+        $this->assertFalse(qti_variable::or_($variable2, $variable2)->value);
+    }
+
+}
