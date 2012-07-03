@@ -594,6 +594,7 @@ class qti_variable {
         return new qti_variable('single', 'float', array('value' => $value));
     }
 
+    // TODO: This should be deprecated by the more specific methods
     // TODO: Make this work for things other than strings and arrays
     public static function compare($variable1, $variable2) {
         if (!is_array($variable1->value) && !(is_array($variable2->value))) {
@@ -634,6 +635,11 @@ class qti_variable {
      * expressions with the same name in the spec. The closures and classes produced by 
      * qti_response_processing are the implementation of expressions, which just happen to
      * use these functions to do their work.
+     * 
+     * Update: today I'm thinking that the closures and classes used in response processors
+     * should really be thought of as "expression processing functions" rather than expressions
+     * per se. So the following methods are "operator helper methods" and will be used when 
+     * creating the expression processors.
      */
     public static function multiple() {
         $params = func_get_args();
@@ -704,8 +710,7 @@ class qti_variable {
     }
     
     public function isNull() {
-        $result = new qti_variable('single', 'boolean', array('value' => false));
-        $result->value = $this->_isNull();
+        $result = new qti_variable('single', 'boolean', array('value' => $this->_isNull()));
         return $result;
     }
     
@@ -845,6 +850,157 @@ class qti_variable {
         }
         return $result;
     }
+    
+    /**
+     * anyN(min, max, [boolean1], [boolean2]...)
+     */
+    public static function anyN() {
+        $result = new qti_variable('single', 'boolean');
+        $params = func_get_args();
+        $min = array_shift($params);
+        $max = array_shift($params);
+        $false = $true = $null = 0;
+        foreach($params as $param) {
+            if ($param->_isNull()) {
+                $null++;
+            } else if ($param->value == true) {
+                $true++;
+            } else if ($param->value == false) {
+                $false++;
+            } 
+        }
+        
+        if ($false > (count($params) - $min)) {
+            $result->value = false;
+        } else if ($true > $max) {
+            $result->value = false;
+        } else if (($min <= $true) && ($true <= $max)) {
+            $result->value = true;
+        }
+        
+        return $result;
+    }
+    
+    public function match($othervariable) {
+        $result = new qti_variable('single', 'boolean', array('value' => false));
+        
+        // TODO: Can we just let PHP decide if two values are equal?
+        if (!is_array($this->value) && !(is_array($othervariable->value))) {
+            $result->value = ($this->value == $othervariable->value);
+            return $result;
+        }
+        if (count($this->value) != count($othervariable->value)) {
+            $result->value = false;
+            return $result;
+        }
+        // If it's multiple just do a diff
+        if ($this->cardinality == 'multiple') {
+            $result->value = (count(array_diff($this->value, $othervariable->value)) == 0);
+        } else if ($this->cardinality == 'ordered') {
+            // check them pairwise
+            for($i = 0; $i < count($this->value); $i++) {
+                if ($this->value[$i] != $othervariable->value[$i]) {
+                    $result->value = false;
+                    return $result;
+                }
+            }
+            $result->value = true;
+        }
+        
+        // default to false
+        return $result;
+    }
+    
+    // TODO: Implement these methods
+    public function stringMatch() {
+        throw new Exception("Not implemented");
+    }
+    
+    public function patternMatch() {
+        throw new Exception("Not implemented");
+    }
+    
+    public function equal() {
+        throw new Exception("Not implemented");
+    }
+    
+    public function equalRounded() {
+        throw new Exception("Not implemented");
+    }
+    
+    public function inside() {
+        throw new Exception("Not implemented");
+    }
+    
+    public function lt() {
+        throw new Exception("Not implemented");
+    }
+    
+    public function gt() {
+        throw new Exception("Not implemented");
+    }
+    
+    public function lte() {
+        throw new Exception("Not implemented");
+    }
+    
+    public function gte() {
+        throw new Exception("Not implemented");
+    }
+    
+    public function durationLT() {
+        throw new Exception("Not implemented");
+    }
+    
+    public function durationGTE() {
+        throw new Exception("Not implemented");
+    }
+    
+    public function sum() {
+        throw new Exception("Not implemented");
+    }
+    
+    public function product() {
+        throw new Exception("Not implemented");
+    }
+    
+    public function subtract() {
+        throw new Exception("Not implemented");
+    }
+    
+    public function divide() {
+        throw new Exception("Not implemented");
+    }
+    
+    public function power() {
+        throw new Exception("Not implemented");
+    }
+    
+    public function integerDivide() {
+        throw new Exception("Not implemented");
+    }
+    
+    public function integerModulus() {
+        throw new Exception("Not implemented");
+    }
+    
+    public function truncate() {
+        throw new Exception("Not implemented");
+    }
+    
+    public function round() {
+        throw new Exception("Not implemented");
+    }
+    
+    public function integerToFloat() {
+        throw new Exception("Not implemented");
+    }
+    
+    public function customOperator() {
+        throw new Exception("Not implemented");
+    }
+    
+    
 
     // Return a qti_variable representing the default
     public function getDefaultValue() {

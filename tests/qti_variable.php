@@ -168,5 +168,26 @@ class QTIVariableTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue(qti_variable::or_($variable2, $variable1, $variable2)->value);
         $this->assertFalse(qti_variable::or_($variable2, $variable2)->value);
     }
+    
+    public function testAnyN() {
+        $variable1 = new qti_variable('single', 'boolean', array('value' => true));
+        $variable2 = new qti_variable('single', 'boolean', array('value' => false));
+        $this->assertTrue(qti_variable::anyN(1, 3, $variable1, $variable1)->value);
+        $this->assertFalse(qti_variable::anyN(1, 3, $variable1, $variable1, $variable1, $variable1)->value);
+        
+        $variable3 = new qti_variable('single', 'boolean');
+        $this->assertNull(qti_variable::anyN(2, 4, $variable1, $variable3, $variable3, $variable3)->value);
+    }
+
+    public function testMatch() {
+        $variable1 = new qti_variable('single', 'identifier', array('value' => 6));
+        $this->assertTrue($variable1->match($variable1)->value);
+        
+        $variable2 = new qti_variable('single', 'identifier', array('value' => 4));
+        $this->assertFalse($variable1->match($variable2)->value);
+        
+        $variable3 = new qti_variable('multiple', 'identifier', array('value' => array('A', 'B', 'C')));
+        $this->assertTrue($variable3->match($variable3)->value);
+    }
 
 }
