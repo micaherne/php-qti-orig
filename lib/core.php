@@ -1037,7 +1037,7 @@ class qti_variable {
         return $result;
     }
     
-    public function product() {
+    public static function product() {
         $params = func_get_args();
         $result = clone($params[0]); // There should always be one
         $result->value = 0;
@@ -1619,101 +1619,154 @@ class qti_response_processing {
      * 15.3. Operators
     */
     public function _multiple($attrs, $children) {
-        throw new Exception("Not implemented");
+        return function($controller) use ($attrs, $children) {
+            $vars = array();
+            foreach($children as $child) {
+                $vars[] = $child->__invoke($controller);
+            }
+            return qti_variable::multiple($vars);
+        };
     }
 
     public function _ordered($attrs, $children) {
         return function($controller) use ($attrs, $children) {
-            $result = new qti_variable('ordered', null);
-            $value = array();
+            $vars = array();
             foreach($children as $child) {
-                $var = $child->__invoke($controller);
-                if (is_null($result->type)) {
-                    $result->type = $var->type;
-                }
-                if ($var->cardinality == 'single') {
-                    $value[] = $var->value;
-                } else if ($var->cardinality == 'ordered') {
-                    $value = array_merge($value, $var->value);
-                }
+                $vars[] = $child->__invoke($controller);
             }
-            $result->value = $value;
-            return $result;
+            return qti_variable::ordered($vars);
         };
     }
 
     public function _containerSize($attrs, $children) {
-        throw new Exception("Not implemented");
+        return function($controller) use ($attrs, $children) {
+            $container = $child->__invoke($controller);
+            return $container->containerSize();
+        };
     }
 
     public function _isNull($attrs, $children) {
         return function($controller) use ($attrs, $children) {
             $what = $children[0]->__invoke($controller);
-            return (!isset($what->value) || is_null($what->value));
+            return $what->isNull();
         };
     }
 
     public function _index($attrs, $children) {
-        throw new Exception("Not implemented");
+        return function($controller) use ($attrs, $children) {
+            $what = $children[0]->__invoke($controller);
+            return $what->index($attrs['n']);
+        };
     }
 
     public function _fieldValue($attrs, $children) {
-        throw new Exception("Not implemented");
+        return function($controller) use ($attrs, $children) {
+            $what = $children[0]->__invoke($controller);
+            return $what->fieldValue($attrs['fieldIdentifier']);
+        };
     }
 
     public function _random($attrs, $children) {
-        throw new Exception("Not implemented");
+        return function($controller) use ($attrs, $children) {
+            $what = $children[0]->__invoke($controller);
+            return $what->random();
+        };
     }
 
     public function _member($attrs, $children) {
-        throw new Exception("Not implemented");
+         return function($controller) use ($attrs, $children) {
+            $var1 = $children[0]->__invoke($controller);
+            $var2 = $children[1]->__invoke($controller);
+            return $var1->member($var2);
+        };
     }
 
     public function _delete($attrs, $children) {
-        throw new Exception("Not implemented");
+          return function($controller) use ($attrs, $children) {
+            $var1 = $children[0]->__invoke($controller);
+            $var2 = $children[1]->__invoke($controller);
+            return $var1->delete($var2);
+        };
     }
 
     public function _contains($attrs, $children) {
-        throw new Exception("Not implemented");
+        return function($controller) use ($attrs, $children) {
+            $var1 = $children[0]->__invoke($controller);
+            $var2 = $children[1]->__invoke($controller);
+            return $var1->contains($var2);
+        };
     }
 
     public function _substring($attrs, $children) {
-        throw new Exception("Not implemented");
+        return function($controller) use ($attrs, $children) {
+            $var1 = $children[0]->__invoke($controller);
+            $var2 = $children[1]->__invoke($controller);
+            return $var1->substring($var2, $attrs['caseSensitive']);
+        };
     }
 
     public function _not($attrs, $children) {
-        throw new Exception("Not implemented");
+         return function($controller) use ($attrs, $children) {
+            $var1 = $children[0]->__invoke($controller);
+            return $var1->not();
+        };
     }
 
     public function _and($attrs, $children) {
-        throw new Exception("Not implemented");
+        return function($controller) use ($attrs, $children) {
+            $vars = array();
+            foreach($children as $child) {
+                $vars[] = $child->__invoke($controller);
+            }
+            return qti_variable::and_($vars);
+        };
     }
 
     public function _or($attrs, $children) {
-        throw new Exception("Not implemented");
+         return function($controller) use ($attrs, $children) {
+            $vars = array();
+            foreach($children as $child) {
+                $vars[] = $child->__invoke($controller);
+            }
+            return qti_variable::or_($vars);
+        };
     }
 
     public function _anyN($attrs, $children) {
-        throw new Exception("Not implemented");
+        return function($controller) use ($attrs, $children) {
+            $vars = array();
+            foreach($children as $child) {
+                $vars[] = $child->__invoke($controller);
+            }
+            return qti_variable::anyN($vars, $attrs['min'], $attrs['max']);
+        };
     }
 
     public function _match($attrs, $children) {
         return function($controller) use ($attrs, $children) {
             $val1 = $children[0]->__invoke($controller);
             $val2 = $children[1]->__invoke($controller);
-            // TODO: Make work for arrays, floats etc.
-            return  new qti_variable('single', 'boolean', array(
-                'value' => (qti_variable::compare($val1, $val2) === 0) ? true : false
-            ));
+            
+            return $val1->match($val2);
         };
     }
 
     public function _stringMatch($attrs, $children) {
-        throw new Exception("Not implemented");
+         return function($controller) use ($attrs, $children) {
+            $val1 = $children[0]->__invoke($controller);
+            $val2 = $children[1]->__invoke($controller);
+            
+            // TODO: Missing substring attribute will probably break helper function
+            return $val1->stringMatch($val2, $attrs['caseSensitive'], $attrs['substring']);
+        };
     }
 
     public function _patternMatch($attrs, $children) {
-        throw new Exception("Not implemented");
+        return function($controller) use ($attrs, $children) {
+            $val1 = $children[0]->__invoke($controller);
+            
+            return $val1->patternMatch($attrs['pattern']);
+        };
     }
 
     public function _equal($attrs, $children) {
@@ -1729,19 +1782,39 @@ class qti_response_processing {
     }
 
     public function _lt($attrs, $children) {
-        throw new Exception("Not implemented");
+        return function($controller) use ($attrs, $children) {
+            $val1 = $children[0]->__invoke($controller);
+            $val2 = $children[1]->__invoke($controller);
+            
+            return $val1->lt($val2);
+        };
     }
 
     public function _gt($attrs, $children) {
-        throw new Exception("Not implemented");
+        return function($controller) use ($attrs, $children) {
+            $val1 = $children[0]->__invoke($controller);
+            $val2 = $children[1]->__invoke($controller);
+            
+            return $val1->gt($val2);
+        };
     }
 
     public function _lte($attrs, $children) {
-        throw new Exception("Not implemented");
+        return function($controller) use ($attrs, $children) {
+            $val1 = $children[0]->__invoke($controller);
+            $val2 = $children[1]->__invoke($controller);
+            
+            return $val1->lte($val2);
+        };
     }
 
     public function _gte($attrs, $children) {
-        throw new Exception("Not implemented");
+        return function($controller) use ($attrs, $children) {
+            $val1 = $children[0]->__invoke($controller);
+            $val2 = $children[1]->__invoke($controller);
+            
+            return $val1->gte($val2);
+        };
     }
 
     public function _durationLT($attrs, $children) {
@@ -1753,43 +1826,92 @@ class qti_response_processing {
     }
 
     public function _sum($attrs, $children) {
-        throw new Exception("Not implemented");
+         return function($controller) use ($attrs, $children) {
+            $vars = array();
+            foreach($children as $child) {
+                $vars[] = $child->__invoke($controller);
+            }
+            return qti_variable::sum($vars);
+        };
     }
 
     public function _product($attrs, $children) {
-        throw new Exception("Not implemented");
+         return function($controller) use ($attrs, $children) {
+            $vars = array();
+            foreach($children as $child) {
+                $vars[] = $child->__invoke($controller);
+            }
+            return qti_variable::product($vars);
+        };
     }
 
     public function _subtract($attrs, $children) {
-        throw new Exception("Not implemented");
+        return function($controller) use ($attrs, $children) {
+            $val1 = $children[0]->__invoke($controller);
+            $val2 = $children[1]->__invoke($controller);
+            
+            return $val1->subtract($val2);
+        };
     }
 
     public function _divide($attrs, $children) {
-        throw new Exception("Not implemented");
+         return function($controller) use ($attrs, $children) {
+            $val1 = $children[0]->__invoke($controller);
+            $val2 = $children[1]->__invoke($controller);
+            
+            return $val1->divide($val2);
+        };
     }
 
     public function _power($attrs, $children) {
-        throw new Exception("Not implemented");
+        return function($controller) use ($attrs, $children) {
+            $val1 = $children[0]->__invoke($controller);
+            $val2 = $children[1]->__invoke($controller);
+            
+            return $val1->power($val2);
+        };
     }
 
     public function _integerDivide($attrs, $children) {
-        throw new Exception("Not implemented");
+        return function($controller) use ($attrs, $children) {
+            $val1 = $children[0]->__invoke($controller);
+            $val2 = $children[1]->__invoke($controller);
+            
+            return $val1->integerDivide($val2);
+        };
     }
 
     public function _integerModulus($attrs, $children) {
-        throw new Exception("Not implemented");
+        return function($controller) use ($attrs, $children) {
+            $val1 = $children[0]->__invoke($controller);
+            $val2 = $children[1]->__invoke($controller);
+            
+            return $val1->integerModulus($val2);
+        };
     }
 
     public function _truncate($attrs, $children) {
-        throw new Exception("Not implemented");
+        return function($controller) use ($attrs, $children) {
+            $val1 = $children[0]->__invoke($controller);
+            
+            return $val1->truncate();
+        };
     }
 
     public function _round($attrs, $children) {
-        throw new Exception("Not implemented");
+        return function($controller) use ($attrs, $children) {
+            $val1 = $children[0]->__invoke($controller);
+            
+            return $val1->round();
+        };
     }
 
     public function _integerToFloat($attrs, $children) {
-        throw new Exception("Not implemented");
+        return function($controller) use ($attrs, $children) {
+            $val1 = $children[0]->__invoke($controller);
+            
+            return $val1->integerToFloat();
+        };
     }
 
     public function _customOperator($attrs, $children) {
