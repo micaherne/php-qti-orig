@@ -189,5 +189,92 @@ class QTIVariableTest extends PHPUnit_Framework_TestCase {
         $variable3 = new qti_variable('multiple', 'identifier', array('value' => array('A', 'B', 'C')));
         $this->assertTrue($variable3->match($variable3)->value);
     }
+    
+    public function testStringMatch() {
+        $variable1 = new qti_variable('single', 'string', array('value' => 'Some String'));
+        $this->assertTrue($variable1->stringMatch($variable1, true)->value);
+        $this->assertTrue($variable1->stringMatch($variable1, false)->value);
+        
+        $variable2 = new qti_variable('single', 'string', array('value' => 'some string'));
+        $this->assertTrue($variable1->stringMatch($variable1, false)->value);
+        $this->assertFalse($variable1->stringMatch($variable2, true)->value);
+        
+        $variable3 = new qti_variable('single', 'string');
+        $this->assertNull($variable3->stringMatch($variable1, true)->value);
+    }
+    
+    public function testPatternMatch() {
+        $variable1 = new qti_variable('single', 'string', array('value' => 'Some String'));
+        $this->assertTrue($variable1->patternMatch('^Some')->value);
+        $this->assertFalse($variable1->patternMatch('\d{3}')->value);
+    }
 
+    public function testLT() {
+        $variable1 = new qti_variable('single', 'integer', array('value' => 5));
+        $variable2 = new qti_variable('single', 'integer', array('value' => 300));
+        $this->assertTrue($variable1->lt($variable2)->value);
+        $this->assertFalse($variable2->lt($variable1)->value);
+    }
+    
+    /* No tests for gt, lte, gte. Assume that any problems with these functions will 
+     * also exist for lt */
+    
+    public function testSum() {
+        $variable1 = new qti_variable('single', 'integer', array('value' => 5));
+        $this->assertEquals(15, qti_variable::sum($variable1, $variable1, $variable1)->value);
+    }
+    
+    public function testSubtract() {
+        $variable1 = new qti_variable('single', 'integer', array('value' => 5));
+        $this->assertEquals(0, $variable1->subtract($variable1)->value);
+        
+        $variable2 = new qti_variable('single', 'integer', array('value' => 2));
+        $this->assertEquals(3, $variable1->subtract($variable2)->value);
+        
+    }
+    
+    public function testPower() {
+        $variable1 = new qti_variable('single', 'integer', array('value' => 5));
+        $this->assertEquals(3125, $variable1->power($variable1)->value);
+    
+        $variable2 = new qti_variable('single', 'integer', array('value' => 2));
+        $this->assertEquals(25, $variable1->power($variable2)->value);
+    
+        $variable3 = new qti_variable('single', 'float', array('value' => 25));
+        $variable4 = new qti_variable('single', 'float', array('value' => 0.5));
+        $this->assertEquals(5, $variable3->power($variable4)->value);
+        
+    }
+    
+    public function testIntegerModulus() {
+        $variable1 = new qti_variable('single', 'integer', array('value' => 5));
+        $this->assertEquals(0, $variable1->integerModulus($variable1)->value);
+        
+        $variable2 = new qti_variable('single', 'integer', array('value' => 2));
+        $this->assertEquals(1, $variable1->integerModulus($variable2)->value);
+        
+    }
+    
+    public function testTruncate() {
+        $variable1 = new qti_variable('single', 'float', array('value' => 6.8));
+        $this->assertEquals(6, $variable1->truncate()->value);
+        $this->assertEquals('integer', $variable1->truncate()->type);
+        
+        $variable2 = new qti_variable('single', 'float', array('value' => -6.8));
+        $this->assertEquals(-6, $variable2->truncate()->value);
+        
+    }
+    
+    public function testRound() {
+        $variable1 = new qti_variable('single', 'float', array('value' => 6.8));
+        $this->assertEquals(7, $variable1->round()->value);
+        $this->assertEquals('integer', $variable1->round()->type);
+    
+        $variable2 = new qti_variable('single', 'float', array('value' => -6.5));
+        $this->assertEquals(-6, $variable2->round()->value);
+    
+        $variable3 = new qti_variable('single', 'float', array('value' => 6.49));
+        $this->assertEquals(6, $variable3->round()->value);
+        
+    }
 }

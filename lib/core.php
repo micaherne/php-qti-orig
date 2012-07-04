@@ -884,7 +884,7 @@ class qti_variable {
     public function match($othervariable) {
         $result = new qti_variable('single', 'boolean', array('value' => false));
         
-        // TODO: Can we just let PHP decide if two values are equal?
+        // TODO: Is it OK just to let PHP decide if two values are equal?
         if (!is_array($this->value) && !(is_array($othervariable->value))) {
             $result->value = ($this->value == $othervariable->value);
             return $result;
@@ -911,15 +911,46 @@ class qti_variable {
         return $result;
     }
     
+    public function stringMatch($othervariable, $caseSensitive, $substring = false) {
+        $result = new qti_variable('single', 'boolean', array('value' => false));
+        
+        if ($this->_isNull() || $othervariable->_isNull()) {
+            $result->value = null;
+            return result;
+        }
+        
+        $string1 = $this->value;
+        $string2 = $othervariable->value;
+                
+        if (!$caseSensitive) {
+            $string1 = strtolower($string1);
+            $string2 = strtolower($string2);
+        }
+        
+        if ($substring) {
+            $result->value = (strpos($string1, $string2) !== false);
+        } else {
+            $result->value =  ($string1 == $string2);
+        }
+        
+        return $result;
+    }
+    
+    // TODO: Is PCRE compatible with the XML Schema regexes used in the spec?
+    public function patternMatch($pattern) {
+        $result = new qti_variable('single', 'boolean', array('value' => false));
+        
+        if ($this->_isNull()) {
+            $result->value = null;
+            return result;
+        }
+        
+        // TODO: What if the pattern contains a percent? Should be escaped
+        $result->value = (preg_match('%' . $pattern . '%', $this->value) > 0);
+        return $result;
+    }
+    
     // TODO: Implement these methods
-    public function stringMatch() {
-        throw new Exception("Not implemented");
-    }
-    
-    public function patternMatch() {
-        throw new Exception("Not implemented");
-    }
-    
     public function equal() {
         throw new Exception("Not implemented");
     }
@@ -928,26 +959,59 @@ class qti_variable {
         throw new Exception("Not implemented");
     }
     
-    public function inside() {
+    public function inside($shape, $coords) {
         throw new Exception("Not implemented");
     }
     
-    public function lt() {
-        throw new Exception("Not implemented");
+    public function lt($othervariable) {
+        $result = new qti_variable('single', 'boolean', array('value' => false));
+        
+        if ($this->_isNull() || $othervariable->_isNull()) {
+            $result->value = null;
+            return result;
+        }
+        
+        $result->value = ($this->value < $othervariable->value);
+        return $result;
     }
     
     public function gt() {
-        throw new Exception("Not implemented");
+         $result = new qti_variable('single', 'boolean', array('value' => false));
+        
+        if ($this->_isNull() || $othervariable->_isNull()) {
+            $result->value = null;
+            return result;
+        }
+        
+        $result->value = ($this->value > $othervariable->value);
+        return $result;
     }
     
     public function lte() {
-        throw new Exception("Not implemented");
+        $result = new qti_variable('single', 'boolean', array('value' => false));
+        
+        if ($this->_isNull() || $othervariable->_isNull()) {
+            $result->value = null;
+            return result;
+        }
+        
+        $result->value = ($this->value <= $othervariable->value);
+        return $result;
     }
     
     public function gte() {
-        throw new Exception("Not implemented");
+        $result = new qti_variable('single', 'boolean', array('value' => false));
+        
+        if ($this->_isNull() || $othervariable->_isNull()) {
+            $result->value = null;
+            return result;
+        }
+        
+        $result->value = ($this->value >= $othervariable->value);
+        return $result;
     }
     
+    // TODO: Implement these functions
     public function durationLT() {
         throw new Exception("Not implemented");
     }
@@ -956,44 +1020,125 @@ class qti_variable {
         throw new Exception("Not implemented");
     }
     
-    public function sum() {
-        throw new Exception("Not implemented");
+    public static function sum() {
+        $params = func_get_args();
+        $result = clone($params[0]); // There should always be one
+        $result->value = 0;
+        
+        foreach($params as $param) {
+            if($param->_isNull()) {
+                $result->value = null;
+                return $result;
+            }
+            
+            $result->value += $param->value;
+        }
+        
+        return $result;
     }
     
     public function product() {
-        throw new Exception("Not implemented");
+        $params = func_get_args();
+        $result = clone($params[0]); // There should always be one
+        $result->value = 0;
+        
+        foreach($params as $param) {
+            if($param->_isNull()) {
+                $result->value = null;
+                return $result;
+            }
+            
+            $result->value *= $param->value;
+        }
+        
+        return $result;
     }
     
-    public function subtract() {
-        throw new Exception("Not implemented");
+    public function subtract($othervariable) {
+        $result = clone($this);
+        
+        if ($this->_isNull() || $othervariable->_isNull()) {
+            $result->value = null;
+            return $result;
+        }
+        
+        $result->value = $this->value - $othervariable->value;
+        return $result;
     }
     
-    public function divide() {
-        throw new Exception("Not implemented");
+    public function divide($othervariable) {
+        $result = clone($this);
+        
+        if ($this->_isNull() || $othervariable->_isNull() || $othervariable->value == 0) {
+            $result->value = null;
+            return $result;
+        }
+        
+        $result->value = $this->value / $othervariable->value;
+        return $result;
     }
     
-    public function power() {
-        throw new Exception("Not implemented");
+    public function power($othervariable) {
+        $result = clone($this);
+        
+        if ($this->_isNull() || $othervariable->_isNull() || $othervariable->value == 0) {
+            $result->value = null;
+            return $result;
+        }
+        
+        $result->value = pow($this->value, $othervariable->value);
+        return $result;
     }
     
-    public function integerDivide() {
-        throw new Exception("Not implemented");
+    public function integerDivide($othervariable) {
+        $result = $this->divide($othervariable);
+        $result->value = round($result->value);
+        return $result;
     }
     
-    public function integerModulus() {
-        throw new Exception("Not implemented");
+    public function integerModulus($othervariable) {
+        $result = clone($this);
+        
+        if ($this->_isNull() || $othervariable->_isNull() || $othervariable->value == 0) {
+            $result->value = null;
+            return $result;
+        }
+        
+        $result->value = $this->value % $othervariable->value;
+        return $result;
     }
     
     public function truncate() {
-        throw new Exception("Not implemented");
+        $result = new qti_variable('single', 'integer');
+        
+        if ($this->_isNull()) {
+            return $result;
+        }
+        
+        if ($this->value > 0) {
+            $result->value = floor($this->value);
+        } else {
+            $result->value = ceil($this->value);
+        }
+        return $result;
     }
     
     public function round() {
-        throw new Exception("Not implemented");
+        $result = new qti_variable('single', 'integer');
+        
+        if ($this->_isNull()) {
+            return $result;
+        }
+        
+        $result->value = round($this->value, 0, PHP_ROUND_HALF_DOWN);
+
+        return $result;
     }
     
     public function integerToFloat() {
-        throw new Exception("Not implemented");
+        $result = clone($this);
+        $result->type = 'float';
+        return $result;
     }
     
     public function customOperator() {
