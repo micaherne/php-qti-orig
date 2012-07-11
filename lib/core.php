@@ -277,6 +277,10 @@ class qti_feedbackInline extends qti_feedbackElement {
     
 }
 
+class qti_feedbackBlock extends qti_feedbackElement {
+    
+}
+
 class qti_feedbackElement extends qti_element {
     
     public function __invoke($controller) {
@@ -407,7 +411,6 @@ class qti_simpleChoice extends qti_element {
 
 /* Begin PHP-QTI operational classes */
 
-
 class qti_item_controller {
 
     const STATE_NONE = 0;
@@ -420,6 +423,9 @@ class qti_item_controller {
     const STATE_SOLUTION = 70;
 
     public $state = qti_item_controller::STATE_NONE;
+    
+    // A unique identifier for the controller.
+    public $identifier;
 
     public $response = array();
     public $outcome = array();
@@ -454,12 +460,13 @@ class qti_item_controller {
     }
 
     public function showItemBody() {
-        // TODO: Does this resource provider thing work with the new item_body function?
         $resource_provider = $this->resource_provider;
         echo $this->item_body->execute();
     }
 
     public function run() {
+        $this->persistence->restore($this);
+        
         if ($this->state == qti_item_controller::STATE_NONE) {
             $this->beginItemSession();
         }
@@ -468,10 +475,14 @@ class qti_item_controller {
             if($this->response_source->isEndAttempt()) {
                 // TODO: fix (the person has submitted the item)
                 $this->endAttempt();
-            } else {
-                $this->showItemBody();
             }
         }
+
+        // TODO: How do we know when to show the body / results?
+        $this->showItemBody();
+        $this->displayResults();
+        
+        $this->beginAttempt();
 
         if ($this->show_debugging) {
             echo "<hr />Memory: " . memory_get_peak_usage() / (1024 * 1024) . "Mb"; // TODO: Remove this debugging
@@ -485,16 +496,23 @@ class qti_item_controller {
         $this->setUpDefaultVars();
         $this->beginAttempt();
     }
+    
+    public function endItemSession() {
+        $this->state = qti_item_controller::STATE_CLOSED;
+    }
 
     public function beginAttempt() {
         $this->state = qti_item_controller::STATE_INTERACTING;
         $this->outcome['completionStatus']->value = 'unknown';
+        // 5.1.1 numAttempts increases at the start of the attempt
+        $this->response['numAttempts']->value++;
     }
 
     public function endAttempt() {
         $this->bindVariables();
         $this->processResponse();
-        $this->state = qti_item_controller::STATE_CLOSED; // TODO: What should this be? Does it depend on response processing?
+        // TODO: Shouldn't change state to closed here, but when should we??
+        // $this->state = qti_item_controller::STATE_CLOSED; 
     }
 
     // Bind the responses to the controller variables
@@ -506,11 +524,10 @@ class qti_item_controller {
 
     public function processResponse() {
         $this->response_processing->execute();
-        $this->showItemBody();
+
         if ($this->modal_feedback_processing) {
             echo $this->modal_feedback_processing->execute();
         }
-        $this->displayResults();
     }
     
     public function displayResults() {
@@ -639,7 +656,8 @@ class qti_variable {
      * Update: today I'm thinking that the closures and classes used in response processors
      * should really be thought of as "expression processing functions" rather than expressions
      * per se. So the following methods are "operator helper methods" and will be used when 
-     * creating the expression processors.
+     * creating the expression processors. As I understand it, an expression always evaluates to a variable
+     * (i.e. when the processing function is executed)
      */
     public static function multiple() {
         $params = func_get_args();
@@ -1195,25 +1213,27 @@ class qti_mapping {
 class qti_persistence {
 
     public function persist($controller) {
-        // TODO: Implement properly
         session_start();
-        $_SESSION['response'] = $controller->response;
-        $_SESSION['outcome'] = $controller->outcome;
-        $_SESSION['state'] = $controller->state;
-        session_write_close();
+        if (!isset($_SESSION[$controller->identifier])) {
+            $_SESSION[$controller->identifier] = array();
+        }
+        $_SESSION[$controller->identifier]['response'] = $controller->response;
+        $_SESSION[$controller->identifier]['outcome'] = $controller->outcome;
+        $_SESSION[$controller->identifier]['state'] = $controller->state;
     }
 
     public function restore($controller) {
-        // TODO: Implement properly
         session_start();
-        if (!isset($_SESSION['state'])) {
+        if (!isset($_SESSION[$controller->identifier])) {
             return;
         }
-        echo "DEBUG: Restoring session";
-        $controller->response = $_SESSION['response'];
-        $controller->outcome = $_SESSION['outcome'];
-        $controller->state = $_SESSION['state'];
-        session_write_close();
+        $sessionvariable = $_SESSION[$controller->identifier];
+        if (!isset($sessionvariable['state'])) {
+            return;
+        }
+        $controller->response = $sessionvariable['response'];
+        $controller->outcome = $sessionvariable['outcome'];
+        $controller->state = $sessionvariable['state'];
     }
 
 }

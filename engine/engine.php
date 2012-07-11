@@ -58,7 +58,6 @@ if($_FILES) {
     exit;
 }
 
-
 $item = $_GET['item'];
 list($package, $itemid) = explode('/', $item);
 
@@ -87,7 +86,7 @@ $controller_file = "../data/{$package}/{$itemid}_controller.php";
 $controller_class = "{$itemid}_controller";
 
 require_once $controller_file;
-$controller = new $controller_class();
+$controller = new $controller_class("{$package}/{$itemid}");
 $controller->rootDir = dirname(__FILE__). '/../data/' . $package;
 $controller->persistence = new qti_persistence();
 $controller->response_source = new qti_http_response_source();
