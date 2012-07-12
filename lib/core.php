@@ -865,6 +865,10 @@ class qti_variable {
     public static function and_() {
         $result = new qti_variable('single', 'boolean', array('value' => true));
         $params = func_get_args();
+        // Allow a single array as well as a parameter list
+        if (count($params) == 1 && is_array($params[0])) {
+            $params = $params[0];
+        }
         foreach($params as $param) {
             if (!$param->value) {
                 $result->value = false;
@@ -878,6 +882,10 @@ class qti_variable {
     public static function or_() {
         $result = new qti_variable('single', 'boolean', array('value' => false));
         $params = func_get_args();
+        // Allow a single array as well as a parameter list
+        if (count($params) == 1 && is_array($params[0])) {
+            $params = $params[0];
+        }
         foreach($params as $param) {
             if ($param->value) {
                 $result->value = true;
@@ -895,6 +903,11 @@ class qti_variable {
         $params = func_get_args();
         $min = array_shift($params);
         $max = array_shift($params);
+        
+        // Allow a single array as well as a parameter list
+        if (count($params) == 1 && is_array($params[0])) {
+            $params = $params[0];
+        }
         $false = $true = $null = 0;
         foreach($params as $param) {
             if ($param->_isNull()) {
@@ -1058,6 +1071,10 @@ class qti_variable {
     
     public static function sum() {
         $params = func_get_args();
+        // Allow a single array as well as a parameter list
+        if (count($params) == 1 && is_array($params[0])) {
+            $params = $params[0];
+        }
         $result = clone($params[0]); // There should always be one
         $result->value = 0;
         
@@ -1075,6 +1092,10 @@ class qti_variable {
     
     public static function product() {
         $params = func_get_args();
+        // Allow a single array as well as a parameter list
+        if (count($params) == 1 && is_array($params[0])) {
+            $params = $params[0];
+        }
         $result = clone($params[0]); // There should always be one
         $result->value = 0;
         
@@ -1781,7 +1802,7 @@ class qti_response_processing {
             foreach($children as $child) {
                 $vars[] = $child->__invoke($controller);
             }
-            return qti_variable::anyN($vars, $attrs['min'], $attrs['max']);
+            return qti_variable::anyN($attrs['min'], $attrs['max'], $vars);
         };
     }
 
