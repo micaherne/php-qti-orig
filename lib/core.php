@@ -127,7 +127,10 @@ class qti_choiceInteraction extends qti_element{
                 }
             }
         }
-        $result .= $this->prompt->__invoke($controller);
+        
+        if (!is_null($this->prompt)) {
+            $result .= $this->prompt->__invoke($controller);
+        }
 
         // Work out an order to display them in
         // TODO: Worst implementation ever!
@@ -295,26 +298,27 @@ class qti_feedbackElement extends qti_element {
         }
         
         // Create new variable for comparison
+        /* 
+         * TODO: It looks from the examples as if it should be possible to have
+         * a single "identifier" attribute representing multiple items (space delimited), but
+         * the spec doesn't seem to mention this that I can find. 
+         * 
+        */
+        $testvar = new qti_variable('single', $variable->type, array('value' => $identifier));
         if ($variable->cardinality == 'multiple') {
-            // TODO: Is this how we're supposed to deserialise multiple cardinality vars
-            // from attribute values? The spec doesn't seem clear.
-            $value = explode(' ', $identifier);
+            $comparisonresult = $variable->contains($testvar);
         } else {
-            $value = $identifier;
+            $comparisonresult = $variable->match($testvar);
         }
-        $testvar = new qti_variable($variable->cardinality, $variable->type, array(
-            'value' => $value
-        ));
-        $testvar->value = $identifier;
         
-        if (qti_variable::compare($variable, $testvar) == 0 && $showHide == 'show') {
+        if ($comparisonresult->value && $showHide == 'show') {
             $result = "<span class=\"{$class}\">"; 
             foreach ($this->children as $child) {
                 $result .= $child->__invoke($controller);
             }
             $result .= '</span>';
             return $result;
-        } else if (qti_variable::compare($variable, $testvar) != 0 && $showHide == 'hide') {
+        } else if (!$comparisonresult->value && $showHide == 'hide') {
             $result = "<span class=\"{$class}\">"; 
             foreach ($this->children as $child) {
                 $result .= $child->__invoke($controller);
@@ -464,6 +468,8 @@ class qti_item_controller {
         echo $this->item_body->execute();
     }
 
+    // TODO: Should this be moved out of the item controller into
+    // an engine class?
     public function run() {
         $this->persistence->restore($this);
         
@@ -482,13 +488,17 @@ class qti_item_controller {
         $this->showItemBody();
         $this->displayResults();
         
+        $this->persistence->persist($this);
+        
+        // TODO: This is resetting all the variables somehow. More work needed
+        // on the item lifecycle!! Having it commented out doesn't update
+        // numAttempts properly
         $this->beginAttempt();
 
         if ($this->show_debugging) {
             echo "<hr />Memory: " . memory_get_peak_usage() / (1024 * 1024) . "Mb"; // TODO: Remove this debugging
         }
-        
-        $this->persistence->persist($this);
+
     }
 
     public function beginItemSession() {
@@ -503,7 +513,10 @@ class qti_item_controller {
 
     public function beginAttempt() {
         $this->state = qti_item_controller::STATE_INTERACTING;
-        $this->outcome['completionStatus']->value = 'unknown';
+        // 5.2.1 completionStatus set to unknown at start of first attempt
+        if ($this->outcome['completionStatus']->value == 'not_attempted') {
+            $this->outcome['completionStatus']->value = 'unknown';
+        }
         // 5.1.1 numAttempts increases at the start of the attempt
         $this->response['numAttempts']->value++;
     }
@@ -669,6 +682,11 @@ class qti_variable {
             $result = new qti_variable('multiple', 'identifier', array('value' => array()));
         }
         
+        // Allow a single array as well as a parameter list
+        if (count($params) == 1 && is_array($params[0])) {
+            $params = $params[0];
+        }
+        
         $allnull = true;
         foreach ($params as $param) {
             if (is_null($param->value)) {
@@ -677,7 +695,7 @@ class qti_variable {
                 $allnull = false;
                 $result->type = $param->type;
                 if (is_array($param->value)) {
-                    $result->value = array_merge($result->value, $paramvalue);
+                    $result->value = array_merge($result->value, $param->value);
                 } else {
                     $result->value[] = $param->value;
                 }
@@ -1264,7 +1282,7 @@ class qti_http_response_source {
                 break;
             case 'multiple':
                 if($submittedvalue = $this->get($name)) {
-                    $variable->value = $submittedvalue;
+                    $variable->value = array($submittedvalue);
                     if ($variable->type == 'directedPair') {
                         $variable->value = array();
                         // Gap is target, value is source
@@ -1469,7 +1487,6 @@ class qti_response_processing {
             }
             return $this->$realmethodname($attrs, $args);
         }
-
         throw new Exception("qti_response_processing method _$name not found");
     }
 
@@ -1502,7 +1519,7 @@ class qti_response_processing {
             foreach($children as $child) {
                 $result = $child->__invoke($controller);
                 if ($result->value === true) {
-                    break;
+                    return;
                 }
             }
         };
@@ -1512,7 +1529,9 @@ class qti_response_processing {
         return function($controller) use ($attrs, $children) {
             $result = $children[0]->__invoke($controller);
             if ($result->value === true) {
-                $children[1]->__invoke($controller);
+                for($i = 1; $i < count($children); $i++) {
+                    $children[$i]->__invoke($controller);
+                }
             }
             return $result;
         };
@@ -1523,7 +1542,9 @@ class qti_response_processing {
         return function($controller) use ($attrs, $children) {
             $result = $children[0]->__invoke($controller);
             if ($result->value === true) {
-                $children[1]->__invoke($controller);
+                for($i = 1; $i < count($children); $i++) {
+                    $children[$i]->__invoke($controller);
+                }
             }
             return $result;
         };
@@ -1531,7 +1552,9 @@ class qti_response_processing {
 
     public function _responseElse($attrs, $children) {
         return function($controller) use ($attrs, $children) {
-            $result = $children[0]->__invoke($controller);
+            for($i = 0; $i < count($children); $i++) {
+                $children[$i]->__invoke($controller);
+            }
         };
     }
 

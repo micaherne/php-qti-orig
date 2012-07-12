@@ -69,7 +69,7 @@ body {
 		<div class="row show-grid">
 			<div class="span4">
 				<h2>Upload a QTI item</h2>
-				<form class="well" action="engine.php" method="post" enctype="multipart/form-data">
+				<form class="well" action="upload.php" method="post" enctype="multipart/form-data">
 					<label>QTI Item</label> <input name="qti-file" type="file" class="span3"
 						placeholder="Choose your QTI item..."> <span class="help-block">QTI
 						items can include:

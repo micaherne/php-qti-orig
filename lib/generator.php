@@ -4,7 +4,7 @@
 // This assumes that the XML is a valid QTI 2.1 item
 
 class qti_item_generator {
-        
+
     public function __construct($dom) {
         $this->dom = $dom;
     }
@@ -67,7 +67,6 @@ class qti_item_generator {
         
         // Close __construct
         $result .= "}";
-        // TODO: Add: "public function beginAttempt() {" etc.
         $result .= "    public function beginAttempt() {
         parent::beginAttempt();\n";
 
@@ -90,6 +89,9 @@ class qti_item_generator {
     
     // Return a view / responseProcessing generating function for a given XML node
     public function generating_function($node, $varname = '$p') {
+        if (($node->nodeType == XML_COMMENT_NODE)) {
+            return;
+        }
         if (($node->nodeType == XML_TEXT_NODE)){
             if (trim($node->nodeValue) == '') {
                 return;

@@ -31,6 +31,18 @@ class QTIVariableTest extends PHPUnit_Framework_TestCase {
         $null2 = new qti_variable('single', 'identifier');
         $result3 = qti_variable::multiple($null1, $null2);
         $this->assertNull($result3->value);
+        
+        $variable4 = new qti_variable('single', 'identifier', array('value' => 'tryAgain'));
+        $result4 = qti_variable::multiple($variable4);
+        $this->assertEquals(1, count($result4->value));
+        
+        /* This is to check for an issue that occurred where multiple was being
+         * sent an array of variables as a single parameter, rather than as a list
+         * of parameters, and should have worked anyway.
+         */
+        $variable5 = array($variable4, $variable4);
+        $result5 = qti_variable::multiple($variable5);
+        $this->assertEquals(2, count($result5->value));
     }
     
     public function testOrdered() {
