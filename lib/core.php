@@ -97,7 +97,7 @@ class qti_choiceInteraction extends qti_element{
 
     public function __invoke($controller) {
         $variableName = $this->attrs['responseIdentifier'];
-        $result = "<form method=\"post\" id=\"choiceInteraction_{$variableName}\" class=\"qti_blockInteraction\">";
+        $result = "<div id=\"choiceInteraction_{$variableName}\" class=\"qti_blockInteraction\">";
 
         // Work out what kind of HTML tag will be used for simpleChoices
         if (!isset($controller->response[$variableName])) {
@@ -152,8 +152,7 @@ class qti_choiceInteraction extends qti_element{
             }
         }
 
-        $result .= "<input type=\"submit\" value=\"Submit response\"/>";
-        $result .= "</form>";
+        $result .= "</div>";
         return $result;
     }
 
@@ -172,7 +171,7 @@ class qti_gapMatchInteraction extends qti_element{
 
     public function __invoke($controller) {
         $variableName = $this->attrs['responseIdentifier'];
-        $result = "<form method=\"post\" id=\"gapMatchInteraction_{$variableName}\" class=\"qti_blockInteraction\">";
+        $result = "<div id=\"gapMatchInteraction_{$variableName}\" class=\"qti_blockInteraction\">";
 
         // Find variable
         if (!isset($controller->response[$variableName])) {
@@ -227,8 +226,7 @@ class qti_gapMatchInteraction extends qti_element{
             $result .= $node->__invoke($controller);
         }
         
-        $result .= "<input type=\"submit\" value=\"Submit response\"/>";
-        $result .= "</form>";
+        $result .= "</div>";
         return $result;
     }
 
@@ -238,10 +236,29 @@ class qti_endAttemptInteraction extends qti_element {
 
     public function __invoke($controller) {
         $variableName = $this->attrs['responseIdentifier'];
-        $result = "<form id=\"endAttemptInteraction_{$variableName}\" method=\"post\">";
+        $result = "<div id=\"endAttemptInteraction_{$variableName}\" method=\"post\">";
         $result .= "<input type=\"hidden\" name=\"{$variableName}\" value=\"true\" />";
         $result .= "<input type=\"submit\" value=\"{$this->attrs['title']}\" >";
-        $result .= "</form>";
+        $result .= "</div>";
+        return $result;
+    }
+
+}
+
+
+
+class qti_uploadInteraction extends qti_element {
+
+    public function __invoke($controller) {
+        $variableName = $this->attrs['responseIdentifier'];
+        $result = "<div id=\"uploadInteraction_{$variableName}\" method=\"post\">";
+        $result .= "<input type=\"file\" name=\"{$variableName}\" >";
+        foreach($this->children as $child) {
+            if ($child instanceof qti_prompt) {
+                $result .= "<div class=\"qti_prompt\">" . $child->__invoke($controller) . "</div>";
+            }
+        }
+        $result .= "</div>";
         return $result;
     }
 
@@ -465,8 +482,11 @@ class qti_item_controller {
     }
 
     public function showItemBody() {
+        echo "<form method=\"post\" enctype=\"multipart/form-data\">";
         $resource_provider = $this->resource_provider;
         echo $this->item_body->execute();
+        echo "<input type=\"submit\" value=\"Submit response\"/>";
+        echo "</form>";
     }
 
     // TODO: Should this be moved out of the item controller into
@@ -559,6 +579,9 @@ class qti_item_controller {
 
     public function getCSS() {
         $result = '';
+        if (count($this->stylesheets) == 0) {
+            return $result;
+        }
         foreach($this->stylesheets as $sheet) {
             $url = $this->resource_provider->urlFor($sheet);
             $result .= '<link rel="stylesheet" href="' . $url . "\"></link>\n";

@@ -16,7 +16,7 @@ require_once 'config.php';
 require_once '../lib/core.php';
 require_once '../lib/generator.php';
 
-if($_FILES) {
+/* if($_FILES) {
     // Deal with uploaded files
     
     // TODO: Implement this sensibly
@@ -56,7 +56,7 @@ if($_FILES) {
         }
     }
     exit;
-}
+} */
 
 $item = $_GET['item'];
 list($package, $itemid) = explode('/', $item);
