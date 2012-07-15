@@ -1390,6 +1390,13 @@ class qti_item_body {
         if (method_exists($this, $realmethodname)) {
             return $this->$realmethodname($attrs, $args);
         }
+        
+        // Support MathML functions. (_mathml_math function 
+        // exists to create container with correct NS)
+        // TODO: It would be good if this was pluggable to support other namespaces if required.
+        if (strpos($name, '__mathml_') === 0) {
+            $name = substr($name, 9);
+        }
 
         // default to just creating a basic HTML element
         return $this->__default($name, $attrs, $args);
@@ -1464,6 +1471,20 @@ class qti_item_body {
                 $result .= $child->__invoke($controller);
             }
             $result .= "</div>";
+            return $result;
+        };
+    }
+    
+    /* Create MathML container. Note the three underscores are required
+     * as the method name generated is __mathml_math (with 2 underscores)
+     */
+    public function ___mathml_math($attrs, $children) {
+        return function($controller) use($attrs, $children) {
+            $result = "<math xmlns=\"http://www.w3.org/1998/Math/MathML\">";
+            foreach($children as $child) {
+                $result .= $child->__invoke($controller);
+            }
+            $result .= "</math>";
             return $result;
         };
     }

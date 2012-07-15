@@ -5,6 +5,8 @@
 
 class qti_item_generator {
 
+    public $dom;
+    
     public function __construct($dom) {
         $this->dom = $dom;
     }
@@ -47,7 +49,6 @@ class qti_item_generator {
                     $dom->load(dirname(__FILE__) . "/../ref/qtiv2p1pd2/rptemplates/$template.xml");
                     $result .= $this->generating_function($dom->documentElement, '$r');
                 }
-                
             } else {
                 $result .= $this->generating_function($node, '$r');
             }
@@ -99,7 +100,30 @@ class qti_item_generator {
                 return $varname . '->__text(\'' . addslashes($node->nodeValue) . '\')';
             }
         }
-        $result = $varname . '->' . $node->nodeName . '(';
+        
+        /*
+         * Check the node's namespace URI. We could assume that namespaces
+         * are set in the documentElement and not changed, which would simplify this
+         * a lot, but it's not necessarily the case. 
+         */
+        list($prefix, $name) = explode(':', $node->nodeName, 2);
+        if (is_null($name)) {
+            $methodName = $prefix;
+        } else {
+            $nodeNamespace = $node->lookupNamespaceURI($prefix);
+            switch ($nodeNamespace) {
+                case 'http://www.imsglobal.org/xsd/imsqti_v2p1':
+                    $methodName = $name;
+                    break;
+                case 'http://www.w3.org/1998/Math/MathML':
+                    $methodName = '__mathml_' . $name;
+                    break;
+                default:
+                    throw new Exception('Unsupported XML namespace: ' . $nodeNamespace);
+            }
+        }
+        
+        $result = $varname . '->' . $methodName . '(';
             $children = array();
             if (count($node->attributes) > 0) {
                 $attrs = array();
