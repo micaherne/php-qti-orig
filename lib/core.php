@@ -387,7 +387,6 @@ class qti_simpleChoice extends qti_element {
             // See if this response was selected already
             // TODO: Do this checking in qti_variable so it can be reused
             if (is_array($responseValue)) {
-                echo "array";
                 $checked = in_array($this->attrs['identifier'], $responseValue) ? ' checked="checked"' : '';
             } else {
                 $checked = $responseValue == $this->attrs['identifier'] ? ' checked="checked"' : '';
@@ -1303,7 +1302,11 @@ class qti_http_response_source {
                 break;
             case 'multiple':
                 if($submittedvalue = $this->get($name)) {
-                    $variable->value = array($submittedvalue);
+                    if (is_array($submittedvalue)) {
+                        $variable->value = $submittedvalue;
+                    } else {
+                        $variable->value = array($submittedvalue);
+                    }
                     if ($variable->type == 'directedPair') {
                         $variable->value = array();
                         // Gap is target, value is source
