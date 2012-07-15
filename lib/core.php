@@ -441,6 +441,8 @@ class qti_item_controller {
     public $item_body; // closure which displays item body
     public $modal_feedback_processing; // closure which displays modal feedback
 
+    public $stylesheets; // a simple array of stylesheets
+    
     public $rootdir;
     public $view;
     
@@ -555,6 +557,14 @@ class qti_item_controller {
         echo "</div>";
     }
 
+    public function getCSS() {
+        $result = '';
+        foreach($this->stylesheets as $sheet) {
+            $url = $this->resource_provider->urlFor($sheet);
+            $result .= '<link rel="stylesheet" href="' . $url . "\"></link>\n";
+        }
+        return $result;
+    }
 }
 
 class qti_variable {
@@ -1391,8 +1401,8 @@ class qti_item_body {
             return $this->$realmethodname($attrs, $args);
         }
         
-        // Support MathML functions. (_mathml_math function 
-        // exists to create container with correct NS)
+        // Support MathML functions. (___mathml_math function 
+        // exists below to create container with correct NS)
         // TODO: It would be good if this was pluggable to support other namespaces if required.
         if (strpos($name, '__mathml_') === 0) {
             $name = substr($name, 9);
@@ -1445,12 +1455,23 @@ class qti_item_body {
         };
     }
 
+    // TODO: These next 2 exist just to wire in the resource provider - simplify
+    
     public function _img($attrs, $args) {
         return function($controller) use ($attrs) {
             if(isset($attrs['src'])) {
                 $attrs['src'] = $controller->resource_provider->urlFor($attrs['src']);
             }
             return qti_item_body::__basicElement('img', $attrs, $args);
+        };
+    }
+    
+    public function _object($attrs, $args) {
+        return function($controller) use ($attrs) {
+            if(isset($attrs['data'])) {
+                $attrs['data'] = $controller->resource_provider->urlFor($attrs['data']);
+            }
+            return qti_item_body::__basicElement('object', $attrs, $args);
         };
     }
     

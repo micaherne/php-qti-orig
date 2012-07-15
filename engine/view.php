@@ -49,6 +49,8 @@ body {
   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 
+<?php echo $controller->getCSS(); ?>
+
 <body>
 
 	<div class="navbar navbar-fixed-top">

@@ -22,6 +22,12 @@ class qti_item_generator {
             }
         }
         
+        foreach($this->dom->getElementsByTagNameNS('http://www.imsglobal.org/xsd/imsqti_v2p1', 'stylesheet') as $stylesheetNode) {
+            if (!is_null($attr = $stylesheetNode->attributes->getNamedItem('href'))) {
+                $result .= '$this->stylesheets[] = "' . $attr->value . "\";\n";
+            }
+        }
+        
         // Create the itemBody generator function
         $result .= '$p = new qti_item_body($this);' . "\n";
         

@@ -73,8 +73,25 @@ if (isset($_GET['resource'])) {
         die("$path Not found");
     }
     
-    $finfo = new finfo(FILEINFO_MIME_TYPE);
-    $mimetype = $finfo->file($path);
+    /*
+     * Try to determine certain file types from extension rather
+     * than relying on mime magic, as e.g. css files don't work 
+     * in some browsers if they aren't served with proper type.
+     */
+    $mimetype = null;
+    if ($ext = pathinfo($path, PATHINFO_EXTENSION)) {
+        switch ($ext) {
+            case 'css':
+                $mimetype = 'text/css';
+                break;
+        }
+    }
+    
+    if (is_null($mimetype)) {
+        $finfo = new finfo(FILEINFO_MIME);
+        $mimetype = $finfo->file($path);
+    }
+    
     header("Content-Type: $mimetype");
     readfile($path);
     exit;
@@ -118,8 +135,8 @@ class qti_resource_provider {
         $this->itemid = $itemid;
     }
 
-    public function urlFor($relativePath) {
-        return $this->script . '?resource=true&path=' . urlencode($relativePath) . '&item=' . urlencode($this->item); 
+    public function urlFor($relativePath) {  
+        return $this->script . '?resource=true&item=' . urlencode($this->item) . '&path=' . urlencode($relativePath); 
     }
 
 }
