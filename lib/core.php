@@ -200,8 +200,10 @@ class qti_gapMatchInteraction extends qti_element{
         
         $controller->context['gapMatchInteraction'] = $this;
         
-        $result .= $this->prompt->__invoke($controller);
-
+        if (!is_null($this->prompt)) {
+            $result .= $this->prompt->__invoke($controller);
+        }
+        
         // Work out an order to display them in
         // TODO: Worst implementation ever!
         /* $order = range(0, count($this->gapChoice) - 1);
@@ -328,6 +330,44 @@ class qti_textEntryInteraction extends qti_stringInteraction {
         return $result;
     }
     
+}
+
+class qti_extendedTextInteraction extends qti_stringInteraction {
+
+    public function __invoke($controller) {
+        $variableName = $this->attrs['responseIdentifier'];
+        $variable = $controller->response[$variableName];
+        $result = '';
+        
+        // Process child nodes
+        foreach($this->children as $child) {
+            if ($child instanceof qti_prompt) {
+                $result .= $child->__invoke($controller);
+            } 
+        }
+        
+        if ($variable->cardinality == 'single') {
+            $brackets = '';
+            $values = array($variable->value);
+            $count = 1;
+        } else {
+            $brackets = '[]';
+            $values = $variable->value;
+            $count = $this->attrs['maxStrings'];
+        }
+        
+        
+        for($i = 0; $i < $count; $i++) {
+            if(isset($values[$i])) {
+                $value = $values[$i];
+            } else {
+                $value = '';
+            }
+            $result .= "<textarea name=\"{$variableName}{$brackets}\">" . htmlentities($value) . "</textarea>";
+        }
+        return $result;
+    }
+
 }
 
 class qti_endAttemptInteraction extends qti_element {
@@ -1684,8 +1724,9 @@ class qti_response_processing {
     }
 
     public function execute() {
-        $this->processingFunction->__invoke($this->controller);
-        //echo "DEBUG: SCORE = " . $this->controller->outcome['SCORE'];
+        if ($this->processingFunction) { // there may be no processing (e.g. extended_text.xml)
+            $this->processingFunction->__invoke($this->controller);
+        }
     }
 
     /*
