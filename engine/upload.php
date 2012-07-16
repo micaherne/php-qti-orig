@@ -27,7 +27,6 @@ if($_FILES) {
     }
     
     $basedir = $datadir . '/' . $folderno;
-    echo $basedir;
     mkdir($basedir);
     // foreach not really necessary but easier
     foreach($_FILES as $file) {
@@ -45,7 +44,7 @@ if($_FILES) {
                 fputs($out, $gen->generate_controller($filename));
                 fclose($out);
                                 
-                // TODO: Then what? Redirect to view?
+                header('Location: index.php');
                 break;
             case 'zip':
                 echo "Content packaged items not implemented";

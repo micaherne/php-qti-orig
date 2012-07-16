@@ -314,6 +314,22 @@ class qti_inlineChoice extends qti_element {
     
 }
 
+// TODO: Implement stringInteraction features such as base, stringIdentifier,
+// expectedLength, patternMask, placeholderText
+class qti_stringInteraction extends qti_element {
+
+}
+
+class qti_textEntryInteraction extends qti_stringInteraction {
+    
+    public function __invoke($controller) {
+        $variableName = $this->attrs['responseIdentifier'];
+        $result = "<input type=\"text\" name=\"{$variableName}\"></input>";
+        return $result;
+    }
+    
+}
+
 class qti_endAttemptInteraction extends qti_element {
 
     public function __invoke($controller) {
@@ -718,7 +734,7 @@ class qti_variable {
     public function mapResponse() {
         // TODO: Check mapping is defined here?
         if ($this->cardinality == 'single') {
-            if (in_array($this->value, $this->mapping['mapEntry'])) {
+            if (array_key_exists($this->value, $this->mapping['mapEntry'])) {
                 $value = $this->mapping['mapEntry'][$this->value];
             } else {
                 $value = $this->mapping['defaultValue'];
