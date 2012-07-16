@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<?php require_once 'config.php'; ?><!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -92,36 +92,29 @@ body {
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>choice.xml</td>
+					    <?php 
+					        $dir = dir($datadir);
+					        while(false !== ($direntry = $dir->read())) {
+					            if(strpos($direntry, '.') === 0) {
+					                continue;
+					            }
+					            if($dir2 = dir("$datadir/$direntry")) {
+    					            while(false !== ($dir2entry = $dir2->read())) {
+    					                if (strpos($dir2entry, '_controller.php') !== false) {
+    					                    $id = $direntry . '/' . str_replace('_controller.php', '', $dir2entry); 
+					   ?>
+					   <tr>
+							<td><?php echo $id; ?></td>
 							<td>Michael Aherne</td>
-							<td><a class="btn" href="view.php?item=choice/choice">view</a></td>
+							<td><a class="btn" href="view.php?item=<?php echo $id; ?>">view</a></td>
 						</tr>
-						<tr>
-							<td>choice_fixed.xml</td>
-							<td>Michael Aherne</td>
-							<td><a class="btn" href="view.php?item=choice_fixed/choice_fixed">view</a></td>
-						</tr>
-						<tr>
-							<td>choice_multiple.xml</td>
-							<td>Michael Aherne</td>
-							<td><a class="btn" href="view.php?item=choice_multiple/choice_multiple">view</a></td>
-						</tr>
-						<tr>
-							<td>choice_multiple_chocolade.xml</td>
-							<td>Michael Aherne</td>
-							<td><a class="btn" href="view.php?item=choice_multiple_chocolade/choice_multiple_chocolade">view</a></td>
-						</tr>
-						<tr>
-							<td>order.xml</td>
-							<td>Michael Aherne</td>
-							<td><a class="btn" href="view.php?item=order/order">view</a></td>
-						</tr>
-						<tr>
-							<td>order_partial_scoring.xml</td>
-							<td>Michael Aherne</td>
-							<td><a class="btn" href="view.php?item=order_partial_scoring/order_partial_scoring">view</a></td>
-						</tr>
+					   <?php 
+    					                }   
+					                }
+					            }
+					        }
+					    ?>
+					
 					</tbody>
 				</table>
 			</div>

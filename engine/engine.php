@@ -16,48 +16,6 @@ require_once 'config.php';
 require_once '../lib/core.php';
 require_once '../lib/generator.php';
 
-/* if($_FILES) {
-    // Deal with uploaded files
-    
-    // TODO: Implement this sensibly
-    // Create a folder
-    $folderno = 0;
-    while (file_exists($datadir . '/' . $folderno)) {
-        $folderno++;
-    }
-    
-    $basedir = $datadir . '/' . $folderno;
-    echo $basedir;
-    mkdir($basedir);
-    // foreach not really necessary but easier
-    foreach($_FILES as $file) {
-        $filepath = $basedir . '/' . $file['name'];
-        move_uploaded_file($file['tmp_name'], $filepath);
-        $uploadedfileinfo = pathinfo($filepath);
-        switch ($uploadedfileinfo['extension']) {
-            case 'xml':
-                // Generate a controller file
-                $filename = $uploadedfileinfo['filename'];
-                $dom = new DOMDocument();
-                $dom->load($uploadedfileinfo['dirname'] . '/' . $uploadedfileinfo['basename']);
-                $gen = new qti_item_generator($dom);
-                $out = fopen($uploadedfileinfo['dirname'] . '/' . "{$filename}_controller.php", 'w');
-                fputs($out, $gen->generate_controller($filename));
-                fclose($out);
-                                
-                // TODO: Then what? Redirect to view?
-                break;
-            case 'zip':
-                echo "Content packaged items not implemented";
-                break;
-            default:
-                echo "ERROR $uploadedfiletype";
-                break;
-        }
-    }
-    exit;
-} */
-
 $item = $_GET['item'];
 list($package, $itemid) = explode('/', $item);
 
