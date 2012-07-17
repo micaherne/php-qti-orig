@@ -16,3 +16,8 @@
 .qti_feedbackInline {
 	color: red;
 }
+
+.qti_hottext {
+	border-bottom: 1px dotted red;
+	margin-left: .5em;
+}
