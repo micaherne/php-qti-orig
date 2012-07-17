@@ -289,4 +289,37 @@ class QTIVariableTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(6, $variable3->round()->value);
         
     }
+    
+    public function testMapResponse() {
+        $variable1 = new qti_variable('single', 'identifier', array('value' => 'nim', 'mapping' => array(
+                'defaultValue' => 0,
+                'mapEntry' => array(
+                     'nim' => 5,
+                     'bim' => 365   
+                     )
+                )));
+        $this->assertEquals(5, $variable1->mapResponse()->value);
+        
+        $variable2 = new qti_variable('multiple', 'identifier', array('value' => array('nim', 'lim'), 'mapping' => array(
+                'defaultValue' => 4,
+                'mapEntry' => array(
+                        'nim' => 5,
+                        'bim' => 365
+                )
+        )));
+        $this->assertEquals(9, $variable2->mapResponse()->value);
+        
+        // Pair type
+        $variable3 = new qti_variable('multiple', 'pair', array('value' => array('A B', 'F G'), 'mapping' => array(
+                'defaultValue' => 4,
+                'mapEntry' => array(
+                        'A B' => 5,
+                        'C D' => 365
+                )
+        )));
+        $this->assertEquals(9, $variable3->mapResponse()->value);
+        
+        $variable3->value = array('B A', 'D E');
+        $this->assertEquals(9, $variable3->mapResponse()->value);
+    }
 }

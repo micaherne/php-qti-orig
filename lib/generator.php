@@ -39,11 +39,11 @@ class qti_item_generator {
         $result .= ";\n" . '$this->item_body = $p;' . "\n\n";
         
         // Create responseProcessing function
-        // TODO: Deal with templates
         $result .= '$r = new qti_response_processing($this);' . "\n";
         $responseProcessingTags = $this->dom->getElementsByTagNameNS ('http://www.imsglobal.org/xsd/imsqti_v2p1', 'responseProcessing');
         foreach($responseProcessingTags as $node) {
             // Check for template
+            // TODO: template can be a URI, and templateLocation is used to find the XML
             // TODO: Remove hard coded location
             // TODO: Deal with other templates by downloading
             if (!is_null($node->attributes->getNamedItem('template'))) {
@@ -110,7 +110,7 @@ class qti_item_generator {
         /*
          * Check the node's namespace URI. We could assume that namespaces
          * are set in the documentElement and not changed, which would simplify this
-         * a lot, but it's not necessarily the case. 
+         * a bit, but it's not necessarily the case. 
          */
         list($prefix, $name) = explode(':', $node->nodeName, 2);
         if (is_null($name)) {
