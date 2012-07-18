@@ -328,7 +328,7 @@ class qti_matchInteraction extends qti_element {
             foreach($targetIdentifiers as $targetIdentifier) {
                 $result .= "<td>";
                 // Tick values from variable
-                if (in_array("{$sourceIdentifier} {$targetIdentifier}", $responseVariable->value)) {
+                if (isset($responseVariable->value) && in_array("{$sourceIdentifier} {$targetIdentifier}", $responseVariable->value)) {
                     $checked = " checked=\"checked\" ";
                 } else {
                     $checked = "";
