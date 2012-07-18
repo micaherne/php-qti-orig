@@ -132,24 +132,10 @@ class qti_choiceInteraction extends qti_element{
             $result .= $this->prompt->__invoke($controller);
         }
 
-        // Work out an order to display them in
-        // TODO: Worst implementation ever!
-        $order = range(0, count($this->simpleChoice) - 1);
-        if ($this->attrs['shuffle'] === 'true') {
-            $notfixed = array_diff($order, $this->fixed);
-            shuffle($notfixed);
-            $shuffledused = 0;
-            for($i = 0; $i < count($this->simpleChoice); $i++) {
-                if(in_array($i, $this->fixed)) {
-                    $result .= $this->simpleChoice[$i]->__invoke($controller);
-                } else {
-                    $result .= $this->simpleChoice[$notfixed[$shuffledused++]]->__invoke($controller);
-                }
-            }
-        } else {
-            foreach($order as $i) {
-                $result .= $this->simpleChoice[$i]->__invoke($controller);
-            }
+        $shuffle = $this->attrs['shuffle'] === 'true';
+        $choiceIterator = new qti_choiceIterator($this->simpleChoice, $shuffle);
+        foreach($choiceIterator as $choice) {
+            $result .= $choice->__invoke($controller);
         }
 
         $result .= "</div>";
@@ -1684,6 +1670,10 @@ class qti_variable {
 
 }
 
+/**
+ * An iterator which will iterate over an array of choices, taking into
+ * account the shuffle and fixed attributes.
+ */
 class qti_choiceIterator implements Iterator {
 
     protected $choices;
