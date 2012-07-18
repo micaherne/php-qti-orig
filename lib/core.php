@@ -244,7 +244,12 @@ class qti_associateInteraction extends qti_element{
             foreach($identifiers as $left) {
                 $rightnumber = 1;
                 foreach($identifiers as $right) {
-                    $inputs .= "<option value=\"{$left} {$right}\">" . $leftnumber . ", " . $rightnumber++ . "</option>";
+                    if (isset($responseVariable->value[$i]) && $responseVariable->value[$i] == "{$left} {$right}") {
+                        $selected = " selected=\"selected\" ";
+                    } else {
+                        $selected = '';
+                    }
+                    $inputs .= "<option value=\"{$left} {$right}\" $selected>" . $leftnumber . ", " . $rightnumber++ . "</option>";
                 }
                 $leftnumber++;
             }
@@ -258,7 +263,6 @@ class qti_associateInteraction extends qti_element{
     }
 
 }
-
 
 class qti_simpleAssociableChoice extends qti_element {
     
