@@ -158,12 +158,7 @@ class qti_choiceInteraction extends qti_element{
 
 }
 
-class qti_associateInteraction extends qti_element{
-
-    /* TODO: We'd really like to tell the simpleChoice elements what type of
-     * input control they're to display in the constructor, but we don't have access to the
-    * variable declarations.
-    */
+class qti_associateInteraction extends qti_element {
 
     public $simpleAssociableChoice = array();
     public $fixed = array(); // indices of simpleAssociableChoices with fixed set to true
@@ -211,10 +206,10 @@ class qti_associateInteraction extends qti_element{
             for($i = 0; $i < count($this->simpleAssociableChoice); $i++) {
                 if(in_array($i, $this->fixed)) {
                     $identifiers[] = $this->simpleAssociableChoice[$i]->attrs['identifier'];
-                    $result .= $this->simpleAssociableChoice[$i]->__invoke($controller);
+                    $result .= "<li>" . $this->simpleAssociableChoice[$i]->__invoke($controller) . "</li>";
                 } else {
                     $identifiers[] = $this->simpleAssociableChoice[$notfixed[$shuffledused]]->attrs['identifier'];
-                    $result .= $this->simpleAssociableChoice[$notfixed[$shuffledused++]]->__invoke($controller);
+                    $result .= "<li>" . $this->simpleAssociableChoice[$notfixed[$shuffledused++]]->__invoke($controller) . "</li>";
                 }
             }
         } else {
@@ -264,20 +259,158 @@ class qti_associateInteraction extends qti_element{
 
 }
 
+// TODO: Implement associableChoice (in particular matchGroup)
 class qti_simpleAssociableChoice extends qti_element {
     
     public function __invoke($controller) {
-        $result = "<li>";
+        $result = "";
         foreach($this->children as $child) {
             $result .= $child->__invoke($controller);
         }
-        $result .= "</li>";
         return $result;
     }
     
 }
 
-class qti_gapMatchInteraction extends qti_element{
+class qti_matchInteraction extends qti_element {
+    
+    public $simpleMatchSet = array();
+    public $prompt;
+    
+    public function __invoke($controller) {
+        $variableName = $this->attrs['responseIdentifier'];
+        $result = "<div id=\"matchInteraction_{$variableName}\" class=\"qti_blockInteraction\">";
+    
+        // Work out what kind of HTML tag will be used for simpleMatchSets
+        if (!isset($controller->response[$variableName])) {
+            throw new Exception("Declaration for $variableName not found");
+        }
+    
+        $responseVariable = $controller->response[$variableName];
+    
+        $this->simpleMatchSet = array();
+        $this->fixed = array();
+        // Process child nodes
+        foreach($this->children as $child) {
+            if ($child instanceof qti_prompt) {
+                $this->prompt = $child;
+            } else if ($child instanceof qti_simpleMatchSet) {
+                $child->name = $variableName;
+                $this->simpleMatchSet[] = $child;
+            }
+        }
+    
+        if (!is_null($this->prompt)) {
+            $result .= $this->prompt->__invoke($controller);
+        }
+    
+        $shuffle = ($this->attrs['shuffle'] == 'true');
+        $sourceChoicesIterator = $this->simpleMatchSet[0]->iterator($shuffle);
+        $targetChoicesIterator = $this->simpleMatchSet[1]->iterator($shuffle);
+        
+        $result .= "<table>";
+        
+        // Create headers and extract target identifiers
+        $result .= "<tr><td></td>";
+        $targetIdentifiers = array();
+        foreach($targetChoicesIterator as $targetChoice) {
+            $targetIdentifiers[] = $targetChoice->attrs['identifier'];
+            $result .= "<td>" . $targetChoice->__invoke($controller) . "</td>";
+        }
+        $result .= "</tr>";
+        
+        foreach($sourceChoicesIterator as $sourceChoice) {
+            $result .= "<tr><td>";
+            $result .= $sourceChoice->__invoke($controller);
+            $result .= "</td>";
+            
+            $sourceIdentifier = $sourceChoice->attrs['identifier'];
+            foreach($targetIdentifiers as $targetIdentifier) {
+                $result .= "<td>";
+                // Tick values from variable
+                if (in_array("{$sourceIdentifier} {$targetIdentifier}", $responseVariable->value)) {
+                    $checked = " checked=\"checked\" ";
+                } else {
+                    $checked = "";
+                }
+                $result .= "<input type=\"checkbox\" name=\"{$variableName}[{$targetIdentifier}][]\" value=\"{$sourceIdentifier}\" $checked/>";
+                $result .= "</td>";
+            }
+            
+            $result .= "</tr>";
+        }
+    
+        $result .= "</table>";
+        $result .= "</div>";
+        return $result;
+    }
+    
+}
+
+class qti_simpleMatchSet extends qti_element {
+    
+    public function iterator($shuffle = false) {
+        return new qti_choiceIterator($this->children, $shuffle);
+    }
+    
+}
+
+class qti_choiceIterator implements Iterator {
+    
+    protected $choices;
+    protected $position = 0;
+    
+    public function __construct($choiceArray, $shuffle = false) {
+        $this->position = 0;
+        
+        $identifiers = array();
+        $fixed = array(); 
+        for($i = 0; $i < count($choiceArray); $i++) {
+            if (isset($choiceArray[$i]->attrs['fixed']) && $choiceArray[$i]->attrs['fixed'] == 'true') {
+                $fixed[] = $i;
+            }
+        }
+        $order = range(0, count($choiceArray) - 1);
+        if ($shuffle) {
+            $notfixed = array_diff($order, $fixed);
+            shuffle($notfixed);
+            $shuffledused = 0;
+            for($i = 0; $i < count($choiceArray); $i++) {
+                if(in_array($i, $fixed)) {
+                    $this->choices[] = $choiceArray[$i];
+                } else {
+                    $this->choices[] = $choiceArray[$notfixed[$shuffledused]];
+                    $shuffledused++;
+                }
+            }
+        } else {
+            $this->choices = $choiceArray;
+        }
+        
+    }
+    
+    public function rewind() {
+        $this->position = 0;
+    }
+
+    function current() {
+        return $this->choices[$this->position];
+    }
+
+    function key() {
+        return $this->position;
+    }
+
+    function next() {
+        ++$this->position;
+    }
+
+    function valid() {
+        return isset($this->choices[$this->position]);
+    }
+}
+
+class qti_gapMatchInteraction extends qti_element {
 
     /* TODO: gapMatchInteraction should support shuffle (for the choices, not gaps!)
     */
@@ -1685,8 +1818,14 @@ class qti_http_response_source {
                     if ($variable->type == 'directedPair') {
                         $variable->value = array();
                         // Gap is target, value is source
+                        // This is a bit over-complicated to deal with matchInteraction
                         foreach($submittedvalue as $target => $source) {
-                            $variable->value[] = "$source $target";
+                            if (!is_array($source)) {
+                                $source = array($source);
+                            }
+                            foreach($source as $s) {
+                                $variable->value[] = "$s $target";
+                            }
                         }
                     }
                 }
