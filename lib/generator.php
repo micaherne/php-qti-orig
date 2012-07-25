@@ -62,6 +62,15 @@ class qti_item_generator {
         
         $result .= ";\n" . '$this->response_processing = $r;' . "\n";
         
+        // Create templateProcessing function
+        $result .= '$t = new qti_template_processing($this);' . "\n";
+        $templateProcessingTags = $this->dom->getElementsByTagNameNS ('http://www.imsglobal.org/xsd/imsqti_v2p1', 'templateProcessing');
+        foreach($templateProcessingTags as $node) {
+            $result .= $this->generating_function($node, '$t');
+        }
+        
+        $result .= ";\n" . '$this->template_processing = $t;' . "\n";
+        
         // Create modalFeedback processor, and add modalFeedback processing functions
         $result .= '$m = new qti_modal_feedback_processing($this);' . "\n";
         $modalFeedbackTags = $this->dom->getElementsByTagNameNS ('http://www.imsglobal.org/xsd/imsqti_v2p1', 'modalFeedback');
@@ -85,7 +94,11 @@ class qti_item_generator {
             $result .= $this->variable_declaration($outcomeDeclarationNode);
         }
         
-        // TODO: Implement templateDeclaration
+        foreach($this->dom->getElementsByTagNameNS ('http://www.imsglobal.org/xsd/imsqti_v2p1', 'templateDeclaration') as $templateDeclarationNode) {
+            $result .= $this->variable_declaration($templateDeclarationNode);
+        }
+        
+        $result .= "\$this->template_processing->execute();\n";
 
         // Close beginAttempt
         $result .= "}";

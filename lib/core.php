@@ -847,6 +847,7 @@ class qti_item_controller {
 
     public $response = array();
     public $outcome = array();
+    public $template = array();
 
     public $response_source; // provides response values for variables
     public $persistence; // provides existing values of variables
@@ -876,6 +877,9 @@ class qti_item_controller {
         $this->outcome['completion_status'] = $this->outcome['completionStatus'];
     }
 
+    // TODO: We should be able to pass the form action URL to the controller
+    // For example, if we want to remove one of the query string parameters before
+    // posting back, or to post to a completely different script.
     public function showItemBody() {
         echo "<form method=\"post\" enctype=\"multipart/form-data\">";
         $resource_provider = $this->resource_provider;
@@ -906,9 +910,6 @@ class qti_item_controller {
         
         $this->persistence->persist($this);
         
-        // TODO: This is resetting all the variables somehow. More work needed
-        // on the item lifecycle!! Having it commented out doesn't update
-        // numAttempts properly
         $this->beginAttempt();
 
         if ($this->show_debugging) {
@@ -968,7 +969,11 @@ class qti_item_controller {
         foreach($this->response as $key => $response) {
             echo "$key: " . $response . "<br />";
         }
-                
+        echo "<hr />";
+        foreach($this->template as $key => $template) {
+            echo "$key: " . $template . "<br />";
+        }
+
         echo "</div>";
     }
 
@@ -1107,6 +1112,13 @@ class qti_variable {
      * creating the expression processors. As I understand it, an expression always evaluates to a variable
      * (i.e. when the processing function is executed)
      */
+
+    // TODO: Should we implement Built-in General Expressions here? At the moment
+    // they're just implemented directly in qti_response_processing
+    
+    /*
+     * 15.3 Operators
+     */
     public static function multiple() {
         $params = func_get_args();
 
@@ -1203,7 +1215,7 @@ class qti_variable {
         if ($this->_isNull() || count($this->value) == 0) {
             $result->value = null;
         } else {
-            $result->value = $this->value[rand(0, count($this->value))];
+            $result->value = $this->value[mt_rand(0, count($this->value))];
         }
         return $result;
     }
@@ -1644,10 +1656,7 @@ class qti_variable {
         return new qti_variable($this->cardinality, $this->type, array('value' => $this->defaultValue));
     }
 
-    // Return a qti_variable representing the correct value
-    public function getCorrectResponse() {
-        return new qti_variable($this->cardinality, $this->type, array('value' => $this->correctResponse));
-    }
+    
 
     /**
      * Set the value of the variable
@@ -1661,6 +1670,19 @@ class qti_variable {
         return $this->value;
     }
 
+    /**
+     * Set the correctResponse of the variable
+     * @param qti_variable $value The value either as a qti_variable
+     */
+    public function setCorrectResponse($value) {
+        $this->correctResponse = $value->value;
+    }
+    
+    // Return a qti_variable representing the correct value
+    public function getCorrectResponse() {
+        return new qti_variable($this->cardinality, $this->type, array('value' => $this->correctResponse));
+    }
+    
     public function __toString(){
         return $this->cardinality . ' ' . $this->type . ' [' . (is_array($this->value) ? implode(',', $this->value) : $this->value) . ']';
     }
@@ -1752,6 +1774,7 @@ class qti_persistence {
         }
         $_SESSION[$controller->identifier]['response'] = $controller->response;
         $_SESSION[$controller->identifier]['outcome'] = $controller->outcome;
+        $_SESSION[$controller->identifier]['template'] = $controller->template;
         $_SESSION[$controller->identifier]['state'] = $controller->state;
     }
 
@@ -1766,7 +1789,13 @@ class qti_persistence {
         }
         $controller->response = $sessionvariable['response'];
         $controller->outcome = $sessionvariable['outcome'];
+        $controller->template = $sessionvariable['template'];
         $controller->state = $sessionvariable['state'];
+    }
+    
+    public function reset($controller) {
+        session_start();
+        unset($_SESSION[$controller->identifier]);
     }
 
 }
@@ -1845,7 +1874,7 @@ class qti_http_response_source {
 
 }
 
-class qti_response_processing_exception extends Exception {
+class qti_processing_exception extends Exception {
 
 }
 
@@ -1987,6 +2016,16 @@ class qti_item_body {
         };
     }
     
+    // Basic printedVariable function
+    // TODO: Make work for non-string types
+    // TODO: Support format and base attributes
+    public function _printedVariable($attrs, $children) {
+        return function($controller) use ($attrs) {
+            $identifier = $attrs['identifier'];
+            return $controller->template[$identifier]->value;
+        };
+    }
+    
     /* Create MathML container. Note the three underscores are required
      * as the method name generated is __mathml_math (with 2 underscores)
      */
@@ -2007,7 +2046,7 @@ class qti_item_body {
  * TODO: The creation of the expression closures and classes should probably be refactored out into
  * a qti_expression_factory class, or something like that.
  */
-class qti_response_processing {
+class qti_processing {
 
     protected $controller;
 
@@ -2060,7 +2099,6 @@ class qti_response_processing {
     }
 
     /*
-     * TODO: Implement
     * 8.2. Generalized Response Processing
     */
 
@@ -2127,7 +2165,77 @@ class qti_response_processing {
         throw new Exception("Not implemented");
     }
 
-
+    /*
+     * 10.3 Template Processing
+    */
+    
+    public function _templateProcessing($attrs, $children) {
+        $this->processingFunction = function($controller) use($children) {
+            foreach($children as $child) {
+                $child->__invoke($controller);
+            }
+        };
+    }
+    
+    public function _templateCondition($attrs, $children) {
+        return function($controller) use ($attrs, $children) {
+            foreach($children as $child) {
+                $result = $child->__invoke($controller);
+                if ($result->value === true) {
+                    return;
+                }
+            }
+        };
+    }
+    
+    public function _templateIf($attrs, $children) {
+        return function($controller) use ($attrs, $children) {
+            $result = $children[0]->__invoke($controller);
+            if ($result->value === true) {
+                for($i = 1; $i < count($children); $i++) {
+                    $children[$i]->__invoke($controller);
+                }
+            }
+            return $result;
+        };
+    }
+    
+    public function _templateElseIf($attrs, $children) {
+        // Identical to templateIf
+        return function($controller) use ($attrs, $children) {
+            $result = $children[0]->__invoke($controller);
+            if ($result->value === true) {
+                for($i = 1; $i < count($children); $i++) {
+                    $children[$i]->__invoke($controller);
+                }
+            }
+            return $result;
+        };
+    }
+    
+    public function _templateElse($attrs, $children) {
+        return function($controller) use ($attrs, $children) {
+            for($i = 0; $i < count($children); $i++) {
+                $children[$i]->__invoke($controller);
+            }
+        };
+    }
+    
+    public function _setTemplateValue($attrs, $children) {
+        return function($controller) use($attrs, $children) {
+            $varname = $attrs['identifier'];
+            $controller->template[$varname]->setValue($children[0]->__invoke($controller));
+        };
+    }
+    
+    public function _setCorrectResponse($attrs, $children) {
+        return function($controller) use($attrs, $children) {
+            $varname = $attrs['identifier'];
+            $controller->response[$varname]->setCorrectResponse($children[0]->__invoke($controller));
+        };
+    }
+    
+    // TODO: Implement setDefaultValue and exitTemplate
 
     /*
      * 15.1. Built-in General Expressions
@@ -2148,8 +2256,10 @@ class qti_response_processing {
                 return $controller->response[$varname];
             } else if (isset($controller->outcome[$varname])) {
                 return $controller->outcome[$varname];
+            } else if (isset($controller->template[$varname])) {
+                return $controller->template[$varname];
             } else {
-                throw new qti_response_processing_exception("Variable $varname not found");
+                throw new qti_processing_exception("Variable $varname not found");
             }
         };
     }
@@ -2162,7 +2272,7 @@ class qti_response_processing {
             } else if (isset($controller->outcome[$varname])) {
                 return $controller->outcome[$varname]->getDefaultValue();
             } else {
-                throw new qti_response_processing_exception("Variable $varname not found");
+                throw new qti_processing_exception("Variable $varname not found");
             }
         };
     }
@@ -2173,7 +2283,7 @@ class qti_response_processing {
             if(isset($controller->response[$varname])) {
                 return $controller->response[$varname]->getCorrectResponse();
             } else {
-                throw new qti_response_processing_exception("Variable $varname not found");
+                throw new qti_processing_exception("Variable $varname not found");
             }
         };
 
@@ -2185,7 +2295,7 @@ class qti_response_processing {
             if(isset($controller->response[$varname])) {
                 return $controller->response[$varname]->mapResponse();
             } else {
-                throw new qti_response_processing_exception("Variable $varname not found");
+                throw new qti_processing_exception("Variable $varname not found");
             }
         };
     }
@@ -2204,11 +2314,29 @@ class qti_response_processing {
     }
 
     public function _randomInteger($attrs, $children) {
-        throw new Exception("Not implemented");
+        return function($controller) use ($attrs, $children) {
+            $min = $attrs['min'];
+            $max = $attrs['max'];
+            $step = isset($attrs['step']) ? $attrs['step'] : 1;
+            
+            $offsetmax = intval($max/$step);
+            $value = $min + mt_rand(0, $offsetmax);
+            return new qti_variable('single', 'integer', array(
+                'value' => $value
+            ));
+        };
     }
 
     public function _randomFloat($attrs, $children) {
-        throw new Exception("Not implemented");
+        return function($controller) use ($attrs, $children) {
+            $min = $attrs['min'];
+            $max = $attrs['max'];
+            
+            $value = $randomfloat = $min + mt_rand() / mt_getrandmax() * ($max - $min);
+            return new qti_variable('single', 'float', array(
+                'value' => $value
+            ));
+        };
     }
 
     /*
@@ -2521,6 +2649,16 @@ class qti_response_processing {
 
 }
 
+class qti_response_processing extends qti_processing {
+    
+}
+/*
+ * TODO: This is just a dummy implementation and should be done properly
+ * as soon as possible! Probably both should extend a qti_processing class
+ */
+class qti_template_processing extends qti_processing {
+    
+}
 // Modal feedback can contain any flowStatic elements, so this class extends qti_item_body
 // TODO: Remove the Bootstrap framework specific code if possible
 class qti_modal_feedback_processing extends qti_item_body {
