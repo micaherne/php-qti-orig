@@ -123,7 +123,7 @@ body {
 				<p>PHP-QTI is available as a PHP library which can be used in other 
 				    applications</p>
 				<a class="btn btn-primary btn-large"
-					href="https://github.com/micaherne/">View project on GitHub</a>
+					href="https://github.com/micaherne/php-qti">View project on GitHub</a>
 			</div>
 		</div>
 
