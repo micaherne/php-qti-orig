@@ -858,9 +858,6 @@ class qti_item_controller {
 
     public $stylesheets; // a simple array of stylesheets
     
-    public $rootdir;
-    public $view;
-    
     public $show_debugging = false; // do we show memory usage etc.?
     
     public $context = array(); // for passing contextual info (e.g. ancestor nodes) 

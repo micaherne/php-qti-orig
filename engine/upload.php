@@ -56,25 +56,3 @@ if($_FILES) {
     }
     exit;
 }
-
-$item = $_GET['item'];
-list($package, $itemid) = explode('/', $item);
-
-// If it's a request for a resource, serve it
-if (isset($_GET['resource'])) {
-    if (!isset($_GET['path'])) {
-        header("HTTP/1.0 400 Bad request");
-        die('Path required'); // TODO: Should be bad request header
-    }
-    $path = "../data/{$package}/" . $_GET['path'];
-    if (!file_exists(dirname(__FILE__). '/' . $path)) {
-        header("HTTP/1.0 404 Not found");
-        die("$path Not found");
-    }
-    
-    $finfo = new finfo(FILEINFO_MIME_TYPE);
-    $mimetype = $finfo->file($path);
-    header("Content-Type: $mimetype");
-    readfile($path);
-    exit;
-}

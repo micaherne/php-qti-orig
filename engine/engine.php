@@ -25,7 +25,7 @@ if (isset($_GET['resource'])) {
         header("HTTP/1.0 400 Bad request");
         die('Path required'); // TODO: Should be bad request header
     }
-    $path = "../data/{$package}/" . $_GET['path'];
+    $path = "$datadir/{$package}/" . $_GET['path'];
     if (!file_exists(dirname(__FILE__). '/' . $path)) {
         header("HTTP/1.0 404 Not found");
         die("$path Not found");
@@ -57,12 +57,11 @@ if (isset($_GET['resource'])) {
 
 // TODO: Enable single item packages to be accessed with only package number
 
-$controller_file = "../data/{$package}/{$itemid}_controller.php";
+$controller_file = "$datadir/{$package}/{$itemid}_controller.php";
 $controller_class = "{$itemid}_controller";
 
 require_once $controller_file;
 $controller = new $controller_class("{$package}/{$itemid}");
-$controller->rootDir = dirname(__FILE__). '/../data/' . $package;
 $controller->persistence = new qti_persistence();
 $controller->response_source = new qti_http_response_source();
 $controller->resource_provider = new qti_resource_provider($_SERVER['SCRIPT_NAME'], $item);

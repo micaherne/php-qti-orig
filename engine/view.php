@@ -78,16 +78,6 @@ body {
 			<h1>PHP-QTI</h1>
 			<p class="lead">PHP-QTI is a PHP implementation of a QTI 2.1
 				rendering engine.</p>
-			<!--  <div class="subnav">
-            <ul class="nav nav-pills">
-              <li><a href="#global">Global styles</a></li>
-              <li><a href="#gridSystem">Grid system</a></li>
-              <li><a href="#fluidGridSystem">Fluid grid system</a></li>
-              <li><a href="#gridCustomization">Customizing</a></li>
-              <li><a href="#layouts">Layouts</a></li>
-              <li><a href="#responsive">Responsive design</a></li>
-            </ul>
-          </div>-->
 		</header>
 
 		<div class="page-header">
