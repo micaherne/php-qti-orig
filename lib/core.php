@@ -497,6 +497,33 @@ class qti_inlineChoice extends qti_element {
     
 }
 
+// TODO: Show min and max labels at either end. Support stepLabel and reverse
+class qti_sliderInteraction extends qti_element {
+    
+    public function __invoke($controller) {
+        $variableName = $this->attrs['responseIdentifier'];
+        $value = $controller->response[$variableName]->getValue();
+        
+        $result = '';
+        
+        foreach($this->children as $child) {
+            if ($child instanceof qti_prompt) {
+                $result .= $child->__invoke($controller);
+            }
+        }
+        
+        $result .= "<div class=\"qti_sliderInteraction\"";
+        foreach($this->attrs as $attr => $val) {
+            $result .= " data-{$attr}=\"{$val}\" ";
+        }
+        $result .= "> <div class=\"value\"></div> <div class=\"slider\" /></div> ";
+        $result .= "<input type=\"hidden\" name=\"{$variableName}\" value=\"{$value}\" />";
+        $result .= "</div>";
+        return $result;
+    }
+    
+}
+
 // TODO: Implement stringInteraction features such as base, stringIdentifier,
 // expectedLength, patternMask, placeholderText
 class qti_stringInteraction extends qti_element {
@@ -608,8 +635,8 @@ class qti_endAttemptInteraction extends qti_element {
 
     public function __invoke($controller) {
         $variableName = $this->attrs['responseIdentifier'];
-        $result = "<div id=\"endAttemptInteraction_{$variableName}\" method=\"post\">";
-        $result .= "<input type=\"hidden\" name=\"{$variableName}\" value=\"true\" />";
+        $result = "<div id=\"endAttemptInteraction_{$variableName}\" class=\"qti_endAttemptInteraction\" method=\"post\">";
+        $result .= "<input type=\"hidden\" name=\"{$variableName}\" value=\"false\" />";
         $result .= "<input type=\"submit\" value=\"{$this->attrs['title']}\" >";
         $result .= "</div>";
         return $result;

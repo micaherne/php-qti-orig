@@ -10,6 +10,9 @@ require_once 'engine.php';
 <meta name="description" content="">
 <meta name="author" content="">
 
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/themes/base/jquery-ui.css" type="text/css" media="all" /> 
+
+
 <!-- Le styles -->
 <link href="bootstrap/docs/assets/css/bootstrap.css" rel="stylesheet">
 <style>
@@ -114,5 +117,14 @@ body {
 	<script src="bootstrap/docs/assets/js/bootstrap-carousel.js"></script>
 	<script src="bootstrap/docs/assets/js/bootstrap-typeahead.js"></script>
 
+	<!-- PHP-QTI specific -->
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="../lib/qti.jquery.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+    	// Wire up interactions
+    	$.phpqti.init();
+    });
+    </script>
 </body>
 </html>
