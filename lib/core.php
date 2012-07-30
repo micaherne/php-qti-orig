@@ -507,7 +507,8 @@ class qti_textEntryInteraction extends qti_stringInteraction {
     
     public function __invoke($controller) {
         $variableName = $this->attrs['responseIdentifier'];
-        $result = "<input type=\"text\" name=\"{$variableName}\"></input>";
+        $value = $controller->response[$variableName]->getValue();
+        $result = "<input type=\"text\" name=\"{$variableName}\" value=\"{$value}\"></input>";
         return $result;
     }
     
@@ -950,6 +951,18 @@ class qti_item_controller {
         foreach($this->response as $key => $val) {
             $this->response_source->bindVariable($key, $val);
         }
+    }
+    
+    public function setResponseSource(qti_response_source $response_source) {
+        $this->response_source = $response_source;
+    }
+    
+    public function setPersistence(qti_persistence $persistence) {
+        $this->persistence = $persistence;
+    }
+    
+    public function setResourceProvider(qti_resource_provider $resource_provider) {
+        $this->resource_provider = $resource_provider;
     }
 
     public function processResponse() {
@@ -1765,7 +1778,15 @@ class qti_mapping {
 
 }
 
-class qti_persistence {
+interface qti_persistence {
+    
+    public function persist($controller);
+    public function restore($controller);
+    public function reset($controller);
+    
+}
+
+class qti_session_persistence implements qti_persistence {
 
     public function persist($controller) {
         session_start();
@@ -1800,7 +1821,15 @@ class qti_persistence {
 
 }
 
-class qti_http_response_source {
+interface qti_response_source {
+    
+    public function bindVariable($name, qti_variable &$variable);
+    public function get($name);
+    public function isEndAttempt();
+    
+}
+
+class qti_http_response_source implements qti_response_source {
 
     /**
      * Update a variable with values from $_POST
@@ -1872,6 +1901,12 @@ class qti_http_response_source {
         return count($_POST) > 0; // TODO: Finish - how do we really check if they've ended the attempt
     }
 
+}
+
+interface qti_resource_provider {
+    
+    public function urlFor($relativePath);
+    
 }
 
 class qti_processing_exception extends Exception {
