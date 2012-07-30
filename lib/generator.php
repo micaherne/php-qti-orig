@@ -112,6 +112,13 @@ class qti_item_generator {
         if (($node->nodeType == XML_COMMENT_NODE)) {
             return;
         }
+        if (($node->nodeType == XML_CDATA_SECTION_NODE)) {
+            if (trim($node->textContent) == '') {
+                return;
+            } else {
+                return $varname . '->__text(\'' . addslashes($node->textContent) . '\')';
+            }
+        }
         if (($node->nodeType == XML_TEXT_NODE)){
             if (trim($node->nodeValue) == '') {
                 return;
