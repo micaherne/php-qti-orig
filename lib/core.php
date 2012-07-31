@@ -84,7 +84,7 @@ class qti_orderInteraction extends qti_element {
 
 }
 
-class qti_choiceInteraction extends qti_element{
+class qti_choiceInteraction extends qti_element {
 
     /* TODO: We'd really like to tell the simpleChoice elements what type of
      * input control they're to display in the constructor, but we don't have access to the
@@ -97,8 +97,9 @@ class qti_choiceInteraction extends qti_element{
 
     public function __invoke($controller) {
         $variableName = $this->attrs['responseIdentifier'];
-        $result = "<div id=\"choiceInteraction_{$variableName}\" class=\"qti_blockInteraction\">";
-
+        $result = "<div id=\"choiceInteraction_{$variableName}\" class=\"qti_blockInteraction\"";
+        $result .= implode(' ', $this->_getDataAttributes(array('maxChoices', 'minChoices')));
+        $result .= ">";
         // Work out what kind of HTML tag will be used for simpleChoices
         if (!isset($controller->response[$variableName])) {
             throw new Exception("Declaration for $variableName not found");
@@ -513,9 +514,7 @@ class qti_sliderInteraction extends qti_element {
         }
         
         $result .= "<div class=\"qti_sliderInteraction\"";
-        foreach($this->attrs as $attr => $val) {
-            $result .= " data-{$attr}=\"{$val}\" ";
-        }
+        $result .= implode(' ', $this->_getDataAttributes());
         $result .= "> <div class=\"value\"></div> <div class=\"slider\" /></div> ";
         $result .= "<input type=\"hidden\" name=\"{$variableName}\" value=\"{$value}\" />";
         $result .= "</div>";
@@ -677,6 +676,20 @@ class qti_element {
             $result .= $child->__invoke($controller);
         }
         $result .= "</span>";
+        return $result;
+    }
+    
+    /** Convenience method to get all attributes as an array of HTML5 data attributes
+     * @param array $attrsRequested a whitelist of attributes to return
+     * @return array HTML5 data attributes for this element
+     */
+    public function _getDataAttributes($attrsRequested=null) {
+        $result = array();
+        foreach($this->attrs as $attr => $val) {
+            if (is_null($attrsRequested) || in_array($attr, $attrsRequested)) {
+                $result[] = "data-{$attr}=\"{$val}\"";
+            }
+        }
         return $result;
     }
 
@@ -1103,6 +1116,10 @@ class qti_variable {
 
         return new qti_variable('single', 'float', array('value' => $value));
     }
+    
+    public function mapReponsePoint() {
+        throw new Exception("Not implemented");
+    }
 
     // TODO: This should be deprecated by the more specific methods
     // TODO: Make this work for things other than strings and arrays
@@ -1495,8 +1512,69 @@ class qti_variable {
         throw new Exception("Not implemented");
     }
     
+    // TODO: Implement poly (and maybe ellipse, although deprecated)
+    /* Note: we don't implement the "default" shape here as it's expected
+     * that calling code will create a rect from the associated image dimensions
+     * and call this function using that as the shape.
+     */
     public function inside($shape, $coords) {
-        throw new Exception("Not implemented");
+        $coordsarray = array();
+        foreach(explode(',', $coords) as $coord) {
+            $coordsarray[] = trim($coord);
+        }
+        
+        $result = new qti_variable('single', 'boolean');
+
+        if ($this->_isNull()) {
+            return $result;
+        } 
+        
+        $result->value = false;
+        
+        $values = $this->value;
+        if (!is_array($values)) {
+            $values = array($values);
+        }
+        
+        foreach($values as $value) {
+            list($pointx, $pointy) = explode(' ', $value);
+            
+            switch($shape) {
+                case 'rect':
+                    if (($coordsarray[0] <= $pointx)
+                        && ($coordsarray[1] >= $pointy)
+                        && ($coordsarray[2] >= $pointx)
+                        && ($coordsarray[3] <= $pointy)) {
+                            $result->value = true;
+                            return $result;
+                        }
+                    break;
+                case 'circle':
+                    // work out distance of point from centre
+                    $xoffset = abs($pointx - $coordsarray[0]);
+                    $yoffset = abs($pointy - $coordsarray[1]);
+                    $distance = sqrt(pow($xoffset, 2) + pow($yoffset, 2));
+                    // if lte radius return true
+                    if ($distance <= $coordsarray[2]) {
+                        $result->value = true;
+                        return $result;
+                    }
+                    break;
+                case 'poly':
+                    throw new Exception("inside poly not implemented");
+                    break;
+                case 'ellipse':
+                    throw new Exception("inside ellipse not implemented");
+                    break;
+                case 'default':
+                    throw new Exception("inside default not implemented - please call with a rect instead");
+                    break;
+                default:
+                    break;
+            }
+        }
+        
+        return $result;
     }
     
     public function lt($othervariable) {
@@ -1856,6 +1934,7 @@ interface qti_response_source {
     
 }
 
+// TODO: Support file upload
 class qti_http_response_source implements qti_response_source {
 
     /**
@@ -2363,7 +2442,14 @@ class qti_processing {
     }
 
     public function _mapResponsePoint($attrs, $children) {
-        throw new Exception("Not implemented");
+        return function($controller) use ($attrs, $children) {
+            $varname = $attrs['identifier'];
+            if(isset($controller->response[$varname])) {
+                return $controller->response[$varname]->mapResponsePoint();
+            } else {
+                throw new qti_processing_exception("Variable $varname not found");
+            }
+        };
     }
 
     public function _null($attrs, $children) {

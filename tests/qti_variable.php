@@ -322,4 +322,21 @@ class QTIVariableTest extends PHPUnit_Framework_TestCase {
         $variable3->value = array('B A', 'D E');
         $this->assertEquals(9, $variable3->mapResponse()->value);
     }
+    
+    public function testInside() {
+        $variable1 = new qti_variable('single', 'point', array('value' => '0 0'));
+        
+        // rectangle
+        $this->assertTrue($variable1->inside('rect', '-1,1,1,-1')->value);
+        $this->assertFalse($variable1->inside('rect', '1,2,2,1')->value);
+        
+        // circle
+        $this->assertTrue($variable1->inside('circle', '0,0,25')->value);
+        $this->assertTrue($variable1->inside('circle', '0,1,1')->value);
+        $this->assertFalse($variable1->inside('circle', '0,1.1,1')->value);
+        
+        // poly
+        //$this->assertTrue($variable1->inside('poly', '-1,-1,-1,1,1,1,1,-1')->value);
+        
+    }
 }
