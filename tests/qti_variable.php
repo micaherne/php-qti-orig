@@ -335,6 +335,10 @@ class QTIVariableTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue($variable1->inside('circle', '0,1,1')->value);
         $this->assertFalse($variable1->inside('circle', '0,1.1,1')->value);
         
+        // circle2 
+        $variable2 = new qti_variable('single', 'point', array('value' => '91 111'));
+        $this->assertTrue($variable2->inside('circle', '102,113,16')->value);
+        
         // poly
         //$this->assertTrue($variable1->inside('poly', '-1,-1,-1,1,1,1,1,-1')->value);
         

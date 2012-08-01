@@ -234,8 +234,26 @@ class qti_item_generator {
                     
                     $params[] = "'mapping' => array(" . implode(",", $mapping) . ')';
                     break;
-                    
-                // TODO: Implement areaMapping
+                case 'areaMapping':
+                    $areaMapping = array();
+                    foreach($child->attributes as $attr) {
+                        $areaMapping[] = "'{$attr->name}' => '{$attr->value}'";
+                    }
+                
+                    $areaMapEntry = array();
+                    foreach($child->childNodes as $valueNode) {
+                        if ($valueNode->nodeType == XML_TEXT_NODE) {
+                            continue;
+                        }
+                        $areaMapEntry[] = "array('shape' => '{$valueNode->getAttribute('shape')}', 
+                            'coords' => '{$valueNode->getAttribute('coords')}',
+                            'mappedValue' => '{$valueNode->getAttribute('mappedValue')}')";
+                    }
+                
+                    $areaMapping['areaMapEntry'] = "'areaMapEntry' => array(" . implode(",", $areaMapEntry) . ')';
+                
+                    $params[] = "'areaMapping' => array(" . implode(",", $areaMapping) . ')';
+                    break;                    
             }
         }
         

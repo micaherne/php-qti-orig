@@ -498,6 +498,57 @@ class qti_inlineChoice extends qti_element {
     
 }
 
+abstract class qti_graphicInteraction extends qti_element {
+        
+}
+
+class qti_selectPointInteraction extends qti_graphicInteraction {
+    
+    public $displayNodes;
+    public $prompt;
+    
+    public function __invoke($controller) {
+        $variableName = $this->attrs['responseIdentifier'];
+        $result = "<div id=\"selectPointInteraction_{$variableName}\" class=\"qti_blockInteraction qti_selectPointInteraction\" ";
+        $result .= implode(' ', $this->_getDataAttributes(array('maxChoices', 'minChoices')));
+        $result .= ">";
+        
+        // Work out what kind of HTML tag will be used for simpleMatchSets
+        if (!isset($controller->response[$variableName])) {
+            throw new Exception("Declaration for $variableName not found");
+        }
+    
+        $responseVariable = $controller->response[$variableName];
+
+        // Create the hidden input for the variable data
+        $result .= "<input type=\"hidden\" name=\"{$variableName}\" value=\"{$responseVariable->valueAsString()}\" />";
+        
+        // Process child nodes
+        // TODO: We don't really need displayNodes here - it's just
+        // used so we don't need to create a qti_object class
+        $this->displayNodes = array();
+        foreach($this->children as $child) {
+            if ($child instanceof qti_prompt) {
+                $this->prompt = $child;
+            } else {
+                $this->displayNodes[] = $child;
+            }
+        }
+    
+        if (!is_null($this->prompt)) {
+            $result .= $this->prompt->__invoke($controller);
+        }
+        
+        foreach($this->displayNodes as $node) {
+            $result .= $node->__invoke($controller);
+        }
+        
+        $result .= "</div>";
+        return $result;
+    }
+    
+}
+
 // TODO: Show min and max labels at either end. Support stepLabel and reverse
 class qti_sliderInteraction extends qti_element {
     
@@ -1083,9 +1134,24 @@ class qti_variable {
         if(isset($params['mapping'])) {
             $this->mapping = $params['mapping'];
         }
+        
+        $this->areaMapping = null;
+        if (isset($params['areaMapping'])) {
+            $this->areaMapping = $params['areaMapping'];
+        }
     }
 
+    
+    public function __toString(){
+        return $this->cardinality . ' ' . $this->type . ' [' . $this->valueAsString() . ']';
+    }
+    
+    public function valueAsString() {
+        return (is_array($this->value) ? implode(',', $this->value) : $this->value);
+    }
+    
     // Implement mapResponse processing here because it's sensible!
+    // TODO: Implement lower and upper bound
     public function mapResponse() {
         // TODO: Check mapping is defined here?
         if ($this->cardinality == 'single') {
@@ -1117,8 +1183,46 @@ class qti_variable {
         return new qti_variable('single', 'float', array('value' => $value));
     }
     
-    public function mapReponsePoint() {
-        throw new Exception("Not implemented");
+    // TODO: Implement upper and lower bound
+    // TODO: Check this algorithm - probably too simplistic given
+    // possibilities for overlapping areas and priorities, also
+    // multiple responses in same area
+    // TODO: What do we do with defaultValue????
+    public function mapResponsePoint() {
+        if ($this->cardinality == 'single') {
+            $values = array($this->value);
+        } else {
+            $values = $this->value;
+        }
+        
+        $resultvalue = 0;
+        foreach($this->areaMapping['areaMapEntry'] as $areaMapEntry) {
+            
+            print_r($areaMapEntry);
+            // TODO: Inefficient - should pre-create array of testvars
+            foreach($values as $value) {
+                $testvar = new qti_variable('single', 'point', array('value' => $value));
+                if ($testvar->inside($areaMapEntry['shape'], $areaMapEntry['coords'])) {
+                    $resultvalue += $areaMapEntry['mappedValue'];
+                    continue 2; // ignore any other points in this area
+                }
+            }
+            
+        }
+        
+        if (isset($this->areaMapping['lowerBound'])) {
+            if ($resultvalue < $this->areaMapping['lowerBound']) {
+                $resultvalue = $this->areaMapping['lowerBound'];
+            }
+        }
+        
+        if (isset($this->areaMapping['upperBound'])) {
+            if ($resultvalue > $this->areaMapping['upperBound']) {
+                $resultvalue = $this->areaMapping['upperBound'];
+            }
+        }
+        
+        return new qti_variable('single', 'float', $resultvalue);
     }
 
     // TODO: This should be deprecated by the more specific methods
@@ -1800,10 +1904,7 @@ class qti_variable {
     public function getCorrectResponse() {
         return new qti_variable($this->cardinality, $this->type, array('value' => $this->correctResponse));
     }
-    
-    public function __toString(){
-        return $this->cardinality . ' ' . $this->type . ' [' . (is_array($this->value) ? implode(',', $this->value) : $this->value) . ']';
-    }
+
 
 }
 
@@ -1956,7 +2057,7 @@ class qti_http_response_source implements qti_response_source {
                         }
                     } else if ($variable->type == 'boolean') {
                         $variable->value = ($submittedvalue == 'true');
-                    }
+                    } 
                 }
                 break;
             case 'multiple':
@@ -1978,6 +2079,8 @@ class qti_http_response_source implements qti_response_source {
                                 $variable->value[] = "$s $target";
                             }
                         }
+                    } else if ($variable->type == 'point') {
+                        $variable->value = explode(',', $submittedvalue);
                     }
                 }
                 break;
