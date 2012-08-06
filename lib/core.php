@@ -1198,11 +1198,10 @@ class qti_variable {
         $resultvalue = 0;
         foreach($this->areaMapping['areaMapEntry'] as $areaMapEntry) {
             
-            print_r($areaMapEntry);
             // TODO: Inefficient - should pre-create array of testvars
             foreach($values as $value) {
                 $testvar = new qti_variable('single', 'point', array('value' => $value));
-                if ($testvar->inside($areaMapEntry['shape'], $areaMapEntry['coords'])) {
+                if ($testvar->inside($areaMapEntry['shape'], $areaMapEntry['coords'])->value == true) {
                     $resultvalue += $areaMapEntry['mappedValue'];
                     continue 2; // ignore any other points in this area
                 }
@@ -1222,7 +1221,7 @@ class qti_variable {
             }
         }
         
-        return new qti_variable('single', 'float', $resultvalue);
+        return new qti_variable('single', 'float', array('value' => $resultvalue));
     }
 
     // TODO: This should be deprecated by the more specific methods
