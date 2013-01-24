@@ -88,7 +88,7 @@ class QTIVariableTest extends PHPUnit_Framework_TestCase {
         $result1 = $variable1->random();
         $this->assertEquals('single', $result1->cardinality);
         $this->assertEquals('identifier', $result1->type);
-        $this->assertTrue($result1->value <= 10 && $result->value % 2 == 0);
+        $this->assertTrue($result1->value <= 10 && $result1->value % 2 == 0);
     }
     
     public function testMember() {

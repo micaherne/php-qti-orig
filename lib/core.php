@@ -784,7 +784,8 @@ class qti_feedbackElement extends qti_element {
         */
         $testvar = new qti_variable('single', $variable->type, array('value' => $identifier));
         if ($variable->cardinality == 'multiple') {
-            $comparisonresult = $variable->contains($testvar);
+            //$comparisonresult = $variable->contains($testvar);
+        	$comparisonresult = $variable->contains($testvar);
         } else {
             $comparisonresult = $variable->match($testvar);
         }
@@ -1119,7 +1120,7 @@ class qti_variable {
             $this->value = $params['value'];
         }
 
-        $this->correct = null;
+        $this->correctResponse = null;
         if(isset($params['correctResponse'])) {
             $this->correctResponse = $params['correctResponse'];
         }
@@ -1381,7 +1382,7 @@ class qti_variable {
     }
     
     public function member($container) {
-        $result = new qti_variable('single', 'boolean', array('value' => false));
+    	$result = new qti_variable('single', 'boolean', array('value' => false));
         if (!$this->_isNull() && !$container->_isNull()) {
             $result->value = in_array($this->value, $container->value);
         }
@@ -1572,7 +1573,7 @@ class qti_variable {
         
         if ($this->_isNull() || $othervariable->_isNull()) {
             $result->value = null;
-            return result;
+            return $result;
         }
         
         $string1 = $this->value;
