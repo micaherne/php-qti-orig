@@ -132,10 +132,10 @@ class qti_item_generator {
          * are set in the documentElement and not changed, which would simplify this
          * a bit, but it's not necessarily the case. 
          */
-        list($prefix, $name) = explode(':', $node->nodeName, 2);
-        if (is_null($name)) {
-            $methodName = $prefix;
+        if (strpos($node->nodeName, ':') === false) {
+            $methodName = $node->nodeName;
         } else {
+            list($prefix, $name) = explode(':', $node->nodeName, 2);
             $nodeNamespace = $node->lookupNamespaceURI($prefix);
             switch ($nodeNamespace) {
                 case 'http://www.imsglobal.org/xsd/imsqti_v2p1':

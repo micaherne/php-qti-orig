@@ -123,7 +123,7 @@ class qti_choiceInteraction extends qti_element {
                 $child->inputType = $simpleChoiceType;
                 $child->name = $variableName.$brackets;
                 $this->simpleChoice[] = $child;
-                if($child->attrs['fixed'] === 'true') {
+                if(isset($child->attrs['fixed']) && $child->attrs['fixed'] === 'true') {
                     $this->fixed[] = count($this->simpleChoice) - 1;
                 }
             }
@@ -722,7 +722,7 @@ class qti_element {
     }
     
     public function __invoke($controller) {
-        $result .= '<span class="' . get_class($this) . '">';
+        $result = '<span class="' . get_class($this) . '">';
         foreach($this->children as $child) {
             $result .= $child->__invoke($controller);
         }
@@ -1994,8 +1994,10 @@ interface qti_persistence {
 class qti_session_persistence implements qti_persistence {
 
     public function persist($controller) {
+    if(!isset($_SESSION)) {
         session_start();
-        if (!isset($_SESSION[$controller->identifier])) {
+    }
+    if (!isset($_SESSION[$controller->identifier])) {
             $_SESSION[$controller->identifier] = array();
         }
         $_SESSION[$controller->identifier]['response'] = $controller->response;
@@ -2102,7 +2104,11 @@ class qti_http_response_source implements qti_response_source {
     }
     
     public function get($name) {
-        return $_POST[$name];
+        if (isset($_POST[$name])) {
+            return $_POST[$name];
+        } else {
+            return null;
+        }
     }
 
     public function isEndAttempt() {
@@ -2221,7 +2227,7 @@ class qti_item_body {
     // TODO: These next 2 exist just to wire in the resource provider - simplify
     
     public function _img($attrs, $args) {
-        return function($controller) use ($attrs) {
+        return function($controller) use ($attrs, $args) {
             if(isset($attrs['src'])) {
                 $attrs['src'] = $controller->resource_provider->urlFor($attrs['src']);
             }
@@ -2230,7 +2236,7 @@ class qti_item_body {
     }
     
     public function _object($attrs, $args) {
-        return function($controller) use ($attrs) {
+        return function($controller) use ($attrs, $args) {
             if(isset($attrs['data'])) {
                 $attrs['data'] = $controller->resource_provider->urlFor($attrs['data']);
             }
@@ -2357,7 +2363,7 @@ class qti_processing {
         return function($controller) use ($attrs, $children) {
             foreach($children as $child) {
                 $result = $child->__invoke($controller);
-                if ($result->value === true) {
+                if (isset($result->value) && $result->value === true) {
                     return;
                 }
             }
@@ -2918,6 +2924,7 @@ class qti_modal_feedback_processing extends qti_item_body {
     protected $processingFunction = array(); // There can be multiple modalFeedback nodes
     
     public function execute() {
+        $result = '';
         foreach($this->processingFunction as $processingFunction) {
             $result .= $processingFunction->__invoke($this->controller);
         }
